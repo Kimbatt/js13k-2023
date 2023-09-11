@@ -494,8 +494,8 @@ class Quaternion extends VectorBase<4, Quaternion>
 
     premultiply = (other: Quaternion) => this.multiplyQuaternions(other, this);
 
-    premultiplyAxisAngle = (x: number, y: number, z: number, angle: number) =>
-        this.premultiply(this.tmp.setFromAxisAngle(x, y, z, angle));
+    premultiplyAxisAngle = (x_: number, y_: number, z_: number, angle: number) =>
+        this.premultiply(this.tmp.setFromAxisAngle(x_, y_, z_, angle));
 
     setFromUnitVectors(from: Vector3, to: Vector3)
     {
