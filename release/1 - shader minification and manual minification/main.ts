@@ -16,7 +16,6 @@ const {
     sign,
     min,
     max,
-    pow,
     log2,
     random,
     imul
@@ -160,26 +159,26 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
         this.set(elements ?? []);
     }
 
-    public abstract get new(): T;
-    public abstract get tmp(): T;
-    public clone = () => this.new.set(this);
+    abstract get new(): T;
+    abstract get tmp(): T;
+    clone = () => this.new.set(this);
 
-    public set(array: ArrayLike<number>, offset?: number | undefined)
+    set(array: ArrayLike<number>, offset?: number | undefined)
     {
         super.set(array, offset);
         return this;
     }
 
-    public copyFrom = (other: VectorBase<Length, T>) => this.set(other);
+    copyFrom = (other: VectorBase<Length, T>) => this.set(other);
 
-    public setValues = (...vals: FixedLengthArray<number, Length>) => this.set(vals);
+    setValues = (...vals: FixedLengthArray<number, Length>) => this.set(vals);
 
-    public setScalar(num: number)
+    setScalar(num: number)
     {
         return this.fill(num);
     }
 
-    public add(other: VectorBase<Length, T>)
+    add(other: VectorBase<Length, T>)
     {
         for (let i = 0; i < super.length; ++i)
         {
@@ -189,7 +188,7 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
         return this;
     }
 
-    public sub(other: VectorBase<Length, T>)
+    sub(other: VectorBase<Length, T>)
     {
         for (let i = 0; i < super.length; ++i)
         {
@@ -199,17 +198,7 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
         return this;
     }
 
-    public mul(other: VectorBase<Length, T>)
-    {
-        for (let i = 0; i < super.length; ++i)
-        {
-            this[i] *= other[i];
-        }
-
-        return this;
-    }
-
-    public div(other: VectorBase<Length, T>)
+    div(other: VectorBase<Length, T>)
     {
         for (let i = 0; i < super.length; ++i)
         {
@@ -219,27 +208,7 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
         return this;
     }
 
-    public addScalar(other: number)
-    {
-        for (let i = 0; i < super.length; ++i)
-        {
-            this[i] += other;
-        }
-
-        return this;
-    }
-
-    public subScalar(other: number)
-    {
-        for (let i = 0; i < super.length; ++i)
-        {
-            this[i] -= other;
-        }
-
-        return this;
-    }
-
-    public mulScalar(other: number)
+    mulScalar(other: number)
     {
         for (let i = 0; i < super.length; ++i)
         {
@@ -249,17 +218,7 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
         return this;
     }
 
-    public divScalar(other: number)
-    {
-        for (let i = 0; i < super.length; ++i)
-        {
-            this[i] /= other;
-        }
-
-        return this;
-    }
-
-    public dot = (other: VectorBase<Length, T>): number =>
+    dot = (other: VectorBase<Length, T>): number =>
     {
         let d = 0;
         for (let i = 0; i < super.length; ++i)
@@ -270,29 +229,29 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
         return d;
     };
 
-    public get lengthSqr()
+    get lengthSqr()
     {
         return this.dot(this);
     }
 
-    public get length()
+    get length()
     {
         return sqrt(this.lengthSqr);
     }
 
-    public distanceSqr = (other: VectorBase<Length, T>) => this.tmp.copyFrom(this).sub(other).lengthSqr;
+    distanceSqr = (other: VectorBase<Length, T>) => this.tmp.copyFrom(this).sub(other).lengthSqr;
 
-    public distance = (other: VectorBase<Length, T>) => this.tmp.copyFrom(this).sub(other).length;
+    distance = (other: VectorBase<Length, T>) => this.tmp.copyFrom(this).sub(other).length;
 
-    public normalize = () => this.divScalar(this.length);
+    normalize = () => this.mulScalar(1 / this.length);
 
-    public safeNormalize()
+    safeNormalize()
     {
         const len = this.length;
-        return len > 1e-9 ? this.divScalar(len) : this.setScalar(0);
+        return len > 1e-9 ? this.mulScalar(1 / len) : this.setScalar(0);
     }
 
-    public lerpVectors(a: VectorBase<Length, T>, b: VectorBase<Length, T>, t: number)
+    lerpVectors(a: VectorBase<Length, T>, b: VectorBase<Length, T>, t: number)
     {
         for (let i = 0; i < super.length; ++i)
         {
@@ -302,9 +261,9 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
         return this;
     }
 
-    public lerp = (other: VectorBase<Length, T>, t: number) => this.lerpVectors(this, other, t);
+    lerp = (other: VectorBase<Length, T>, t: number) => this.lerpVectors(this, other, t);
 
-    public clamp(min: VectorBase<Length, T>, max: VectorBase<Length, T>)
+    clamp(min: VectorBase<Length, T>, max: VectorBase<Length, T>)
     {
         for (let i = 0; i < super.length; ++i)
         {
@@ -315,9 +274,141 @@ abstract class VectorBase<Length extends number, T extends VectorBase<Length, T>
     }
 }
 
-abstract class Vector4Base<T extends VectorBase<4, T>> extends VectorBase<4, T>
+class Vector3 extends VectorBase<3, Vector3>
 {
-    constructor(x = 0, y = 0, z = 0, w = 0)
+    constructor(x = 0, y?: number, z?: number)
+    {
+        super(3, [x, y ?? x, z ?? x]);
+    }
+
+    get new()
+    {
+        return NewVector3();
+    }
+
+    get tmp()
+    {
+        return tmpVec3_linear_ts;
+    }
+
+    get x()
+    {
+        return this[0];
+    }
+
+    set x(v)
+    {
+        this[0] = v;
+    }
+
+    get y()
+    {
+        return this[1];
+    }
+
+    set y(v)
+    {
+        this[1] = v;
+    }
+
+    get z()
+    {
+        return this[2];
+    }
+
+    set z(v)
+    {
+        this[2] = v;
+    }
+
+    crossVectors = (a: Vector3, b: Vector3) => this.setValues(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+
+    cross = (other: Vector3) => this.crossVectors(this, other);
+
+    applyQuaternion(q: Quaternion)
+    {
+        const { x: px, y: py, z: pz } = this;
+        const { x, y, z, w } = q;
+
+        const ix = w * px + y * pz - z * py;
+        const iy = w * py + z * px - x * pz;
+        const iz = w * pz + x * py - y * px;
+        const iw = x * px + y * py + z * pz;
+
+        this.x = ix * w + iw * x - iy * z + iz * y;
+        this.y = iy * w + iw * y - iz * x + ix * z;
+        this.z = iz * w + iw * z - ix * y + iy * x;
+        return this;
+    }
+
+    applyMatrix3x3(mat: Matrix3x3)
+    {
+        const { x, y, z } = this;
+        const [m11, m21, m31, m12, m22, m32, m13, m23, m33] = mat;
+
+        this.x = m11 * x + m12 * y + m13 * z;
+        this.y = m21 * x + m22 * y + m23 * z;
+        this.z = m31 * x + m32 * y + m33 * z;
+
+        return this;
+    }
+
+    applyMatrix4x4(mat: Matrix4x4)
+    {
+        const { x, y, z } = this;
+        const [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44] = mat;
+
+        const iw = m41 * x + m42 * y + m43 * z + m44;
+        this.x = (m11 * x + m12 * y + m13 * z + m14) / iw;
+        this.y = (m21 * x + m22 * y + m23 * z + m24) / iw;
+        this.z = (m31 * x + m32 * y + m33 * z + m34) / iw;
+
+        return this;
+    }
+}
+
+class Vector2 extends VectorBase<2, Vector2>
+{
+    constructor(x = 0, y = 0)
+    {
+        super(2, [x, y]);
+    }
+
+    get new()
+    {
+        return NewVector2();
+    }
+
+    get tmp()
+    {
+        return tmpVec2;
+    }
+
+    get x()
+    {
+        return this[0];
+    }
+
+    set x(v)
+    {
+        this[0] = v;
+    }
+
+    get y()
+    {
+        return this[1];
+    }
+
+    set y(v)
+    {
+        this[1] = v;
+    }
+}
+
+// https://github.com/mrdoob/three.js/blob/dev/src/math/Quaternion.js
+class Quaternion extends VectorBase<4, Quaternion>
+{
+    constructor(x = 0, y = 0, z = 0, w = 1)
     {
         super(4, [x, y, z, w]);
     }
@@ -361,175 +452,18 @@ abstract class Vector4Base<T extends VectorBase<4, T>> extends VectorBase<4, T>
     {
         this[3] = v;
     }
-}
 
-class Vector4 extends Vector4Base<Vector4>
-{
-    public get new()
-    {
-        return NewVector4();
-    }
-
-    public get tmp()
-    {
-        return tmpVec4;
-    }
-}
-
-class Vector3 extends VectorBase<3, Vector3>
-{
-    constructor(x = 0, y?: number, z?: number)
-    {
-        super(3, [x, y ?? x, z ?? x]);
-    }
-
-    public get new()
-    {
-        return NewVector3();
-    }
-
-    public get tmp()
-    {
-        return tmpVec3_linear_ts;
-    }
-
-    get x()
-    {
-        return this[0];
-    }
-
-    set x(v)
-    {
-        this[0] = v;
-    }
-
-    get y()
-    {
-        return this[1];
-    }
-
-    set y(v)
-    {
-        this[1] = v;
-    }
-
-    get z()
-    {
-        return this[2];
-    }
-
-    set z(v)
-    {
-        this[2] = v;
-    }
-
-    public crossVectors = (a: Vector3, b: Vector3) => this.setValues(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
-
-    public cross = (other: Vector3) => this.crossVectors(this, other);
-
-    public setFromMatrixPosition = (mat: Matrix4x4) => this.set(mat.subarray(12, 15));
-
-    public setFromMatrixColumn = (mat: Matrix4x4, col: number) => this.set(mat.subarray(col * 4, (col + 1) * 4));
-
-    public applyQuaternion(q: Quaternion)
-    {
-        const { x: px, y: py, z: pz } = this;
-        const { x, y, z, w } = q;
-
-        const ix = w * px + y * pz - z * py;
-        const iy = w * py + z * px - x * pz;
-        const iz = w * pz + x * py - y * px;
-        const iw = x * px + y * py + z * pz;
-
-        this.x = ix * w + iw * x - iy * z + iz * y;
-        this.y = iy * w + iw * y - iz * x + ix * z;
-        this.z = iz * w + iw * z - ix * y + iy * x;
-        return this;
-    }
-
-    applyMatrix3x3(mat: Matrix3x3)
-    {
-        const { x, y, z } = this;
-        const [m11, m21, m31, m12, m22, m32, m13, m23, m33] = mat;
-
-        this.x = m11 * x + m12 * y + m13 * z;
-        this.y = m21 * x + m22 * y + m23 * z;
-        this.z = m31 * x + m32 * y + m33 * z;
-
-        return this;
-    }
-
-    public applyMatrix4x4(mat: Matrix4x4)
-    {
-        const { x, y, z } = this;
-        const [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44] = mat;
-
-        const iw = m41 * x + m42 * y + m43 * z + m44;
-        this.x = (m11 * x + m12 * y + m13 * z + m14) / iw;
-        this.y = (m21 * x + m22 * y + m23 * z + m24) / iw;
-        this.z = (m31 * x + m32 * y + m33 * z + m34) / iw;
-
-        return this;
-    }
-}
-
-class Vector2 extends VectorBase<2, Vector2>
-{
-    constructor(x = 0, y = 0)
-    {
-        super(2, [x, y]);
-    }
-
-    public get new()
-    {
-        return NewVector2();
-    }
-
-    public get tmp()
-    {
-        return tmpVec2;
-    }
-
-    get x()
-    {
-        return this[0];
-    }
-
-    set x(v)
-    {
-        this[0] = v;
-    }
-
-    get y()
-    {
-        return this[1];
-    }
-
-    set y(v)
-    {
-        this[1] = v;
-    }
-}
-
-// https://github.com/mrdoob/three.js/blob/dev/src/math/Quaternion.js
-class Quaternion extends Vector4Base<Quaternion>
-{
-    constructor(x = 0, y = 0, z = 0, w = 1)
-    {
-        super(x, y, z, w);
-    }
-
-    public get new()
+    get new()
     {
         return NewQuaternion();
     }
 
-    public get tmp()
+    get tmp()
     {
         return tmpQuaternion;
     }
 
-    public setFromAxisAngle(x: number, y: number, z: number, angle: number)
+    setFromAxisAngle(x: number, y: number, z: number, angle: number)
     {
         const half = angle / 2;
         const s = sin(half);
@@ -537,31 +471,13 @@ class Quaternion extends Vector4Base<Quaternion>
         return this.setValues(x * s, y * s, z * s, cos(half));
     }
 
-    public invert()
+    invert()
     {
         this.w = -this.w;
         return this;
     }
 
-    public setFromEulerXYZ(x: number, y: number, z: number)
-    {
-        const c1 = cos(x / 2);
-        const c2 = cos(y / 2);
-        const c3 = cos(z / 2);
-
-        const s1 = sin(x / 2);
-        const s2 = sin(y / 2);
-        const s3 = sin(z / 2);
-
-        return this.setValues(
-            s1 * c2 * c3 + c1 * s2 * s3,
-            c1 * s2 * c3 - s1 * c2 * s3,
-            c1 * c2 * s3 + s1 * s2 * c3,
-            c1 * c2 * c3 - s1 * s2 * s3
-        );
-    }
-
-    public multiplyQuaternions(a: Quaternion, b: Quaternion)
+    multiplyQuaternions(a: Quaternion, b: Quaternion)
     {
         const { x, y, z, w } = a;
         const { x: bx, y: by, z: bz, w: bw } = b;
@@ -574,41 +490,14 @@ class Quaternion extends Vector4Base<Quaternion>
         );
     }
 
-    public multiply = (other: Quaternion) => this.multiplyQuaternions(this, other);
+    multiply = (other: Quaternion) => this.multiplyQuaternions(this, other);
 
-    public premultiply = (other: Quaternion) => this.multiplyQuaternions(other, this);
+    premultiply = (other: Quaternion) => this.multiplyQuaternions(other, this);
 
-    public premultiplyAxisAngle = (x: number, y: number, z: number, angle: number) =>
+    premultiplyAxisAngle = (x: number, y: number, z: number, angle: number) =>
         this.premultiply(this.tmp.setFromAxisAngle(x, y, z, angle));
 
-    public setFromRotationMatrix(mat: Matrix4x4)
-    {
-        const [m11, m21, m31, m12, m22, m32, m13, m23, m33] = mat;
-        const trace = m11 + m22 + m33;
-
-        if (trace > 0)
-        {
-            const s = 0.5 / sqrt(trace + 1.0);
-            return this.setValues((m32 - m23) * s, (m13 - m31) * s, (m21 - m12) * s, 0.25 / s);
-        }
-        else if (m11 > m22 && m11 > m33)
-        {
-            const s = 2.0 * sqrt(1.0 + m11 - m22 - m33);
-            return this.setValues(0.25 * s, (m12 + m21) / s, (m13 + m31) / s, (m32 - m23) / s);
-        }
-        else if (m22 > m33)
-        {
-            const s = 2.0 * sqrt(1.0 + m22 - m11 - m33);
-            return this.setValues((m12 + m21) / s, 0.25 * s, (m23 + m32) / s, (m13 - m31) / s);
-        }
-        else
-        {
-            const s = 2.0 * sqrt(1.0 + m33 - m11 - m22);
-            return this.setValues((m13 + m31) / s, (m23 + m32) / s, 0.25 * s, (m21 - m12) / s);
-        }
-    }
-
-    public setFromUnitVectors(from: Vector3, to: Vector3)
+    setFromUnitVectors(from: Vector3, to: Vector3)
     {
         const r = from.dot(to) + 1;
         const { x, y, z } = from;
@@ -651,43 +540,13 @@ class Matrix3x3 extends Float32Array
         ]);
     }
 
-    public clone = () => NewMatrix3x3().set(this);
-
-    public set(array: FixedLengthArray<number, 9> | Matrix3x3, offset?: number | undefined)
+    set(array: FixedLengthArray<number, 9> | Matrix3x3, offset?: number | undefined)
     {
         super.set(array, offset);
         return this;
     }
 
-    public copy(other: Matrix3x3)
-    {
-        return this.set(other);
-    }
-
-    public multiply(other: Matrix3x3)
-    {
-        return this.multiplyMatrices(this, other);
-    }
-
-    public multiplyMatrices(a: Matrix3x3, b: Matrix3x3)
-    {
-        const [a11, a21, a31, a12, a22, a32, a13, a23, a33] = a;
-        const [b11, b21, b31, b12, b22, b32, b13, b23, b33] = b;
-
-        return this.set([
-            a11 * b11 + a12 * b21 + a13 * b31,
-            a21 * b11 + a22 * b21 + a23 * b31,
-            a31 * b11 + a32 * b21 + a33 * b31,
-            a11 * b12 + a12 * b22 + a13 * b32,
-            a21 * b12 + a22 * b22 + a23 * b32,
-            a31 * b12 + a32 * b22 + a33 * b32,
-            a11 * b13 + a12 * b23 + a13 * b33,
-            a21 * b13 + a22 * b23 + a23 * b33,
-            a31 * b13 + a32 * b23 + a33 * b33,
-        ]);
-    }
-
-    public invert()
+    invert()
     {
         const [n11, n21, n31, n12, n22, n32, n13, n23, n33] = this;
         const
@@ -710,7 +569,7 @@ class Matrix3x3 extends Float32Array
         ]);
     }
 
-    public transpose()
+    transpose()
     {
         let tmp;
 
@@ -744,30 +603,30 @@ class Matrix4x4 extends Float32Array
         ]);
     }
 
-    public clone = () => NewMatrix4x4().set(this);
+    clone = () => NewMatrix4x4().set(this);
 
-    public set(array: FixedLengthArray<number, 16> | Matrix4x4, offset?: number | undefined)
+    set(array: FixedLengthArray<number, 16> | Matrix4x4, offset?: number | undefined)
     {
         super.set(array, offset);
         return this;
     }
 
-    public copy(other: Matrix4x4)
+    copy(other: Matrix4x4)
     {
         return this.set(other);
     }
 
-    public multiply(other: Matrix4x4)
+    multiply(other: Matrix4x4)
     {
         return this.multiplyMatrices(this, other);
     }
 
-    public preMultiply(other: Matrix4x4)
+    preMultiply(other: Matrix4x4)
     {
         return this.multiplyMatrices(other, this);
     }
 
-    public multiplyMatrices(a: Matrix4x4, b: Matrix4x4)
+    multiplyMatrices(a: Matrix4x4, b: Matrix4x4)
     {
         const [a11, a21, a31, a41, a12, a22, a32, a42, a13, a23, a33, a43, a14, a24, a34, a44] = a;
         const [b11, b21, b31, b41, b12, b22, b32, b42, b13, b23, b33, b43, b14, b24, b34, b44] = b;
@@ -792,38 +651,7 @@ class Matrix4x4 extends Float32Array
         ]);
     }
 
-    public invert()
-    {
-        const [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44] = this;
-        const
-            t1 = m23 * m34 * m42 - m24 * m33 * m42 + m24 * m32 * m43 - m22 * m34 * m43 - m23 * m32 * m44 + m22 * m33 * m44,
-            t2 = m14 * m33 * m42 - m13 * m34 * m42 - m14 * m32 * m43 + m12 * m34 * m43 + m13 * m32 * m44 - m12 * m33 * m44,
-            t3 = m13 * m24 * m42 - m14 * m23 * m42 + m14 * m22 * m43 - m12 * m24 * m43 - m13 * m22 * m44 + m12 * m23 * m44,
-            t4 = m14 * m23 * m32 - m13 * m24 * m32 - m14 * m22 * m33 + m12 * m24 * m33 + m13 * m22 * m34 - m12 * m23 * m34;
-
-        const det = m11 * t1 + m21 * t2 + m31 * t3 + m41 * t4;
-
-        return this.set([
-            t1 / det,
-            (m24 * m33 * m41 - m23 * m34 * m41 - m24 * m31 * m43 + m21 * m34 * m43 + m23 * m31 * m44 - m21 * m33 * m44) / det,
-            (m22 * m34 * m41 - m24 * m32 * m41 + m24 * m31 * m42 - m21 * m34 * m42 - m22 * m31 * m44 + m21 * m32 * m44) / det,
-            (m23 * m32 * m41 - m22 * m33 * m41 - m23 * m31 * m42 + m21 * m33 * m42 + m22 * m31 * m43 - m21 * m32 * m43) / det,
-            t2 / det,
-            (m13 * m34 * m41 - m14 * m33 * m41 + m14 * m31 * m43 - m11 * m34 * m43 - m13 * m31 * m44 + m11 * m33 * m44) / det,
-            (m14 * m32 * m41 - m12 * m34 * m41 - m14 * m31 * m42 + m11 * m34 * m42 + m12 * m31 * m44 - m11 * m32 * m44) / det,
-            (m12 * m33 * m41 - m13 * m32 * m41 + m13 * m31 * m42 - m11 * m33 * m42 - m12 * m31 * m43 + m11 * m32 * m43) / det,
-            t3 / det,
-            (m14 * m23 * m41 - m13 * m24 * m41 - m14 * m21 * m43 + m11 * m24 * m43 + m13 * m21 * m44 - m11 * m23 * m44) / det,
-            (m12 * m24 * m41 - m14 * m22 * m41 + m14 * m21 * m42 - m11 * m24 * m42 - m12 * m21 * m44 + m11 * m22 * m44) / det,
-            (m13 * m22 * m41 - m12 * m23 * m41 - m13 * m21 * m42 + m11 * m23 * m42 + m12 * m21 * m43 - m11 * m22 * m43) / det,
-            t4 / det,
-            (m13 * m24 * m31 - m14 * m23 * m31 + m14 * m21 * m33 - m11 * m24 * m33 - m13 * m21 * m34 + m11 * m23 * m34) / det,
-            (m14 * m22 * m31 - m12 * m24 * m31 - m14 * m21 * m32 + m11 * m24 * m32 + m12 * m21 * m34 - m11 * m22 * m34) / det,
-            (m12 * m23 * m31 - m13 * m22 * m31 + m13 * m21 * m32 - m11 * m23 * m32 - m12 * m21 * m33 + m11 * m22 * m33) / det,
-        ]);
-    }
-
-    public compose(position: Vector3, rotation: Quaternion, scale: Vector3)
+    compose(position: Vector3, rotation: Quaternion, scale: Vector3)
     {
         const { x, y, z, w } = rotation;
         const { x: sx, y: sy, z: sz } = scale;
@@ -861,7 +689,7 @@ class Matrix4x4 extends Float32Array
         ]);
     }
 
-    public makePerspective(left: number, right: number, top: number, bottom: number, near: number, far: number)
+    makePerspective(left: number, right: number, top: number, bottom: number, near: number, far: number)
     {
         return this.set([
             2 * near / (right - left),
@@ -883,7 +711,7 @@ class Matrix4x4 extends Float32Array
         ]);
     }
 
-    public makeOrthographic(left: number, right: number, top: number, bottom: number, near: number, far: number)
+    makeOrthographic(left: number, right: number, top: number, bottom: number, near: number, far: number)
     {
         const w = 1 / (right - left);
         const h = 1 / (top - bottom);
@@ -909,7 +737,7 @@ class Matrix4x4 extends Float32Array
         ]);
     }
 
-    public lookAt(eye: Vector3, center: Vector3, up: Vector3)
+    lookAt(eye: Vector3, center: Vector3, up: Vector3)
     {
         const f = center.clone().sub(eye).normalize();
         const s = f.clone().cross(up).normalize();
@@ -923,7 +751,7 @@ class Matrix4x4 extends Float32Array
         ]);
     }
 
-    public topLeft3x3 = (target?: Matrix3x3) => (target ?? NewMatrix3x3()).set([
+    topLeft3x3 = (target?: Matrix3x3) => (target ?? NewMatrix3x3()).set([
         this[0], this[1], this[2],
         this[4], this[5], this[6],
         this[8], this[9], this[10]
@@ -932,7 +760,6 @@ class Matrix4x4 extends Float32Array
 
 const NewVector2 = (x?: number, y?: number) => new Vector2(x, y);
 const NewVector3 = (x?: number, y?: number, z?: number) => new Vector3(x, y, z);
-const NewVector4 = (x?: number, y?: number, z?: number, w?: number) => new Vector4(x, y, z, w);
 const NewQuaternion = (x?: number, y?: number, z?: number, w?: number) => new Quaternion(x, y, z, w);
 const NewMatrix3x3 = () => new Matrix3x3();
 const NewMatrix4x4 = () => new Matrix4x4();
@@ -942,7 +769,6 @@ const NewMatrix4x4Compose = (position: Vector3, rotation: Quaternion, scale: Vec
 
 const tmpVec2 = NewVector2();
 const tmpVec3_linear_ts = NewVector3();
-const tmpVec4 = NewVector4();
 const tmpQuaternion = NewQuaternion();
 
 
@@ -964,8 +790,8 @@ const tmpQuaternion = NewQuaternion();
 
 class Ray
 {
-    public origin: Vector3;
-    public direction: Vector3;
+    origin: Vector3;
+    direction: Vector3;
 
     constructor(origin: Vector3, direction: Vector3)
     {
@@ -973,7 +799,7 @@ class Ray
         this.direction = direction.clone().normalize();
     }
 
-    public getPoint = (distance: number, target?: Vector3) => (target ?? NewVector3()).copyFrom(this.direction).mulScalar(distance).add(this.origin);
+    getPoint = (distance: number, target?: Vector3) => (target ?? NewVector3()).copyFrom(this.direction).mulScalar(distance).add(this.origin);
 }
 
 function GroundPlaneLineIntersectionDistance({ origin, direction }: Ray)
@@ -1043,8 +869,8 @@ const tmpVec2_5 = NewVector2();
 
 class CatmullRomSpline
 {
-    private points: Vector2[]; // should work with vec3 too
-    private halfAlpha: number;
+    points: Vector2[]; // should work with vec3 too
+    halfAlpha: number;
 
     constructor(points: Vector2[], alpha = 0.5)
     {
@@ -1052,12 +878,12 @@ class CatmullRomSpline
         this.halfAlpha = alpha / 2;
     }
 
-    public getValue(t: number, target?: Vector2)
+    getValue(t: number, target?: Vector2)
     {
         const segmentIndex = t | 0;
         t %= 1;
 
-        const getT = (time: number, pA: Vector2, pB: Vector2) => pow(pA.distanceSqr(pB), this.halfAlpha) + time;
+        const getT = (time: number, pA: Vector2, pB: Vector2) => (pA.distanceSqr(pB) ** this.halfAlpha) + time;
 
         const p0 = this.points[segmentIndex];
         const p1 = this.points[segmentIndex + 1];
@@ -1077,12 +903,12 @@ class CatmullRomSpline
         return (target ?? NewVector2()).copyFrom(b1.mulScalar((t2 - t) / (t2 - t1)).add(b2.mulScalar((t - t1) / (t2 - t1))));
     }
 
-    public get maxTime()
+    get maxTime()
     {
         return this.points.length - 3;
     }
 
-    public samplePoints(timeStep: number)
+    samplePoints(timeStep: number)
     {
         const { maxTime } = this;
 
@@ -1122,29 +948,6 @@ type NumberArray = number[] | Float32Array;
 
 const globalVolume = 0.2;
 
-let hadFirstInteraction = false;
-async function EnsureContextCreated()
-{
-    if (hadFirstInteraction)
-    {
-        return;
-    }
-
-    await new Promise<void>(resolve =>
-    {
-        function OnInteraction()
-        {
-            hadFirstInteraction = true;
-            window.removeEventListener("pointerdown", OnInteraction);
-            window.removeEventListener("keydown", OnInteraction);
-            resolve();
-        }
-
-        window.addEventListener("pointerdown", OnInteraction);
-        window.addEventListener("keydown", OnInteraction);
-    });
-}
-
 function GenerateCurve(numSamples: number, curve: (t: number) => number)
 {
     return new Float32Array(numSamples).map((_, idx) => curve(idx / (numSamples - 1)));
@@ -1157,9 +960,6 @@ const x4FadeOutCurve = GenerateCurve(16, t => (1 - t) ** 4);
 const x8FadeOutCurve = GenerateCurve(16, t => (1 - t) ** 8);
 const x16FadeOutCurve = GenerateCurve(16, t => (1 - t) ** 16);
 const smoothStepFadeOutCurve = GenerateCurve(16, t => Smoothstep(0, 1, 1 - t));
-
-
-// await EnsureContextCreated();
 
 const actx = new AudioContext();
 
@@ -1277,44 +1077,14 @@ function CreateInstrumentFromWave(numWaves: number, attack: boolean, real: Numbe
     };
 }
 
-const Guitar1 = CreateInstrumentFromWave(1, true,
-    [0.03, 0.4, -1, 0.04, 0.4, 0.4, -0.15, -0.01, 0.04, -0.03, 0.02, -0.01, -0.01, -0.02, 0.01, 0.01, 0, 0, -0.01, 0, 0.01, -0.01, 0.01, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.01],
-    [0, -0.24, -1.7, -0.43, -0.5, 0.2, 0.05, -0.08, 0.15, -0.04, -0.01, 0, 0.01, -0.02, -0.01, 0, -0.01, 0.01, 0, -0.01, 0.01, 0, 0, 0, 0, 0, -0.01, 0.01, -0.01, 0, 0, 0, 0, 0, 0, 0, -0.01, 0.01, 0]
-);
-
 const Guitar2 = CreateInstrumentFromWave(1, true,
-    [-0.02, -0.2, -0.4, -0.1, 1, -0.04, -0.07, 0, 0.1, -0.3, -0.1, 0.2, 0.15, 0.15, -0.02, -0.02, 0.02, -0.1, 0.1, -0.1, -0.06, 0.01, 0, 0.01, 0.01, 0.01, 0, 0, 0, 0, 0.01, 0.01, 0, -0.01, 0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.03, -0.03, -0.02, -0.04, 0, -0.03, 0, -0.01, 0, -0.03, 0, -0.03, -0.03, -0.01, 0.01, 0, -0.01, -0.02, -0.02, 0.04, -0.01, 0.04, 0.01, 0, 0.01, 0, 0, 0, 0, 0, -0.01, 0, 0.01, 0, 0, 0, 0, -0.01],
-    [0, -4, 0.5, -0.5, 0.07, 0, -0.17, -0.05, 0.06, 0.21, -0.46, -0.3, -0.14, 0.05, 0.07, 0.01, -0.08, -0.13, 0.04, -0.01, 0.02, 0, -0.01, -0.01, -0.03, 0.02, -0.02, 0, -0.01, -0.01, -0.01, -0.01, 0.02, 0.01, -0.04, 0.03, -0.02, 0, -0.03, 0.02, -0.02, 0, -0.02, 0.04, -0.03, 0, -0.01, 0, -0.02, 0.04, -0.01, -0.04, -0.02, 0.01, 0.01, 0.01, -0.01, 0.05, 0.01, -0.01, -0.01, 0.01, 0.01, -0.01, -0.01, -0.01, -0.01, 0, 0, -0.01, 0, 0, 0.01, 0, 0, 0, 0, 0.01]
-);
-
-const Guitar3 = CreateInstrumentFromWave(1, true,
-    [0.06, 0.7, -1, 0.42, -0.06, 0.02, -0.01, -0.03, -0.04, -0.04, -0.04, -0.06, -0.03, -0.14, -0.04, 0.15, 0.06, 0.03, 0.01, 0.16, -0.08, -0.07, 0, 0, -0.01, 0.01, -0.01, -0.01, -0.05, 0.02, 0.07, -0.07, 0.14, -0.05, -0.03, -0.11, 0.13],
-    [0, -2.72, -1.52, -1.4, -0.03, -0.04, 0.06, 0.07, 0.08, 0.07, 0.08, 0.1, 0.03, 0.09, 0.01, -0.06, 0.01, 0.01, -0.08, 0.12, -0.03, -0.03, 0.01, 0.01, 0.01, 0.02, 0.01, 0.04, 0.02, 0, 0.06, -0.2, -0.03, -0.1, -0.03, 0.03, 0.01]
-);
-
-const Guitar4 = CreateInstrumentFromWave(4, true,
-    [0, 0, 0, 0.1, -0.4, 0, 1, 0, -0.9, 0.1, 0.4, -0.1, 0, 0.2, -0.1, 0.1, 0, 0, 0.1, 0.1, 0, 0, 0, 0, 0, 0.1, 0.2, -0.2, -0.3, 0.1, 0.1, -0.2, 0, 0, 0.1, 0, -0.1, -0.4, 0.2, 0.4, 0.1, 0.3, 0.3, 0, 0, -0.2, 0.1, -0.1, -0.1, -0.3, 0.1, -0.1, 0, 0, 0.1, 0.1, 0, 0.1, 0.1, -0.2, 0, -0.1, -0.1, 0, 0, -0.1, -0.2, 0, 0.1, 0, -0.1, 0.1, -0.1, 0, 0, -0.1, -0.1, 0, -0.1, -0.1],
-    [0, 0, 0, -0.1, 0.2, 0, -0.3, 0.1, -0.5, -0.8, 0, 0, -0.4, 0, -0.3, -0.1, 0, 0, 0, 0, 0.1, 0.1, 0, -0.1, 0, 0.1, -0.4, 0.1, -0.1, -0.2, 0, 0, -0.1, 0, 0.1, -0.2, 0, -0.2, 0, -0.2, 0, 0.4, 0, -0.4, 0.3, 0.1, 0, -0.1, 0.2, -0.1, 0.2, -0.1, -0.2, -0.2, 0.2, 0, -0.2, 0.1, -0.2, -0.2, 0, 0, 0, 0, 0.1, -0.1, -0.1, 0, 0.1, 0, 0, 0.1, 0, 0, 0, 0, 0, 0, 0, 0]
-);
-
-const Guitar5 = CreateInstrumentFromWave(1, true,
-    [-0.05, 0.63, 1, 0.19, -0.11, -0.01, 0.12, -0.21, 0.02, -0.71, 0.01, -0.07, -0.37, 0, 0.02, -0.01, -0.03, 0.01, -0.11, -0.02, -0.04, -0.44, 0.05, 0.03, 0.02, 0, -0.02, -0.04, 0.02, 0.01, 0.02, 0, 0.01, 0.02, 0, 0.01, 0.03, -0.03, -0.01, -0.01, 0.02, 0.01, 0.02, -0.05],
-    [0, 0.39, 0.3, 0.5, -0.25, -0.23, 0.06, 0.14, -0.02, -0.7, -0.01, -0.07, -0.39, -0.01, -0.03, 0.01, -0.01, -0.03, -0.44, 0, -0.01, -0.14, 0.02, 0, 0.01, 0, 0.01, 0.02, -0.01, -0.02, -0.06, 0.01, 0, 0, 0, -0.01, -0.02, 0.02, 0.01, 0.02, -0.02, -0.01, -0.02, 0.03]
-);
-
-const Guitar6 = CreateInstrumentFromWave(1, true,
-    [1, -0.43, 0.34, -0.09, -0.15, -0.01, 0.22, 0.08, -0.21, -0.04, 0.07, -0.02, -0.13, 0.04, 0.03, -0.09, 0.19, 0.11, -0.09, 0.1, -0.02, 0.05, 0.01, -0.02, 0.13, -0.07, 0.01, 0.06, -0.04, -0.07, -0.05, 0.04, -0.02, -0.02, -0.07, -0.05, 0, -0.06, 0.03, -0.07, -0.08, 0.01, -0.01, 0, 0.01, -0.01, 0, 0, 0.02, -0.01, -0.01, 0, 0.01, 0, -0.04, 0.02, -0.01, 0.01, 0.02, -0.02, 0.02, -0.02, 0.02, 0.04, -0.04, 0.02, 0.01, 0, 0.01, 0, 0.01, -0.02, 0.02, 0.02, 0, -0.01, -0.01, 0.01, 0, 0.01, -0.01, -0.01, 0.01, -0.01, 0.01, 0, -0.02, 0.01, -0.01, 0, -0.01, 0, 0.01, -0.01, 0.01, -0.01, -0.01, 0.01],
-    [0, -0.3, -0.84, -0.03, 0.16, 0.03, -0.06, 0.02, -0.1, -0.17, 0.14, 0.12, -0.16, -0.11, 0.15, -0.02, -0.18, 0.08, -0.07, -0.11, 0.02, -0.03, -0.03, -0.11, -0.01, -0.03, -0.08, -0.05, 0, -0.02, -0.02, -0.03, 0.03, -0.01, -0.04, 0, 0.07, -0.03, -0.08, 0.09, -0.02, 0.04, 0.04, -0.04, 0, 0.03, 0.05, -0.01, -0.04, 0.02, -0.03, 0, 0, 0.02, -0.01, 0, 0.03, 0.01, 0, -0.02, 0.01, 0.02, -0.02, 0.01, -0.02, -0.01, 0.02, -0.01, -0.01, -0.02, 0.02, 0.01, -0.02, 0.01, 0.01, 0, 0, -0.01, -0.01, -0.03, 0, -0.01, 0, 0, -0.03, 0.02, -0.01, 0, 0.01, -0.01, -0.01, -0.01, 0.01, -0.01, -0.02, 0, 0, 0.01]
-);
-
-const Guitar7 = CreateInstrumentFromWave(1, true,
-    [1, -0.51, 0.14, -0.16, 0, -0.02, -0.01, 0.06, -0.05, -0.1, -0.07, 0.04, 0.01, 0.08, -0.04, -0.08, 0.18, 0.02, 0.03, -0.03, -0.08, 0.03, -0.01, 0.07, -0.07, -0.07, 0.03, -0.07, 0.01, 0.02, -0.03, -0.01, 0.06, 0.02, -0.03, 0, -0.03, 0.01, 0, -0.03, -0.02, -0.02, 0, -0.06, -0.04, -0.04, -0.01, -0.02, -0.03, 0.01, 0.01, 0.01, -0.01, 0.03, 0.01, -0.02, 0.03, 0.02, 0.05, 0.03, 0, 0, 0.02, 0.01, -0.01, 0, 0.01, 0.01, 0.01, -0.01, 0, 0, 0, 0.01, 0.01, 0.01, 0, -0.01, 0.01, 0, 0, -0.04, 0.01, 0.02, 0.01, 0, -0.01, 0, 0.01, 0.01, 0, 0, 0.01, 0.02, 0, -0.01, -0.02, -0.01, 0, -0.01],
-    [0, -0.17, -1.02, -0.2, 0.17, 0.25, -0.04, -0.09, -0.1, 0.05, 0.19, -0.11, -0.31, -0.27, 0.19, -0.03, -0.12, 0.02, -0.1, 0.07, -0.08, -0.07, -0.02, 0.02, 0.04, -0.08, 0.01, 0, -0.06, -0.07, 0, -0.11, -0.06, 0.05, -0.05, 0.07, 0.05, 0.01, 0.03, -0.02, 0.03, 0.07, 0.04, 0.02, -0.01, 0.01, 0.05, -0.01, -0.01, -0.03, 0.01, 0.02, -0.02, -0.02, 0.01, -0.01, 0.01, -0.02, -0.01, 0.03, 0.02, 0.01, 0.01, 0.01, 0.02, -0.01, -0.02, 0.02, 0, -0.01, 0, 0, 0, 0.02, -0.01, 0, 0.01, -0.02, -0.01, 0, 0, -0.01, -0.03, -0.01, -0.01, -0.02, -0.01, 0, 0, 0, -0.02, 0, 0.01, 0.01, 0, 0.01, 0.01, 0, 0.01, -0.02]
+    [-0.02, -0.2, -0.4, -0.1, 1, -0.04, -0.07, 0, 0.1, -0.3, -0.1, 0.2, 0.15, 0.15, -0.02, -0.02, 0.02, -0.1, 0.1, -0.1],
+    [0, -4, 0.5, -0.5, 0.07, 0, -0.17, -0.05, 0.06, 0.21, -0.46, -0.3, -0.14, 0.05, 0.07, 0.01, -0.08, -0.13, 0.04, -0.01]
 );
 
 const Bass1 = CreateInstrumentFromWave(1, false,
-    [-0.02, -1, 0.17, 0.31, 0.18, 0.05, 0.06, 0.03, 0.02, 0.01, 0.01, 0.01, 0, 0, 0, 0.01, 0.01, 0, 0, 0, 0, 0.01, 0, -0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.01, 0.01, -0.01],
-    [0, -0.46, 0.72, 0.17, 0.11, 0.11, 0.08, 0.02, 0.01, 0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0, -0.01, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0, 0.01]
+    [-0.02, -1, 0.17, 0.31, 0.18, 0.05, 0.06, 0.03, 0.02, 0.01, 0.01, 0.01],
+    [0, -0.46, 0.72, 0.17, 0.11, 0.11, 0.08, 0.02, 0.01, 0.01, 0, 0]
 );
 
 
@@ -1360,71 +1130,6 @@ function Drum(volume: number, when: number, sourceNode: AudioScheduledSourceNode
     sourceNode.stop(time);
 }
 
-// dampened
-function Kick1(when: number)
-{
-    const volume = 1;
-    {
-        const sourceNode = actx.createOscillator();
-        const startFreq = 120;
-        const timeOffset = 0;
-        sourceNode.frequency.value = startFreq;
-        sourceNode.frequency.linearRampToValueAtTime(startFreq, when + 0.01 + timeOffset);
-        sourceNode.frequency.linearRampToValueAtTime(55, when + 0.03 + timeOffset);
-
-        Drum(volume, when + timeOffset, sourceNode, false, 0, 0, 0.02, 0.4, 0.05);
-    }
-
-    {
-        const sourceNode = actx.createOscillator();
-        sourceNode.frequency.value = 500;
-
-        Drum(volume * 0.1, when, sourceNode, false, 0, 0, 0.0003, 0.001, 0.0003);
-    }
-}
-
-// stronger kick
-function Kick2(when: number)
-{
-    const volume = 1;
-    Kick1(when);
-
-    {
-        const duration = 0.02;
-        const vol = volume * 0.03;
-
-        const sourceNode = actx.createOscillator();
-        sourceNode.frequency.value = 4000;
-        sourceNode.frequency.setValueCurveAtTime([4000, 3000, 1000, 300, 50, 50, 50, 50, 50], when, duration);
-        sourceNode.start(when);
-        sourceNode.stop(when + duration);
-
-        const gain = actx.createGain();
-        gain.gain.value = 0;
-        gain.gain.linearRampToValueAtTime(0, when);
-        gain.gain.linearRampToValueAtTime(vol, when + 0.0004);
-        gain.gain.linearRampToValueAtTime(0, when + duration);
-
-        sourceNode.connect(gain).connect(globalTargetNode);
-    }
-
-    {
-        const duration = 0.01;
-        const vol = volume * 0.03;
-
-        const noiseNode = CreateNoiseNode();
-        const gain = actx.createGain();
-        gain.gain.value = vol;
-        gain.gain.linearRampToValueAtTime(vol, when);
-        gain.gain.linearRampToValueAtTime(0, when + duration);
-
-        noiseNode.start(when);
-        noiseNode.stop(when + duration);
-
-        noiseNode.connect(gain).connect(globalTargetNode);
-    }
-}
-
 function Snare(when: number, duration = 0.25, target?: AudioNode)
 {
     const volume = 0.7;
@@ -1460,32 +1165,10 @@ function Snare(when: number, duration = 0.25, target?: AudioNode)
     }
 }
 
-function Snare2(when: number, duration = 0.15)
-{
-    const volume = 1;
-    Drum(volume, when, CreateNoiseNode(), true, 2000, 1, 0.001, 0.05, duration, linearFadeOutCurve);
-}
-
 function HiHat(when: number, frequency = 8000, fadeOutDuration = 0.1, target?: AudioNode)
 {
     const volume = 1;
     Drum(volume, when, CreateNoiseNode(), true, frequency, 3, 0.001, fadeOutDuration, 0.005, undefined, target);
-}
-
-function HiHat2(when: number, frequency = 8000, fadeOutDuration = 0.07)
-{
-    const volume = 1;
-    Drum(volume, when, CreateNoiseNode(), true, frequency, 3, 0.01, fadeOutDuration, 0.005, linearFadeOutCurve);
-}
-
-function Clap(when: number, duration = 0.15)
-{
-    const volume = 1;
-    const fadeOutCurve = [1, 0.4, 0.2, 0];
-
-    Drum(volume, when, CreateNoiseNode(0), true, 1000, 1, 0.001, 0.005, 0.001, fadeOutCurve);
-    Drum(volume, when + 0.005, CreateNoiseNode(1), true, 2000, 1, 0.001, 0.005, 0.001, fadeOutCurve);
-    Drum(volume, when + 0.01, CreateNoiseNode(2), true, 1500, 2, 0.001, duration, 0.001, fadeOutCurve);
 }
 
 
@@ -1645,7 +1328,7 @@ const {
 
 // util/webgl-utils.ts
 
-const webglDebugMode = true; // using a const bool so relevant parts can be easily removed by the minifier
+const webglDebugMode = false; // using a const bool so relevant parts can be easily removed by the minifier
 
 function CreateShader(shaderType: number, shaderSource: string)
 {
@@ -1892,13 +1575,13 @@ ${returnType} ${edgeBlendFnName}(vec2 u){vec2 w=vec2(${blend}),s=1.-w,o=u*s,b=cl
 
 class Transform
 {
-    public position = NewVector3();
-    public rotation = NewQuaternion();
-    public scale = NewVector3(1, 1, 1);
+    position = NewVector3();
+    rotation = NewQuaternion();
+    scale = NewVector3(1, 1, 1);
 
-    public matrix = (target?: Matrix4x4) => (target ?? NewMatrix4x4()).compose(this.position, this.rotation, this.scale);
+    matrix = (target?: Matrix4x4) => (target ?? NewMatrix4x4()).compose(this.position, this.rotation, this.scale);
 
-    public matrixInverse = (target?: Matrix4x4) =>
+    matrixInverse = (target?: Matrix4x4) =>
     {
         const invRotation = this.rotation.clone().invert();
         return (target ?? NewMatrix4x4()).compose(
@@ -2687,20 +2370,20 @@ let accumulatedFixedDeltaTime = fixedDeltaTime / 2;
 
 class SceneNode
 {
-    public children = new Set<SceneNode>();
-    protected parent: SceneNode | null = null;
-    public transform = new Transform();
-    public onUpdate: OnUpdateCallback[] = [];
-    public onFixedUpdate: OnUpdateCallback[] = [];
-    public onAfterRender: OnUpdateCallback[] = [];
+    children = new Set<SceneNode>();
+    parent: SceneNode | null = null;
+    transform = new Transform();
+    onUpdate: OnUpdateCallback[] = [];
+    onFixedUpdate: OnUpdateCallback[] = [];
+    onAfterRender: OnUpdateCallback[] = [];
 
-    public visible = true;
-    public renderOrder = 0;
-    public transparent = false;
+    visible = true;
+    renderOrder = 0;
+    transparent = false;
 
     //// Hierarchy
 
-    public add(...nodes: SceneNode[])
+    add(...nodes: SceneNode[])
     {
         nodes.forEach(n =>
         {
@@ -2709,19 +2392,19 @@ class SceneNode
         });
     }
 
-    public remove(node: SceneNode)
+    remove(node: SceneNode)
     {
         this.children.delete(node);
         node.parent = null;
     }
 
-    public setParent(parent?: SceneNode)
+    setParent(parent?: SceneNode)
     {
         this.parent?.remove(this);
         parent?.add(this);
     }
 
-    public traverse(callback: (node: SceneNode) => void)
+    traverse(callback: (node: SceneNode) => void)
     {
         (function traverseInner(node: SceneNode)
         {
@@ -2732,13 +2415,13 @@ class SceneNode
 
     //// Transforms
 
-    public localToWorldMatrix(): Matrix4x4
+    localToWorldMatrix(): Matrix4x4
     {
         const mat = this.transform.matrix();
         return this.parent?.localToWorldMatrix().clone().multiply(mat) ?? mat.clone();
     }
 
-    public worldToLocalMatrix(): Matrix4x4
+    worldToLocalMatrix(): Matrix4x4
     {
         // TODO: test this to make sure this is correct
         // seems to work without parents, but not tested with parents
@@ -2746,12 +2429,12 @@ class SceneNode
         return this.parent?.worldToLocalMatrix().clone().preMultiply(mat) ?? mat.clone();
     }
 
-    public get worldPosition()
+    get worldPosition()
     {
         return this.transformPoint(NewVector3());
     }
 
-    public get worldRotation()
+    get worldRotation()
     {
         const rot = NewQuaternion();
         let node: SceneNode | null = this;
@@ -2765,10 +2448,10 @@ class SceneNode
         return rot;
     }
 
-    public transformPoint = (point: Vector3) => point.applyMatrix4x4(this.localToWorldMatrix());
-    public transformDirection = (dir: Vector3) => dir.applyQuaternion(this.worldRotation).normalize();
+    transformPoint = (point: Vector3) => point.applyMatrix4x4(this.localToWorldMatrix());
+    transformDirection = (dir: Vector3) => dir.applyQuaternion(this.worldRotation).normalize();
 
-    public get dirs()
+    get dirs()
     {
         const worldRot = this.worldRotation;
 
@@ -2781,11 +2464,11 @@ class SceneNode
 
     //// Render
 
-    public render(_mode: RenderMode, _viewMatrices: ViewMatrices, _worldMatrix: Matrix4x4, _light: DirectionalLight) { }
+    render(_mode: RenderMode, _viewMatrices: ViewMatrices, _worldMatrix: Matrix4x4, _light: DirectionalLight) { }
 
     //// Misc
 
-    public dispose()
+    dispose()
     {
         this.setParent();
         this.onUpdate = [];
@@ -2807,10 +2490,10 @@ interface ProjectionParams
 
 class Camera extends SceneNode
 {
-    public projectionMatrix = NewMatrix4x4();
-    public projectionParams: ProjectionParams | null = null;
+    projectionMatrix = NewMatrix4x4();
+    projectionParams: ProjectionParams | null = null;
 
-    public setProjectionMatrixPerspecive(fov = 75, aspect = 1, near = 0.01, far = 100)
+    setProjectionMatrixPerspecive(fov = 75, aspect = 1, near = 0.01, far = 100)
     {
         //                          to radian, x0.5
         const top = near * tan(0.00872664626 * fov);
@@ -2821,7 +2504,7 @@ class Camera extends SceneNode
         this.projectionParams = { top, right, near, isPerspective: true };
     }
 
-    public setProjectionMatrixOrthographic(width = 4, height = 4, near = 0.01, far = 100)
+    setProjectionMatrixOrthographic(width = 4, height = 4, near = 0.01, far = 100)
     {
         const right = width / 2;
         const top = height / 2;
@@ -2829,7 +2512,7 @@ class Camera extends SceneNode
         this.projectionParams = { top, right, near, isPerspective: false };
     }
 
-    public getLocalRay(screenX: number, screenY: number): Ray
+    getLocalRay(screenX: number, screenY: number): Ray
     {
         // 1 +---------+
         //   |         |
@@ -2847,7 +2530,7 @@ class Camera extends SceneNode
             : new Ray(v, NewVector3(0, 0, -1));
     }
 
-    public getWorldRay(screenX: number, screenY: number)
+    getWorldRay(screenX: number, screenY: number)
     {
         const localRay = this.getLocalRay(screenX, screenY);
         this.transformPoint(localRay.origin);
@@ -2855,12 +2538,12 @@ class Camera extends SceneNode
         return localRay;
     }
 
-    public getWorldRayFromMouseEvent(ev: MouseEvent)
+    getWorldRayFromMouseEvent(ev: MouseEvent)
     {
         return this.getWorldRay(ev.clientX / window.innerWidth, 1 - ev.clientY / window.innerHeight);
     }
 
-    public getScreenPosition(worldPosition: Vector3, target: Vector3)
+    getScreenPosition(worldPosition: Vector3, target: Vector3)
     {
         return target.copyFrom(worldPosition).applyMatrix4x4(Scene.lastViewProjectionMatrix);
     }
@@ -2868,12 +2551,12 @@ class Camera extends SceneNode
 
 class DirectionalLight extends Camera
 {
-    public depthFrameBuffer: WebGLFramebuffer;
-    public depthTexture: WebGLTexture;
-    public depthMVP = NewMatrix4x4();
-    public resolution: number;
-    public worldMatLocation: WebGLUniformLocation;
-    public target = NewVector3();
+    depthFrameBuffer: WebGLFramebuffer;
+    depthTexture: WebGLTexture;
+    depthMVP = NewMatrix4x4();
+    resolution: number;
+    worldMatLocation: WebGLUniformLocation;
+    target = NewVector3();
 
     constructor(size: number)
     {
@@ -2900,7 +2583,7 @@ class DirectionalLight extends Camera
         this.worldMatLocation = GetOrCreateShadowProgram().uniformLocations.get(shadow_var_WORLDMAT)!;
     }
 
-    public prepare(camera: Camera, centerDistanceFromCamera: number)
+    prepare()
     {
         const lightDirection = this.transform.position.clone().sub(this.target).normalize();
 
@@ -2922,12 +2605,12 @@ const matrixPool: Matrix4x4[] = [];
 
 class Scene extends SceneNode
 {
-    public light: DirectionalLight;
-    public clearColor = NewVector3();
+    light: DirectionalLight;
+    clearColor = NewVector3();
 
-    public static deltaTime = 0.01;
-    public static now = 0;
-    public static lastViewProjectionMatrix = NewMatrix4x4();
+    static deltaTime = 0.01;
+    static now = 0;
+    static lastViewProjectionMatrix = NewMatrix4x4();
 
     constructor()
     {
@@ -2944,7 +2627,7 @@ class Scene extends SceneNode
         Scene.now = performance.now() / 1000;
     }
 
-    public updateScene(now: number)
+    updateScene(now: number)
     {
         Scene.deltaTime = now - Scene.now;
         Scene.now = now;
@@ -2968,7 +2651,7 @@ class Scene extends SceneNode
         });
     }
 
-    public renderScene(camera: Camera)
+    renderScene(camera: Camera)
     {
         const { light, clearColor } = this;
 
@@ -2977,7 +2660,7 @@ class Scene extends SceneNode
         // gl_cullFace(gl_FRONT);
         gl_bindFramebuffer(gl_FRAMEBUFFER, light.depthFrameBuffer);
         gl_clear(gl_DEPTH_BUFFER_BIT);
-        light.prepare(camera, 35);
+        light.prepare();
         this.renderSceneInternal(light, RenderMode.Shadow, light);
         gl_bindFramebuffer(gl_FRAMEBUFFER, null);
         // gl_cullFace(gl_BACK);
@@ -2994,7 +2677,7 @@ class Scene extends SceneNode
         });
     }
 
-    private renderSceneInternal(camera: Camera, mode: RenderMode, light: DirectionalLight)
+    renderSceneInternal(camera: Camera, mode: RenderMode, light: DirectionalLight)
     {
         const viewMatrix = camera.worldToLocalMatrix();
         const cameraWorldPos = camera.worldPosition;
@@ -3088,13 +2771,13 @@ const geometryMap = new Map<Geometry, GeometryData>();
 
 class Renderable extends SceneNode
 {
-    public vao: WebGLVertexArrayObject;
-    public triangleCount: number;
+    vao: WebGLVertexArrayObject;
+    triangleCount: number;
 
-    private vertexBuffer: WebGLBuffer;
-    private indexBuffer: WebGLBuffer;
+    vertexBuffer: WebGLBuffer;
+    indexBuffer: WebGLBuffer;
 
-    private geometry: Geometry;
+    geometry: Geometry;
 
     constructor(geometry: Geometry, positionLoc: number, normalLoc?: number)
     {
@@ -3149,7 +2832,7 @@ class Renderable extends SceneNode
         this.triangleCount = geometry.triangles.length;
     }
 
-    public dispose()
+    dispose()
     {
         const data = geometryMap.get(this.geometry);
         if (data && --data.useCount === 0)
@@ -3189,14 +2872,14 @@ const tmpVec3 = NewVector3();
 
 class Mesh extends Renderable
 {
-    private program: WebGLProgram;
-    private shadowProgram: WebGLProgram;
-    private uniforms: Map<string, WebGLUniformLocation>;
-    public material: Material;
-    private textures = new Map<number, WebGLTexture>();
-    public castShadows = true;
-    public receiveShadows = true;
-    public cull: number | null = gl_BACK;
+    program: WebGLProgram;
+    shadowProgram: WebGLProgram;
+    uniforms: Map<string, WebGLUniformLocation>;
+    material: Material;
+    textures = new Map<number, WebGLTexture>();
+    castShadows = true;
+    receiveShadows = true;
+    cull: number | null = gl_BACK;
 
     constructor(geometry: Geometry, material: Material)
     {
@@ -3217,7 +2900,7 @@ class Mesh extends Renderable
         this.shadowProgram = GetOrCreateShadowProgram().program;
     }
 
-    private prepareMaterial()
+    prepareMaterial()
     {
         const { uniforms, material } = this;
 
@@ -3291,7 +2974,7 @@ class Mesh extends Renderable
         }
     }
 
-    public setTexture(slot: MeshTextureSlot, tex: WebGLTexture | null)
+    setTexture(slot: MeshTextureSlot, tex: WebGLTexture | null)
     {
         if (tex)
         {
@@ -3303,14 +2986,14 @@ class Mesh extends Renderable
         }
     }
 
-    public setTextures(textures: TextureCollection)
+    setTextures(textures: TextureCollection)
     {
         this.setTexture(MeshTextureSlot.Albedo, textures.albedo);
         this.setTexture(MeshTextureSlot.Normal, textures.normalMap);
         this.setTexture(MeshTextureSlot.Roughness, textures.roughness);
     }
 
-    public render(mode: RenderMode, viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: DirectionalLight)
+    render(mode: RenderMode, viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: DirectionalLight)
     {
         if (mode === RenderMode.Shadow && !this.castShadows)
         {
@@ -3391,25 +3074,25 @@ const mouseToScreenPercent = (speed: number, mouseDelta: number) => mouseDelta *
 
 class CameraControl extends SceneNode
 {
-    public camera: Camera;
+    camera: Camera;
 
-    public panSpeed = 1;
-    public rotateSpeed = 2;
-    public zoomSpeed = 0.05;
+    panSpeed = 1;
+    rotateSpeed = 2;
+    zoomSpeed = 0.05;
 
     // in radians
-    public minPitch = -1.5707;
-    public maxPitch = 1.5707;
+    minPitch = -1.5707;
+    maxPitch = 1.5707;
 
-    public minZoom = 1e-3;
-    public maxZoom = 1e3;
+    minZoom = 1e-3;
+    maxZoom = 1e3;
 
-    public minTargetPosition = NewVector3(-Infinity);
-    public maxTargetPosition = NewVector3(Infinity);
+    minTargetPosition = NewVector3(-Infinity);
+    maxTargetPosition = NewVector3(Infinity);
 
-    public yaw = 0;
-    public pitch = 0;
-    public distanceFromTarget = 2;
+    yaw = 0;
+    pitch = 0;
+    distanceFromTarget = 2;
 
     constructor(camera: Camera)
     {
@@ -3420,7 +3103,7 @@ class CameraControl extends SceneNode
         this.updateTransform();
     }
 
-    public rotate(mouseDeltaX: number, mouseDeltaY: number)
+    rotate(mouseDeltaX: number, mouseDeltaY: number)
     {
         const speed = this.rotateSpeed * window.innerHeight / 1000;
         this.yaw += mouseToScreenPercent(speed, mouseDeltaX);
@@ -3428,7 +3111,7 @@ class CameraControl extends SceneNode
         this.updateTransform();
     }
 
-    public pan(mouseDeltaX: number, mouseDeltaY: number)
+    pan(mouseDeltaX: number, mouseDeltaY: number)
     {
         const { right, up } = this.camera.dirs;
 
@@ -3442,14 +3125,14 @@ class CameraControl extends SceneNode
         position.clamp(this.minTargetPosition, this.maxTargetPosition);
     }
 
-    public zoom(mouseWheelDelta: number)
+    zoom(mouseWheelDelta: number)
     {
         const newScale = this.distanceFromTarget * (1 + sign(mouseWheelDelta) * this.zoomSpeed);
         this.distanceFromTarget = Clamp(newScale, this.minZoom, this.maxZoom);
         this.updateTransform();
     }
 
-    public updateTransform()
+    updateTransform()
     {
         this.pitch = Clamp(this.pitch, this.minPitch, this.maxPitch);
         const horizontalRotation = NewQuaternionFromAxisAngle(0, 1, 0, -this.yaw);
@@ -4682,7 +4365,7 @@ function Pulse(t: number, base: number, radius: number)
     const sgn = sign(t);
 
     const x = PI - sgn * t * radius;
-    return sgn * sin(x) * pow(base, x);
+    return sgn * sin(x) * (base ** x);
 }
 
 function CreateHuman(isEnemy: boolean, isArcher: boolean)
@@ -4728,7 +4411,7 @@ function CreateHuman(isEnemy: boolean, isArcher: boolean)
         const offset2 = 0.6;
 
         const t = (sin(now() * walkSpeed * speed + offset * TwoPI) + 1) / 2;
-        node.transform.rotation.setFromAxisAngle(1, 0, 0, (offset2 - pow(t, 1.2)) * magnitude * multiplier);
+        node.transform.rotation.setFromAxisAngle(1, 0, 0, (offset2 - (t ** 1.2)) * magnitude * multiplier);
     }
 
     function LowerLegWalk(node: SceneNode, offset: number, multiplier: number)
@@ -4748,11 +4431,11 @@ function CreateHuman(isEnemy: boolean, isArcher: boolean)
 
         const zOffset = 2;
         const zMagnitude = 0.05 * multiplier;
-        position.z = pow((sin(t + zOffset) + 1) / 2, 2) * zMagnitude;
+        position.z = (((sin(t + zOffset) + 1) / 2) ** 2) * zMagnitude;
 
         const yOffset = 1;
         const yMagnitude = 0.04;
-        position.y = Lerp(0.02, pow((sin(t + yOffset) + 1) / 2, 2) * yMagnitude - 0.05, multiplier);
+        position.y = Lerp(0.02, (((sin(t + yOffset) + 1) / 2) ** 2) * yMagnitude - 0.05, multiplier);
     }
 
 
@@ -5504,10 +5187,10 @@ function HumanBehavior(human: ReturnType<typeof CreateHuman>)
 
                         // reduce damage dealt by enemies, by armor upgrade percent
                         // also increase damage for every level
-                        ? pow(0.95, totalArmorUpgrade) * enemyDamageMultiplier
+                        ? (0.95 ** totalArmorUpgrade) * enemyDamageMultiplier
 
                         // increase damage dealt by friendly units, by damage upgrade percent
-                        : pow(1.05, totalDamageUpgrade);
+                        : (1.05 ** totalDamageUpgrade);
 
                     targetEnemy!.health -= damagePerAttack * damageMultiplier;
                     SwordImpactSound(audioNode);
@@ -5975,7 +5658,7 @@ function CreateBlacksmithUI()
     let armorUpgradeLevel = 1;
     let damageUpgradeLevel = 1;
 
-    const getUpgradeValue = (level: number) => 1 - pow(0.95, level);
+    const getUpgradeValue = (level: number) => 1 - (0.95 ** level);
 
     function UpdateValues()
     {
@@ -6104,8 +5787,8 @@ function CreateTowerUI(node: SceneNode): BuildingUIElement
         rangeIndicator.transform.scale.setValues(rangeRadius, 1, rangeRadius);
 
         damageUpgrade.button.disabled = totalGold < 10;
-        damageMultiplier = pow(1.05, damageUpgradeLevel);
-        const damageIncreasePercent = round((1 - pow(0.95, damageUpgradeLevel)) * 100);
+        damageMultiplier = (1.05 ** damageUpgradeLevel);
+        const damageIncreasePercent = round((1 - (0.95 ** damageUpgradeLevel)) * 100);
         damageUpgrade.descriptionDiv.textContent = `Damage done increased by ${damageIncreasePercent}%. (${damageUpgradeLevel}/3)`;
     }
 
@@ -6569,7 +6252,7 @@ async function BuildBuilding(buildingType: BuildingType)
 
             const p = 8;
             const q = 1.3;
-            const x = max(1e-3, pow(p * t, q));
+            const x = max(1e-3, (p * t) ** q);
             building.transform.scale.y = 1 - sin(x) / x * Smoothstep(1, 0, t);
             return originalT < 1;
         };
