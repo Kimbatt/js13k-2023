@@ -1764,8 +1764,7 @@ in vec2 p;uniform float a;out vec2 pc;void main(){pc=(p+vec2(1))*.5;gl_Position=
         // shader and program setup
         const fragmentShaderSource = `#version 300 es
 precision highp float;
-in vec2 pc;out vec4 oc;uniform float a;
-const vec2 ps=vec2(${1 / width},${1 / height});
+in vec2 pc;out vec4 oc;uniform float a;const vec2 ps=vec2(${1 / width},${1 / height});
 
 ${inputTextures.map((_, idx) => `uniform sampler2D t${idx};`).join("\n")}
 
@@ -1875,15 +1874,7 @@ const ca = CreateWebglCanvas();
 
 // util/shader-utils.ts
 
-const ShaderUtils = `float hash1(float n){return fract(sin(n)*43758.5453);}
-vec2 hash2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}
-float saturate(float x){return clamp(x,0.,1.);}
-float unlerp(float a,float b,float x){return(x-a)/(b-a);}
-float remap(float a,float b,float c,float d,float x){return mix(c,d,unlerp(a,b,x));}
-float sharpstep(float e,float f,float x){return saturate(unlerp(e,f,x));}
-vec4 colorRamp(vec4 a,float A,vec4 b,float B,float t){return mix(a,b,sharpstep(A,B,t));}
-vec3 colorRamp3(vec3 a,float A,vec3 b,float B,float t){return mix(a,b,sharpstep(A,B,t));}
-float valueRamp(float a,float A,float b,float B,float t){return mix(a,b,sharpstep(A,B,t));}`;
+const ShaderUtils = `float h1(float n){return fract(sin(n)*43758.5453);}vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}float se(float x){return clamp(x,0.,1.);}float ul(float a,float b,float x){return(x-a)/(b-a);}float rp(float a,float b,float c,float d,float x){return mix(c,d,ul(a,b,x));}float sr(float e,float f,float x){return se(ul(e,f,x));}vec4 cr(vec4 a,float A,vec4 b,float B,float t){return mix(a,b,sr(A,B,t));}vec3 cr3(vec3 a,float A,vec3 b,float B,float t){return mix(a,b,sr(A,B,t));}float vr(float a,float A,float b,float B,float t){return mix(a,b,sr(A,B,t));}`;
 
 const edgeBlend = (fnName: string, blend = 0.2, returnType = "vec4", edgeBlendFnName = "eb") => `
 ${returnType} ${edgeBlendFnName}(vec2 u){vec2 w=vec2(${blend}),s=1.-w,o=u*s,b=clamp((u-s)/w,0.,1.);return b.y*b.x*${fnName}(fract(o+(w*2.)))+b.y*(1.-b.x)*${fnName}(vec2(fract(o.x+w.x),fract(o.y+(w.y*2.))))+(1.-b.y)*(1.-b.x)*${fnName}(fract(o+w))+(1.-b.y)*b.x*${fnName}(vec2(fract(o.x+(w.x*2.)),fract(o.y+w.y)));}`;
@@ -3605,13 +3596,13 @@ const FBM = `vec2 grad(ivec2 x){int f=x.x+x.y*11111;f=f<<13^f;f=f*(f*f*15731+789
 // https://iquilezles.org/www/articles/smoothvoronoi/smoothvoronoi.htm
 
 // yzw - cell color, x - distance to cell
-const Voronoi = `vec4 voronoi(vec2 i,float s){vec2 v=floor(i),f=fract(i);vec4 d=vec4(8,0,0,0);for(int w=-2;w<=2;++w)for(int x=-2;x<=2;++x){vec2 h=vec2(x,w),P=hash2(v+h);float O=length(h-f+P);vec3 m=.5+.5*sin(hash1(dot(v+h,vec2(7,113)))*2.5+3.5+vec3(2,3,0));m*=m;float M=smoothstep(0.,1.,.5+.5*(d.x-O)/s);d.x=mix(d.x,O,M)-M*(1.-M)*s/(1.+3.*s);d.yzw=mix(d.yzw,m,M)-M*(1.-M)*s/(1.+3.*s);}return d;}`;
+const Voronoi = `vec4 voronoi(vec2 i,float s){vec2 v=floor(i),f=fract(i);vec4 d=vec4(8,0,0,0);for(int w=-2;w<=2;++w)for(int x=-2;x<=2;++x){vec2 h=vec2(x,w),P=h2(v+h);float O=length(h-f+P);vec3 m=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+3.5+vec3(2,3,0));m*=m;float M=smoothstep(0.,1.,.5+.5*(d.x-O)/s);d.x=mix(d.x,O,M)-M*(1.-M)*s/(1.+3.*s);d.yzw=mix(d.yzw,m,M)-M*(1.-M)*s/(1.+3.*s);}return d;}`;
 
 // x - cell color, y - distance to cell
-const VoronoiGrayscale = `vec2 voronoi(vec2 i,float s){vec2 v=floor(i),f=fract(i),d=vec2(0,8);for(int x=-2;x<=2;++x)for(int y=-2;y<=2;++y){vec2 h=vec2(y,x),N=hash2(v+h);float M=length(h-f+N),L=.5+.5*sin(hash1(dot(v+h,vec2(7,113)))*2.5+5.),K=smoothstep(0.,1.,.5+.5*(d.y-M)/s);d.y=mix(d.y,M,K)-K*(1.-K)*s/(1.+3.*s);d.x=mix(d.x,L,K)-K*(1.-K)*s/(1.+3.*s);}return d;}`;
+const VoronoiGrayscale = `vec2 voronoi(vec2 i,float s){vec2 v=floor(i),f=fract(i),d=vec2(0,8);for(int x=-2;x<=2;++x)for(int y=-2;y<=2;++y){vec2 h=vec2(y,x),N=h2(v+h);float M=length(h-f+N),L=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+5.),K=smoothstep(0.,1.,.5+.5*(d.y-M)/s);d.y=mix(d.y,M,K)-K*(1.-K)*s/(1.+3.*s);d.x=mix(d.x,L,K)-K*(1.-K)*s/(1.+3.*s);}return d;}`;
 
 // https://www.iquilezles.org/www/articles/voronoilines/voronoilines.htm
-const VoronoiDistance = `float voronoiDistance(vec2 i){vec2 v=floor(i),n=fract(i),d,D;float f=8.;for(int h=-1;h<=1;++h)for(int M=-1;M<=1;++M){vec2 m=vec2(M,h),K=m+hash2(v+m)-n;float J=dot(K,K);if(J<f)f=J,D=K,d=m;}f=8.;for(int h=-2;h<=2;++h)for(int M=-2;M<=2;++M){vec2 m=d+vec2(M,h),K=m+hash2(v+m)-n;float J=dot(.5*(D+K),normalize(K-D));f=min(f,J);}return f;}`;
+const VoronoiDistance = `float voronoiDistance(vec2 i){vec2 v=floor(i),n=fract(i),d,D;float f=8.;for(int h=-1;h<=1;++h)for(int M=-1;M<=1;++M){vec2 m=vec2(M,h),K=m+h2(v+m)-n;float J=dot(K,K);if(J<f)f=J,D=K,d=m;}f=8.;for(int h=-2;h<=2;++h)for(int M=-2;M<=2;++M){vec2 m=d+vec2(M,h),K=m+h2(v+m)-n;float J=dot(.5*(D+K),normalize(K-D));f=min(f,J);}return f;}`;
 
 
 
@@ -3655,7 +3646,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             : `float rh=float(${rowHeight}),cw=float(${colWidth}),y=c.y/rh,x=c.x/cw,ox=floor(y)*float(${rowOffset}),iy=.5-float(${mortarSize})-n.x*float(${noiseScale1}),ay=iy-float(${edgeThickness}),ix=.5-(float(${mortarSize})-n.y*float(${noiseScale1}))*float(${invAspect}),ax=ix-float(${edgeThickness})*float(${invAspect}),d=min(smoothstep(ix,ax,abs(.5-fract(x+ox))),smoothstep(iy,ay,abs(.5-fract(y))));`
         }${isAlbedo
             ? `d+=(n.x+n.y-.05)*.5;vec3 q=mix(vec3(${mortarColor.join(",")}),vec3(${baseColor.join(",")}),vec3(d));return vec4(q,1);`
-            : `d+=n.x+n.y-.05;return vec4(vec3(remap(0.,1.,float(${minRoughness}),float(${maxRoughness}),d)),1);`
+            : `d+=n.x+n.y-.05;return vec4(vec3(rp(0.,1.,float(${minRoughness}),float(${maxRoughness}),d)),1);`
         }}`;
 
     const mainImage = `oc=gc(pc);`;
@@ -3703,42 +3694,18 @@ function DirtTexture(w: number, h: number,
     baseColor: [number, number, number] = [0.3, 0.22, 0.07],
     normalIntensity = 1): TextureCollection
 {
-    const shader = (isAlbedo: boolean) => `
-vec4 getColor(vec2 uv)
-{
-    vec2 coord = uv * float(${scale});
-    vec2 noise = vec2(1) - vec2(fbm(coord, 5, 1.0, 2.0), fbm(coord + vec2(1.23, 4.56), 5, 1.0, 2.0));
-    float voro = voronoiDistance(noise * 4.0) * 2.0;
-    voro = saturate(1.0 - voro * 20.0);
-
-
-    float noise2 = fbm(coord * 2.0, 3, 1.0, 2.0);
-    noise2 = sharpstep(0.45, 0.52, noise2);
-    float detail = saturate(1.0 - voro * noise2);
-
-
-    float noise3 = remap(0.0, 1.0, 0.3, 1.0, fbm(coord * 1.5, 3, 1.0, 2.0));
-    float height = detail * noise3;
-
-    ${isAlbedo
-            ? `
-        vec4 albedo = colorRamp(vec4(0, 0, 0, 1), 0.08, vec4(${baseColor.join(",")}, 1), 0.67, noise3);
-        albedo.rgb *= vec3(height);
-        return albedo;
-        `
-            : `
-        return vec4(vec3(remap(0.0, 1.0, float(${minRoughness}), float(${maxRoughness}), height)), 1);
-        `
-        }
-}`;
+    const shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*float(${scale});float q=rp(0.,1.,.3,1.,fbm(c*1.5,3,1.,2.)),h=se(1.-se(1.-voronoiDistance(vec2(1)-vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*4.)*40.)*sr(.45,.52,fbm(c*2.,3,1.,2.)))*q;${isAlbedo
+        ? `return cr(vec4(0,0,0,1),.08,vec4(${baseColor.join(",")},1),.67,q)*vec4(h,h,h,1);`
+        : `return vec4(vec3(rp(0.,1.,float(${minRoughness}),float(${maxRoughness}),h)),1);`
+        }}`;
 
     const mainImage = `oc=eb(pc);`;
 
     const albedo = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, VoronoiDistance, shader(true), edgeBlend("getColor")], mainImage, w, h, [], albedo);
+    ca.DrawWithShader([ShaderUtils, FBM, VoronoiDistance, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
 
     const heightMap = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, VoronoiDistance, shader(false), edgeBlend("getColor")], mainImage, w, h, [], heightMap);
+    ca.DrawWithShader([ShaderUtils, FBM, VoronoiDistance, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
 
     const normalMap = ca.CreateTexture(w, h);
     ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
@@ -3768,33 +3735,18 @@ function MetalTexture(w: number, h: number,
     baseColor: [number, number, number] = [1, 1, 1],
     normalIntensity = 0.2): TextureCollection
 {
-    const shader = (isAlbedo: boolean) => `
-vec4 getColor(vec2 uv)
-{
-    vec2 coord = uv * float(${scale});
-    vec2 noise = vec2(fbm(coord, 5, 1.0, 2.0), fbm(coord + vec2(1.23, 4.56), 5, 1.0, 2.0)) * 5.0;
-    float voro = sqrt(voronoi(coord * 5.0 + noise, 0.01).y) * 1.5 - noise.x;
-    // voro = valueRamp(0.4, 0.3, 0.6, 0.7, voro);
-
-    ${isAlbedo
-            ? `
-        vec4 albedo = colorRamp(vec4(0.0, 0.0, 0.0, 1), 0.2, vec4(1.0, 1.0, 1.0, 1), 0.8, voro) * vec4(${baseColor.join(",")}, 1);
-        return vec4(${baseColor.join(",")}, 1);
-        // return albedo;
-        `
-            : `
-        return vec4(vec3(remap(0.0, 1.0, float(${minRoughness}), float(${maxRoughness}), remap(0.0, 1.0, 0.9, 1.0, voro))), 1);
-        `
-        }
-}`;
+    const shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*float(${scale}),n=vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*5.;float v=sqrt(voronoi(c*5.+n,.01).y)*1.5-n.x;${isAlbedo
+        ? `return vec4(${baseColor.join(",")},1);`
+        : `return vec4(vec3(rp(0.,1.,float(${minRoughness}),float(${maxRoughness}),rp(0.,1.,.9,1.,v))),1);`
+        }}`;
 
     const mainImage = `oc=eb(pc);`;
 
     const albedo = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, Voronoi, shader(true), edgeBlend("getColor")], mainImage, w, h, [], albedo);
+    ca.DrawWithShader([ShaderUtils, FBM, Voronoi, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
 
     const heightMap = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, Voronoi, shader(false), edgeBlend("getColor")], mainImage, w, h, [], heightMap);
+    ca.DrawWithShader([ShaderUtils, FBM, Voronoi, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
 
     const normalMap = ca.CreateTexture(w, h);
     ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
@@ -3824,31 +3776,18 @@ function PlasticTexture(w: number, h: number,
     baseColor: [number, number, number] = [0.3, 0.22, 0.07],
     normalIntensity = 0.5): TextureCollection
 {
-    const shader = (isAlbedo: boolean) => `
-vec4 getColor(vec2 uv)
-{
-    vec2 coord = uv * float(${scale});
-    vec2 noise = vec2(fbm(coord, 5, 1.0, 2.0), fbm(coord + vec2(1.23, 4.56), 5, 1.0, 2.0));
-    float voro = sqrt(voronoi(noise * 10.0, 1.0).y) * 1.5;
-
-    ${isAlbedo
-            ? `
-        vec4 albedo = colorRamp(vec4(0.95, 0.95, 0.95, 1), 0.2, vec4(1.0, 1.0, 1.0, 1), 0.8, mix(voro, noise.x, 0.5)) * vec4(${baseColor.join(",")}, 1);
-        return albedo;
-        `
-            : `
-        return vec4(vec3(remap(0.0, 1.0, float(${minRoughness}), float(${maxRoughness}), saturate(valueRamp(0.4, 0.3, 0.6, 0.7, voro)) * 0.2 - noise.x * 1.0)), 1);
-        `
-        }
-}`;
+    const shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*float(${scale}),n=vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.));float v=sqrt(voronoi(n*10.,1.).y)*1.5;${isAlbedo
+        ? `return cr(vec4(.95,.95,.95,1),.2,vec4(1),.8,mix(v,n.x,.5))*vec4(${baseColor.join(",")},1);`
+        : `return vec4(vec3(rp(0.,1.,float(${minRoughness}),float(${maxRoughness}),se(vr(.4,.3,.6,.7,v))*.2-n.x*1.)),1);`
+        }}`;
 
     const mainImage = `oc=eb(pc);`;
 
     const albedo = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(true), edgeBlend("getColor")], mainImage, w, h, [], albedo);
+    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
 
     const heightMap = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(false), edgeBlend("getColor")], mainImage, w, h, [], heightMap);
+    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
 
     const normalMap = ca.CreateTexture(w, h);
     ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
@@ -3881,42 +3820,18 @@ function WoodTexture(w: number, h: number,
     scale = 5,
     normalIntensity = 0.5): TextureCollection
 {
-    const shader = (isAlbedo: boolean) => `
-
-vec4 getColor(vec2 uv)
-{
-    vec2 coord = uv;
-    coord.y *= 0.1;
-    vec2 voronoise = voronoi(coord * float(${scale}), 1.5);
-    voronoise *= vec2(10, 3);
-    float noise = remap(0.1, 0.6, 0.0, 1.0, fbm(voronoise, 4, 10.0, 3.0));
-    ${isAlbedo
-            ? `
-            vec3 color0 = vec3(${color0});
-            vec3 color1 = vec3(${color1});
-            vec3 color2 = vec3(${color2});
-            vec3 color3 = vec3(${color3});
-
-            vec3 rgb =
-                noise < 0.65
-                ? colorRamp3(color0, 0.35, color1, 0.65, noise)
-                : noise < 0.85
-                ? colorRamp3(color1, 0.65, color2, 0.85, noise)
-                : colorRamp3(color2, 0.85, color3, 0.90, noise);
-
-            return vec4(rgb, 1);`
-            : `
-            return vec4(vec3(mix(float(${minRoughness}), float(${maxRoughness}), smoothstep(0.4, 0.8, noise))), 1);`
-        }
-}`;
+    const shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){u.y*=.1;float n=rp(.1,.6,0.,1.,fbm(voronoi(u*float(${scale}),1.5)*vec2(10,3),4,10.,3.));${isAlbedo
+        ? `return vec4(n<.65?cr3(vec3(${color0}),.35,vec3(${color1}),.65,n):n<.85?cr3(vec3(${color1}),.65,vec3(${color2}),.85,n):cr3(vec3(${color2}),.85,vec3(${color3}),.9,n),1);`
+        : `return vec4(vec3(mix(float(${minRoughness}),float(${maxRoughness}),smoothstep(.4,.8,n))),1);`
+        }}`;
 
     const mainImage = `oc=eb(pc);`;
 
     const albedo = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(true), edgeBlend("getColor")], mainImage, w, h, [], albedo);
+    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
 
     const heightMap = ca.CreateTexture(w, h);
-    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(false), edgeBlend("getColor")], mainImage, w, h, [], heightMap);
+    ca.DrawWithShader([ShaderUtils, FBM, VoronoiGrayscale, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
 
     const normalMap = ca.CreateTexture(w, h);
     ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
