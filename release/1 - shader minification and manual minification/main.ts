@@ -1985,10 +1985,6 @@ layout(location=0) in vec4 v;layout(location=1) in vec3 m;out vec3 y,u,f,n,r,z;o
         var frag_glsl = `#version 300 es
 precision highp float;precision highp sampler2DShadow;uniform bool x;uniform sampler2D d,a,w;uniform sampler2DShadow h;uniform mat3 b,l;uniform bool D,E,C;uniform vec4 B;uniform float A,F,G,H;uniform vec3 I,J,K,L;uniform bool M;in vec3 y,u,f,n,r,z;in vec4 i;out vec4 o;vec3 g(vec3 v){vec3 m=pow(abs(v),vec3(H));return m/vec3(dot(m,vec3(1)));}vec4 g(sampler2D v,vec3 m,vec3 y){vec3 i=g(y);return texture(v,m.zy)*i.x+texture(v,m.zx)*i.y+texture(v,m.xy)*i.z;}vec3 N(sampler2D v,vec3 m,vec3 y){vec3 i=g(y),n=texture(v,m.zx).xyz*2.-1.;return normalize(vec3(0,(texture(v,m.zy).xyz*2.-1.).yx)*i.x+vec3(n.y,0,n)*i.y+vec3((texture(v,m.xy).xyz*2.-1.).xy,0)*i.z+y);}float N(vec3 v,vec3 m){return max(dot(v,m),0.);}vec3 g(vec3 v,float m){return v+(1.-v)*pow(1.-m,5.);}vec3 N(vec3 v,vec3 m,vec3 y,vec3 b,vec3 s,vec3 n,vec3 d,float f){float I=N(v,y);vec3 x=normalize(y+m),J=g(d,dot(y,x));float e=pow(N(v,x),f)*(f+2.)/8.,u=0.;if(M){vec3 l=i.xyz/i.w;vec2 B=abs(vec2(.5)-l.xy);u=l.z>1.||B.x>.5||B.y>.5?1.:(l.z-=max(.001*(1.-dot(normalize(z),L)),1e-4)/i.w,texture(h,l));}else u=1.;vec3 o=u*(n+J*e)*I*b;o+=n*s;return o;}vec3 O(vec3 v,vec3 m){vec3 y=normalize(n);v=E?normalize(l*N(a,f*I+J,y)):v;vec3 s=D?g(d,f*I+J,y).xyz*B.xyz:B.xyz;float u=C?g(w,f*I+J,y).x:A;vec3 i=mix(s*(1.-vec3(.04).x),vec3(0),F)/acos(-1.),r=mix(vec3(.04),s,F);u=1.2-.2/clamp(u,1e-5,.99999);float x=log(2.-u)*185.;vec3 o=vec3(0),G[]=vec3[1](K),H[]=vec3[1](vec3(1)),p[]=vec3[1](vec3(1));{vec3 b=p[0]*(1.-N(z,-L)*.1);o+=N(v,m,G[0],H[0],b,i,r,x);}return o;}void main(){if(x){o=B;return;}vec3 v=O(normalize(u),normalize(-y));o=vec4(mix(v,vec3(.4,.45,.5),smoothstep(150.,250.,length(r))),B.w);}`
 
-
-
-
-
         standardMaterialProgram = CreateWebglProgram(vert_glsl, frag_glsl,
             standardMaterial_var_WORLDVIEWMAT, standardMaterial_var_WORLDVIEWNORMALMAT, standardMaterial_var_WORLDVIEWPROJMAT, standardMaterial_var_WORLDMAT, standardMaterial_var_WORLDNORMALMAT, standardMaterial_var_SHADOWMVP, standardMaterial_var_ISUNLIT,
             standardMaterial_var_ALBEDO, standardMaterial_var_NORMALMAP, standardMaterial_var_ROUGHNESSMAP, standardMaterial_var_DEPTHMAP,
@@ -2008,44 +2004,24 @@ precision highp float;precision highp sampler2DShadow;uniform bool x;uniform sam
     return standardMaterialProgram;
 }
 
+const shadow_var_DEPTHMVP = "e"
+const shadow_var_TEX = "t"
+const shadow_var_UV = "v"
+const shadow_var_VPOSITION = "m"
+const shadow_var_WORLDMAT = "d"
+
+
 let shadowProgram: ReturnType<typeof CreateWebglProgram> | null = null;
 function GetOrCreateShadowProgram()
 {
     if (shadowProgram === null)
     {
-        shadowProgram = CreateWebglProgram(`#version 300 es
-
-layout (location = 0)
-in vec4 vPosition;
-out vec2 uv;
-
-uniform mat4 depthMVP;
-uniform mat4 worldMat;
-
-void main()
-{
-    uv = vPosition.xy + 0.5;
-    gl_Position = depthMVP * worldMat * vPosition;
-}
-`,
-
+        shadowProgram = CreateWebglProgram(
             `#version 300 es
-
-precision highp float;
-
-uniform sampler2D tex;
-
-in vec2 uv;
-
-void main()
-{
-    if (texture(tex, uv).a < 0.5)
-    {
-        discard;
-    }
-}
-`,
-            "depthMVP", "worldMat", "tex"
+layout(location=0) in vec4 m;out vec2 v;uniform mat4 e,d;void main(){v=m.xy+.5;gl_Position=e*d*m;}`,
+            `#version 300 es
+precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).w<.5)discard;}`,
+            shadow_var_DEPTHMVP, shadow_var_WORLDMAT, shadow_var_TEX
         );
     }
 
@@ -2921,7 +2897,7 @@ class DirectionalLight extends Camera
         gl_bindFramebuffer(gl_FRAMEBUFFER, this.depthFrameBuffer);
         gl_framebufferTexture2D(gl_FRAMEBUFFER, gl_DEPTH_STENCIL_ATTACHMENT, gl_TEXTURE_2D, this.depthTexture, 0);
 
-        this.worldMatLocation = GetOrCreateShadowProgram().uniformLocations.get("worldMat")!;
+        this.worldMatLocation = GetOrCreateShadowProgram().uniformLocations.get(shadow_var_WORLDMAT)!;
     }
 
     public prepare(camera: Camera, centerDistanceFromCamera: number)
@@ -2938,7 +2914,7 @@ class DirectionalLight extends Camera
         this.depthMVP.copy(this.projectionMatrix).multiply(lightView);
         const shadowProgram = GetOrCreateShadowProgram();
         gl_useProgram(shadowProgram.program);
-        gl_uniformMatrix4fv(shadowProgram.uniformLocations.get("depthMVP")!, false, this.depthMVP);
+        gl_uniformMatrix4fv(shadowProgram.uniformLocations.get(shadow_var_DEPTHMVP)!, false, this.depthMVP);
     }
 }
 
