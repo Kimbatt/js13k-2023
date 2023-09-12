@@ -2,8 +2,8 @@ let LoadEverything = () =>
 {
     let getElementById = document.getElementById.bind(document), createElement = document.createElement.bind(document);
 
-    let minifiedCSS = `#overlay,.fullscreen{top:0;width:100vw;height:100vh;position:absolute;left:0}#overlay,.hb{background-color:#000;display:flex}body{background:#323639;color:#fff;user-select:none;font-family:Verdana,sans-serif;overflow:hidden}canvas{z-index:-10;filter:saturate(1.3) brightness(1.4) contrast(1.4)}.fullscreen{pointer-events:none;display:flex;flex-direction:column;align-items:center;z-index:9}#overlay{opacity:1;visibility:visible;transition:opacity .5s linear,visibility .5s linear;justify-content:space-evenly;font-size:4vh;text-align:center;white-space:pre-line;flex-direction:column;justify-content:center;align-items:center;gap:5vh}.we{position:absolute;z-index:-9;transform:translate(-50%,-50%);pointer-events:none;user-select:none}.hb{width:8vh;height:.6vh}.hb>div{margin:.15vh}#building-buttons-container,#bi{position:absolute;width:30vh;height:fit-content;font-size:1.2vh;background-color:#000000e0;border-radius:1vh;margin:1vh;padding:1.5vh;white-space:pre-line}#bi{bottom:5vh;right:20%}#building-buttons-container{display:flex;flex-direction:column;bottom:0;left:0;gap:1vh}#bi>div{display:flex;flex-direction:column;gap:3vh;width:100%}button{cursor:pointer;width:100%;font-size:1.2vh;background-color:#0064bb;color:#fff;padding:.8vh;border:0;border-radius:1vh}button:hover{background-color:#4084c0}button:disabled{background-color:#5f6e7a;pointer-events:none}.ability-container{display:flex;flex-direction:column;gap:1vh}.title{font-size:2vh;font-weight:700}@keyframes pulse{50%{color:#c75555}}.danger{animation:1s ease-in-out infinite pulse}#overlay.hidden{opacity:0;visibility:hidden}`;
-    let minifiedHTML = `<div id=building-buttons-container></div><div id=bi style=display:none></div><div style=position:absolute;top:0;right:20%;display:flex;background-color:#000000a0;border-radius:1vh;padding:1vh;margin:1vh;font-size:2vh;gap:4vh><div style=display:flex;gap:1vh;align-items:center><div id=food-count></div><svg style=height:2vh viewBox="0 0 120 100" stroke-width=5 stroke=#000><path d="M60 100q-10 0-10-10V40c0-10-10-10-10-20Q30 0 70 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#faae3b /><path d="M20 100q-10 0-10-10V40C10 30 0 30 0 20Q0 0 40 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#f8e6c5 /></svg></div><div style=display:flex;gap:1vh;align-items:center><div id=gold-count></div><svg style=height:2vh viewBox="0 0 125 100" stroke-width=5 stroke=#000><circle cx=75 cy=50 r=50 fill=#ff960c /><circle cx=50 cy=50 r=50 fill=#ffc60c /></svg></div></div><div id=overlay><div id=overlay-text></div><button id=start-level style="width:auto;font-size:4vh;padding:2vh 5vh"></button></div>`;
+    let minifiedCSS = `#overlay,.fullscreen{top:0;width:100vw;height:100vh;position:absolute;left:0}#overlay,.hb{background:#000;display:flex}body{background:#323639;color:#fff;user-select:none;font-family:Verdana,sans-serif;overflow:hidden}canvas{z-index:-10;filter:saturate(1.3) brightness(1.4) contrast(1.4);position:absolute;top:0;left:0}.fullscreen{pointer-events:none;display:flex;flex-direction:column;align-items:center;z-index:9}#overlay{opacity:1;visibility:visible;transition:opacity .5s linear,visibility .5s linear;justify-content:space-evenly;font-size:4vh;text-align:center;white-space:pre-line;flex-direction:column;justify-content:center;align-items:center;gap:5vh}.we{position:absolute;z-index:-9;transform:translate(-50%,-50%);pointer-events:none;user-select:none}.hb{width:8vh;height:.6vh}.hb>div{margin:.15vh}#bc,#bi{position:absolute;width:30vh;height:fit-content;font-size:1.2vh;background:#000000e0;border-radius:1vh;margin:1vh;padding:1.5vh;white-space:pre-line}#bi{bottom:5vh;right:20%}#bc{display:flex;flex-direction:column;bottom:0;left:0;gap:1vh}#bi>div{display:flex;flex-direction:column;gap:3vh;width:100%}button{cursor:pointer;width:100%;font-size:1.2vh;background:#0064bb;color:#fff;padding:.8vh;border:0;border-radius:1vh}button:hover{background:#4084c0}button:disabled{background:#5f6e7a;pointer-events:none}.ability-container{display:flex;flex-direction:column;gap:1vh}.title{font-size:2vh;font-weight:700}@keyframes pulse{50%{color:#c75555}}.danger{animation:1s ease-in-out infinite pulse}#overlay.hidden{opacity:0;visibility:hidden}`;
+    let minifiedHTML = `<div id=bc></div><div id=bi style=display:none></div><div style=position:absolute;top:0;right:20%;display:flex;background:#000000a0;border-radius:1vh;padding:1vh;margin:1vh;font-size:2vh;gap:4vh><div style=display:flex;gap:1vh;align-items:center><div id=food-count></div><svg style=height:2vh viewBox="0 0 120 100" stroke-width=5 stroke=#000><path d="M60 100q-10 0-10-10V40c0-10-10-10-10-20Q30 0 70 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#faae3b /><path d="M20 100q-10 0-10-10V40C10 30 0 30 0 20Q0 0 40 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#f8e6c5 /></svg></div><div style=display:flex;gap:1vh;align-items:center><div id=gold-count></div><svg style=height:2vh viewBox="0 0 125 100" stroke-width=5 stroke=#000><circle cx=75 cy=50 r=50 fill=#ff960c /><circle cx=50 cy=50 r=50 fill=#ffc60c /></svg></div></div><div id=overlay><div id=overlay-text></div><button id=start-level style="width:auto;font-size:4vh;padding:2vh 5vh"></button></div>`;
 
     getElementById("st")!.innerHTML = minifiedCSS;
     getElementById("ui")!.innerHTML = minifiedHTML;
@@ -21,13 +21,11 @@ let LoadEverything = () =>
         sin,
         cos,
         atan2,
-        floor,
         round,
         sqrt,
         sign,
         min,
         max,
-        log2,
         random,
         imul
     } = Math;
@@ -194,11 +192,7 @@ let LoadEverything = () =>
 
         r = () => this.mulScalar(1 / this.len); // normalize
 
-        safeNormalize()
-        {
-            let len = this.len;
-            return len > 1e-9 ? this.mulScalar(1 / len) : this.setScalar(0);
-        }
+        safeNormalize = () => this.len > 1e-9 ? this.mulScalar(1 / this.len) : this.setScalar(0);
 
         lerpVectors(a: VectorBase<Length, T>, b: VectorBase<Length, T>, t: number)
         {
@@ -272,12 +266,10 @@ let LoadEverything = () =>
 
         crossVectors = (a: Vector3, b: Vector3) => this.setValues(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 
-        cross = (other: Vector3) => this.crossVectors(this, other);
-
         applyQuaternion(q: Quaternion)
         {
-            let { x: px, y: py, z: pz } = this;
-            let { x, y, z, w } = q;
+            let [px, py, pz] = this;
+            let [x, y, z, w] = q;
 
             let ix = w * px + y * pz - z * py;
             let iy = w * py + z * px - x * pz;
@@ -362,46 +354,6 @@ let LoadEverything = () =>
             super(4, [x, y, z, w]);
         }
 
-        get x()
-        {
-            return this[0];
-        }
-
-        set x(v)
-        {
-            this[0] = v;
-        }
-
-        get y()
-        {
-            return this[1];
-        }
-
-        set y(v)
-        {
-            this[1] = v;
-        }
-
-        get z()
-        {
-            return this[2];
-        }
-
-        set z(v)
-        {
-            this[2] = v;
-        }
-
-        get w()
-        {
-            return this[3];
-        }
-
-        set w(v)
-        {
-            this[3] = v;
-        }
-
         get n()
         {
             return NewQuaternion();
@@ -422,14 +374,14 @@ let LoadEverything = () =>
 
         invert()
         {
-            this.w = -this.w;
+            this[3] = -this[3];
             return this;
         }
 
         multiplyQuaternions(a: Quaternion, b: Quaternion)
         {
-            let { x, y, z, w } = a;
-            let { x: bx, y: by, z: bz, w: bw } = b;
+            let [x, y, z, w] = a;
+            let [bx, by, bz, bw] = b;
 
             return this.setValues(
                 x * bw + w * bx + y * bz - z * by,
@@ -449,7 +401,7 @@ let LoadEverything = () =>
         setFromUnitVectors(from: Vector3, to: Vector3)
         {
             let r = from.dot(to) + 1;
-            let { x, y, z } = from;
+            let [x, y, z] = from;
 
             if (r < 1e-7)
             {
@@ -549,15 +501,11 @@ let LoadEverything = () =>
             return this;
         }
 
-        m(other: Matrix4x4) // multiply
-        {
-            return this.multiplyMatrices(this, other);
-        }
+        m = (other: Matrix4x4) => // multiply
+            this.multiplyMatrices(this, other);
 
-        p(other: Matrix4x4) // premultiply
-        {
-            return this.multiplyMatrices(other, this);
-        }
+        p = (other: Matrix4x4) => // premultiply
+            this.multiplyMatrices(other, this);
 
         multiplyMatrices(a: Matrix4x4, b: Matrix4x4)
         {
@@ -586,8 +534,8 @@ let LoadEverything = () =>
 
         compose(position: Vector3, rotation: Quaternion, scale: Vector3)
         {
-            let { x, y, z, w } = rotation;
-            let { x: sx, y: sy, z: sz } = scale;
+            let [x, y, z, w] = rotation;
+            let [sx, sy, sz] = scale;
 
             let x2 = x + x;
             let y2 = y + y;
@@ -667,20 +615,6 @@ let LoadEverything = () =>
                 (-top - bottom) * h,
                 (-far - near) * p,
                 1,
-            ]);
-        }
-
-        lookAt(eye: Vector3, center: Vector3, up: Vector3)
-        {
-            let f = center.c().s(eye).r();
-            let s = f.c().cross(up).r();
-            let u = s.c().cross(f);
-
-            return this.set([
-                s.x, u.x, -f.x, 0,
-                s.y, u.y, -f.y, 0,
-                s.z, u.z, -f.z, 0,
-                -eye.dot(s), -eye.dot(u), eye.dot(f), 1
             ]);
         }
 
@@ -874,7 +808,7 @@ let LoadEverything = () =>
         {
             let target = targetNode ?? globalTargetNode;
 
-            let frequency = (2 ** (log2(440) + octave - 4 + (note - 9) / 12)) / numWaves;
+            let frequency = (2 ** (Math.log2(440) + octave - 4 + (note - 9) / 12)) / numWaves;
             let fadeInDuration = 0.001;
 
             let oscillator = actx.createOscillator();
@@ -886,14 +820,10 @@ let LoadEverything = () =>
             gain.gain.value = 0;
             let time = when;
             gain.gain.linearRampToValueAtTime(0, time);
-            time += fadeInDuration;
-            gain.gain.linearRampToValueAtTime(attack ? volume * 1.4 : volume, time);
-            time += 0.05;
-            gain.gain.linearRampToValueAtTime(volume, time);
-            time += duration;
-            gain.gain.linearRampToValueAtTime(volume, time);
-            time += fadeOutDuration;
-            gain.gain.linearRampToValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(attack ? volume * 1.4 : volume, time += fadeInDuration);
+            gain.gain.linearRampToValueAtTime(volume, time += 0.05);
+            gain.gain.linearRampToValueAtTime(volume, time += duration);
+            gain.gain.linearRampToValueAtTime(0, time += fadeOutDuration);
 
             filter.type = "bandpass";
             filter.frequency.value = frequency;
@@ -1036,66 +966,9 @@ let LoadEverything = () =>
     // scenegraph/global-canvas.ts
 
     let globalCanvas = createElement("canvas");
+    document.body.appendChild(globalCanvas);
 
     let gl = globalCanvas.getContext("webgl2")!;
-
-    let
-        gl_useProgram = gl.useProgram.bind(gl),
-
-        gl_bindVertexArray = gl.bindVertexArray.bind(gl),
-        gl_enableVertexAttribArray = gl.enableVertexAttribArray.bind(gl),
-        gl_vertexAttribPointer = gl.vertexAttribPointer.bind(gl),
-
-        gl_enable = gl.enable.bind(gl),
-
-        gl_createBuffer = gl.createBuffer.bind(gl),
-        gl_bindBuffer = gl.bindBuffer.bind(gl),
-        gl_bufferData = gl.bufferData.bind(gl),
-
-        gl_activeTexture = gl.activeTexture.bind(gl),
-        gl_bindTexture = gl.bindTexture.bind(gl),
-        gl_texParameteri = gl.texParameteri.bind(gl),
-
-        gl_bindFramebuffer = gl.bindFramebuffer.bind(gl),
-
-        gl_uniform1i = gl.uniform1i.bind(gl),
-        gl_uniform1f = gl.uniform1f.bind(gl),
-        gl_uniform3fv = gl.uniform3fv.bind(gl),
-        gl_uniformMatrix4fv = gl.uniformMatrix4fv.bind(gl),
-        gl_getUniformLocation = gl.getUniformLocation.bind(gl),
-
-        gl_depthMask = gl.depthMask.bind(gl),
-        gl_viewport = gl.viewport.bind(gl);
-
-    let {
-        VERTEX_SHADER: gl_VERTEX_SHADER,
-        FRAGMENT_SHADER: gl_FRAGMENT_SHADER,
-
-        ARRAY_BUFFER: gl_ARRAY_BUFFER,
-        ELEMENT_ARRAY_BUFFER: gl_ELEMENT_ARRAY_BUFFER,
-
-        FLOAT: gl_FLOAT,
-
-        STATIC_DRAW: gl_STATIC_DRAW,
-
-        TEXTURE0: gl_TEXTURE0,
-        TEXTURE_2D: gl_TEXTURE_2D,
-        TEXTURE_MIN_FILTER: gl_TEXTURE_MIN_FILTER,
-        LINEAR: gl_LINEAR,
-        REPEAT: gl_REPEAT,
-
-        FRAMEBUFFER: gl_FRAMEBUFFER,
-
-        CULL_FACE: gl_CULL_FACE,
-        BACK: gl_BACK,
-
-        DEPTH_BUFFER_BIT: gl_DEPTH_BUFFER_BIT,
-
-        BLEND: gl_BLEND,
-    } = gl;
-
-
-
 
 
 
@@ -1139,7 +1012,7 @@ let LoadEverything = () =>
                 let padCount = Math.log10(lines.length + 1) | 0 + 4;
                 console.error("\n" + lines.map((line, idx) => (idx + 1).toString().padEnd(padCount, " ") + line).join("\n"));
 
-                throw new Error(`Error compiling ${shaderType === gl_VERTEX_SHADER ? "vertex" : "fragment"} shader`);
+                throw new Error(`Error compiling ${shaderType === gl.VERTEX_SHADER ? "vertex" : "fragment"} shader`);
             }
         }
 
@@ -1178,15 +1051,15 @@ let LoadEverything = () =>
 
     let CreateWebglProgram = (vertexShaderSource: string, fragmentShaderSource: string, ...uniforms: string[]) =>
     {
-        let vertShaderObj = CreateShader(gl_VERTEX_SHADER, vertexShaderSource);
-        let fragShaderObj = CreateShader(gl_FRAGMENT_SHADER, fragmentShaderSource);
+        let vertShaderObj = CreateShader(gl.VERTEX_SHADER, vertexShaderSource);
+        let fragShaderObj = CreateShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
 
         let program = CreateAndLinkProgram(vertShaderObj, fragShaderObj);
 
-        // gl_useProgram(program);
+        // gl.useProgram(program);
 
         let uniformLocations = new Map<string, WebGLUniformLocation>();
-        uniforms.forEach(u => uniformLocations.set(u, gl_getUniformLocation(program, u)!));
+        uniforms.forEach(u => uniformLocations.set(u, gl.getUniformLocation(program, u)!));
 
         return { program, uniformLocations };
     }
@@ -1210,7 +1083,6 @@ let LoadEverything = () =>
         DrawWithShader: (shaderFunctions: string[], shaderMainImage: string, width: number, height: number,
             inputTextures: WebGLTexture[], resultTexture: WebGLTexture) => void;
         CreateTexture: (width: number, height: number) => WebGLTexture;
-        canvas: HTMLCanvasElement;
         GetTexturePixels?: (texture: WebGLTexture, width: number, height: number, pixels?: Uint8ClampedArray) => Uint8ClampedArray;
         DrawTexture?: (texture: WebGLTexture, width: number, height: number) => void;
         TextureToImage?: (texture: WebGLTexture, width: number, height: number) => Promise<HTMLImageElement>;
@@ -1222,12 +1094,12 @@ let LoadEverything = () =>
         let vertexShader = `#version 300 es
 in vec2 p;uniform float a;out vec2 pc;void main(){pc=(p+vec2(1))*.5;gl_Position=vec4(p,0,1);}`;
 
-        let vertShaderObj = CreateShader(gl_VERTEX_SHADER, vertexShader);
+        let vertShaderObj = CreateShader(gl.VERTEX_SHADER, vertexShader);
 
-        let vertexBuffer = gl_createBuffer()!;
+        let vertexBuffer = gl.createBuffer()!;
         let vertexPositions = new f32a([-1, -1, 1, -1, -1, 1, 1, 1]);
-        gl_bindBuffer(gl_ARRAY_BUFFER, vertexBuffer);
-        gl_bufferData(gl_ARRAY_BUFFER, vertexPositions, gl_STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, vertexPositions, gl.STATIC_DRAW);
 
         let framebuffer = gl.createFramebuffer()!;
 
@@ -1237,7 +1109,7 @@ in vec2 p;uniform float a;out vec2 pc;void main(){pc=(p+vec2(1))*.5;gl_Position=
             // size setup
             globalCanvas.width = width;
             globalCanvas.height = height;
-            gl_viewport(0, 0, width, height);
+            gl.viewport(0, 0, width, height);
 
             // shader and program setup
             let fragmentShaderSource = `#version 300 es
@@ -1247,67 +1119,67 @@ ${inputTextures.map((_, idx) => `uniform sampler2D t${idx};`).join("\n")}
 ${shaderFunctions.join("\n")}
 void main(){${shaderMainImage}}`;
 
-            let fragShaderObj = CreateShader(gl_FRAGMENT_SHADER, fragmentShaderSource);
+            let fragShaderObj = CreateShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
             let program = CreateAndLinkProgram(vertShaderObj, fragShaderObj);
 
-            gl_useProgram(program);
+            gl.useProgram(program);
 
             // setup attributes and uniforms
             let vertexLocation = gl.getAttribLocation(program, "p");
-            gl_uniform1f(gl_getUniformLocation(program, "a"), width / height);
+            gl.uniform1f(gl.getUniformLocation(program, "a"), width / height);
 
             // textures
             inputTextures.forEach((tex, idx) =>
             {
-                gl_activeTexture(gl_TEXTURE0 + idx);
-                gl_bindTexture(gl_TEXTURE_2D, tex);
-                let loc = gl_getUniformLocation(program, "t" + idx);
-                gl_uniform1i(loc, idx);
+                gl.activeTexture(gl.TEXTURE0 + idx);
+                gl.bindTexture(gl.TEXTURE_2D, tex);
+                let loc = gl.getUniformLocation(program, "t" + idx);
+                gl.uniform1i(loc, idx);
             });
 
-            gl_bindFramebuffer(gl_FRAMEBUFFER, framebuffer);
-            gl.framebufferTexture2D(gl_FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl_TEXTURE_2D, resultTexture, 0);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, resultTexture, 0);
 
             // draw
-            gl_bindBuffer(gl_ARRAY_BUFFER, vertexBuffer);
-            gl_enableVertexAttribArray(vertexLocation);
-            gl_vertexAttribPointer(vertexLocation, 2, gl_FLOAT, false, 0, 0);
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.enableVertexAttribArray(vertexLocation);
+            gl.vertexAttribPointer(vertexLocation, 2, gl.FLOAT, false, 0, 0);
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexPositions.length / 2);
 
             // cleanup
             gl.deleteShader(fragShaderObj);
             gl.deleteProgram(program);
-            gl_bindFramebuffer(gl_FRAMEBUFFER, null);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-            gl_bindTexture(gl_TEXTURE_2D, resultTexture);
-            gl.generateMipmap(gl_TEXTURE_2D);
-            gl_bindTexture(gl_TEXTURE_2D, null);
+            gl.bindTexture(gl.TEXTURE_2D, resultTexture);
+            gl.generateMipmap(gl.TEXTURE_2D);
+            gl.bindTexture(gl.TEXTURE_2D, null);
         }
 
         let CreateTexture = (width: number, height: number) =>
         {
             let tex = gl.createTexture()!;
-            gl_bindTexture(gl_TEXTURE_2D, tex);
-            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_WRAP_S, gl_REPEAT);
-            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_WRAP_T, gl_REPEAT);
-            gl.texImage2D(gl_TEXTURE_2D, 0, gl.RGB10_A2, width, height, 0, gl.RGBA, gl.UNSIGNED_INT_2_10_10_10_REV, null);
+            gl.bindTexture(gl.TEXTURE_2D, tex);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB10_A2, width, height, 0, gl.RGBA, gl.UNSIGNED_INT_2_10_10_10_REV, null);
 
-            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
 
             // only needed for non power of 2 textures
             // {
-            //     gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_MAG_FILTER, gl_LINEAR);
-            //     gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_WRAP_S, gl_REPEAT);
-            //     gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_WRAP_T, gl_REPEAT);
+            //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+            //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
             // }
 
             let ext = gl.getExtension("EXT_texture_filter_anisotropic");
-            ext && gl.texParameterf(gl_TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, min(16, gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
+            ext && gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, min(16, gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
 
             return tex;
         }
 
-        let returnObject: CreateWebglCanvas_ReturnObject = { DrawWithShader, CreateTexture, canvas: globalCanvas };
+        let returnObject: CreateWebglCanvas_ReturnObject = { DrawWithShader, CreateTexture };
 
         return returnObject;
     }
@@ -1324,23 +1196,6 @@ void main(){${shaderMainImage}}`;
 
 
 
-
-
-
-
-    // util/shader-utils.ts
-
-    // https://iquilezles.org/www/articles/fbm/fbm.htm
-    // https://www.shadertoy.com/view/XdXGW8
-
-    /** @noinline */
-    let ShaderUtilsWithFBM = `float h1(float n){return fract(sin(n)*43758.5453);}vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}float se(float x){return clamp(x,0.,1.);}float ul(float a,float b,float x){return(x-a)/(b-a);}float rp(float a,float b,float c,float d,float x){return mix(c,d,ul(a,b,x));}float sr(float e,float f,float x){return se(ul(e,f,x));}vec4 cr(vec4 a,float A,vec4 b,float B,float t){return mix(a,b,sr(A,B,t));}vec3 cr3(vec3 a,float A,vec3 b,float B,float t){return mix(a,b,sr(A,B,t));}float vr(float a,float A,float b,float B,float t){return mix(a,b,sr(A,B,t));}vec2 grad(ivec2 x){int f=x.x+x.y*11111;f=f<<13^f;f=f*(f*f*15731+789221)+1376312589>>16;return vec2(cos(float(f)),sin(float(f)));}float noise(vec2 f){ivec2 g=ivec2(floor(f));vec2 x=fract(f),d=x*x*(3.-2.*x),i=vec2(ivec2(0,1));return mix(mix(dot(grad(g+ivec2(0,1).xx),x-i.xx),dot(grad(g+ivec2(0,1).yx),x-i.yx),d.x),mix(dot(grad(g+ivec2(0,1).xy),x-i.xy),dot(grad(g+ivec2(0,1).yy),x-i.yy),d.x),d.y)*.5+.5;}float fbm(vec2 f,int g,float x,float y){float d=0.,i=1.;for(int r=0;r<g;++r)i*=.5,d+=i*noise(f*x),f*=y;return d/(1.-i);}`;
-
-
-
-
-    let edgeBlend = (fnName: string, blend = 0.2, returnType = "vec4", edgeBlendFnName = "eb") => `
-${returnType} ${edgeBlendFnName}(vec2 u){vec2 w=vec2(${blend}),s=1.-w,o=u*s,b=clamp((u-s)/w,0.,1.);return b.y*b.x*${fnName}(fract(o+(w*2.)))+b.y*(1.-b.x)*${fnName}(vec2(fract(o.x+w.x),fract(o.y+(w.y*2.))))+(1.-b.y)*(1.-b.x)*${fnName}(fract(o+w))+(1.-b.y)*b.x*${fnName}(vec2(fract(o.x+(w.x*2.)),fract(o.y+w.y)));}`;
 
 
 
@@ -1427,11 +1282,11 @@ precision highp float;precision highp sampler2DShadow;uniform sampler2D d,a,w;un
                 standardMaterial_var_LIGHTPOS, standardMaterial_var_LIGHTPOSWORLD, standardMaterial_var_ENABLESHADOWS
             );
 
-            gl_useProgram(standardMaterialProgram.program);
-            gl_uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ALBEDO)!, 0);
-            gl_uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_NORMALMAP)!, 1);
-            gl_uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ROUGHNESSMAP)!, 2);
-            gl_uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_DEPTHMAP)!, 3);
+            gl.useProgram(standardMaterialProgram.program);
+            gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ALBEDO)!, 0);
+            gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_NORMALMAP)!, 1);
+            gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ROUGHNESSMAP)!, 2);
+            gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_DEPTHMAP)!, 3);
         }
 
         return standardMaterialProgram;
@@ -2108,7 +1963,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         depthMVP = NewMatrix4x4();
         resolution: number;
         worldMatLocation: WebGLUniformLocation;
-        target = NewVector3();
 
         constructor()
         {
@@ -2124,33 +1978,28 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             this.depthFrameBuffer = gl.createFramebuffer()!;
             this.depthTexture = gl.createTexture()!;
 
-            gl_bindTexture(gl_TEXTURE_2D, this.depthTexture);
+            gl.bindTexture(gl.TEXTURE_2D, this.depthTexture);
             // use DEPTH_STENCIL for higher depth precision
-            gl.texImage2D(gl_TEXTURE_2D, 0, gl.DEPTH24_STENCIL8, this.resolution, this.resolution, 0, gl.DEPTH_STENCIL, gl.UNSIGNED_INT_24_8, null);
-            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_MIN_FILTER, gl_LINEAR);
-            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl_LINEAR);
-            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.COMPARE_REF_TO_TEXTURE);
-            gl_bindFramebuffer(gl_FRAMEBUFFER, this.depthFrameBuffer);
-            gl.framebufferTexture2D(gl_FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl_TEXTURE_2D, this.depthTexture, 0);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH24_STENCIL8, this.resolution, this.resolution, 0, gl.DEPTH_STENCIL, gl.UNSIGNED_INT_24_8, null);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.COMPARE_REF_TO_TEXTURE);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, this.depthFrameBuffer);
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.TEXTURE_2D, this.depthTexture, 0);
 
             this.worldMatLocation = GetOrCreateShadowProgram().uniformLocations.get(shadow_var_WORLDMAT)!;
         }
 
         prepare()
         {
-            let lightDirection = this.P.c().s(this.target).r();
-
-            // for the 2023 game, it's better to have the shadow center at a fixed position
-            // so don't move the shadow with the camera
-            let frustumCenter = NewVector3();
-
-            // let frustumCenter = NewVector3(0, 0, -centerDistanceFromCamera).applyMatrix4x4(camera.localToWorldMatrix());
-            let lightView = NewMatrix4x4().lookAt(frustumCenter.c().a(lightDirection), frustumCenter, NewVector3(0, 1, 0));
+            // let frustumCenter = NewVector3();
+            // let lightView = NewMatrix4x4().lookAt(frustumCenter.c().a(lightDirection), frustumCenter, NewVector3(0, 1, 0));
+            let lightView = NewMatrix4x4().set([0.894, 0.358, -0.267, 0, 0, 0.6, 0.8, 0, 0.447, -0.717, 0.535, 0, 0, 0, -1, 1]);
 
             this.depthMVP.set(this.projectionMatrix).m(lightView);
             let shadowProgram = GetOrCreateShadowProgram();
-            gl_useProgram(shadowProgram.program);
-            gl_uniformMatrix4fv(shadowProgram.uniformLocations.get(shadow_var_DEPTHMVP)!, false, this.depthMVP);
+            gl.useProgram(shadowProgram.program);
+            gl.uniformMatrix4fv(shadowProgram.uniformLocations.get(shadow_var_DEPTHMVP)!, false, this.depthMVP);
         }
     }
 
@@ -2169,13 +2018,12 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         {
             super();
 
-            gl_enable(gl.DEPTH_TEST);
+            gl.enable(gl.DEPTH_TEST);
             gl.depthFunc(gl.LEQUAL);
-            gl_enable(gl_CULL_FACE);
-            gl.cullFace(gl_BACK);
+            gl.enable(gl.CULL_FACE);
+            gl.cullFace(gl.BACK);
 
             this.light = new DirectionalLight();
-            this.light.P.setValues(0, 1, 1);
 
             Scene.now = performance.now() / 1000;
         }
@@ -2186,7 +2034,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             Scene.now = now;
 
             accumulatedFixedDeltaTime += Scene.deltaTime;
-            let fixedUpdateCount = floor(accumulatedFixedDeltaTime / fixedDeltaTime);
+            let fixedUpdateCount = (accumulatedFixedDeltaTime / fixedDeltaTime) | 0;
             accumulatedFixedDeltaTime -= fixedDeltaTime * fixedUpdateCount;
 
             // limit fixed update count, so there won't be thousands of fixed updates
@@ -2209,19 +2057,19 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             let { light, clearColor } = this;
 
             // shadow maps first
-            gl_viewport(0, 0, light.resolution, light.resolution);
-            // gl_cullFace(gl_FRONT);
-            gl_bindFramebuffer(gl_FRAMEBUFFER, light.depthFrameBuffer);
-            gl.clear(gl_DEPTH_BUFFER_BIT);
+            gl.viewport(0, 0, light.resolution, light.resolution);
+            // gl.cullFace(gl.FRONT);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, light.depthFrameBuffer);
+            gl.clear(gl.DEPTH_BUFFER_BIT);
             light.prepare();
             this.renderSceneInternal(light, RenderMode.Shadow, light);
-            gl_bindFramebuffer(gl_FRAMEBUFFER, null);
-            // gl_cullFace(gl_BACK);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            // gl.cullFace(gl.BACK);
 
             // normal render
-            gl_viewport(0, 0, globalCanvas.width, globalCanvas.height);
+            gl.viewport(0, 0, globalCanvas.width, globalCanvas.height);
             gl.clearColor(clearColor.x, clearColor.y, clearColor.z, 1);
-            gl.clear(gl.COLOR_BUFFER_BIT | gl_DEPTH_BUFFER_BIT);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             this.renderSceneInternal(camera, RenderMode.Normal, light);
 
             this.traverse(node =>
@@ -2348,30 +2196,30 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             else
             {
                 this.vao = gl.createVertexArray()!;
-                gl_bindVertexArray(this.vao);
+                gl.bindVertexArray(this.vao);
 
                 // setup buffers
 
-                this.vertexBuffer = gl_createBuffer()!;
-                gl_bindBuffer(gl_ARRAY_BUFFER, this.vertexBuffer);
-                gl_bufferData(gl_ARRAY_BUFFER, geometry.v, gl_STATIC_DRAW);
-                gl_enableVertexAttribArray(positionLoc);
-                gl_vertexAttribPointer(positionLoc, 3, gl_FLOAT, false, 0, 0);
+                this.vertexBuffer = gl.createBuffer()!;
+                gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, geometry.v, gl.STATIC_DRAW);
+                gl.enableVertexAttribArray(positionLoc);
+                gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
 
-                this.indexBuffer = gl_createBuffer()!;
-                gl_bindBuffer(gl_ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-                gl_bufferData(gl_ELEMENT_ARRAY_BUFFER, geometry.t, gl_STATIC_DRAW);
+                this.indexBuffer = gl.createBuffer()!;
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+                gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, geometry.t, gl.STATIC_DRAW);
 
                 if (geometry.n && normalLoc)
                 {
-                    let normalBuffer = gl_createBuffer()!;
-                    gl_bindBuffer(gl_ARRAY_BUFFER, normalBuffer);
-                    gl_bufferData(gl_ARRAY_BUFFER, geometry.n, gl_STATIC_DRAW);
-                    gl_enableVertexAttribArray(normalLoc);
-                    gl_vertexAttribPointer(normalLoc, 3, gl_FLOAT, true, 0, 0);
+                    let normalBuffer = gl.createBuffer()!;
+                    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+                    gl.bufferData(gl.ARRAY_BUFFER, geometry.n, gl.STATIC_DRAW);
+                    gl.enableVertexAttribArray(normalLoc);
+                    gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, true, 0, 0);
                 }
 
-                gl_bindVertexArray(null);
+                gl.bindVertexArray(null);
 
                 geometryMap.set(geometry, {
                     vao: this.vao,
@@ -2419,7 +2267,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         textures = new Map<number, WebGLTexture>();
         castShadows = true;
         receiveShadows = true;
-        cull: number | null = gl_BACK;
+        cull: number | null = gl.BACK;
 
         constructor(geometry: Geometry, material: Material)
         {
@@ -2432,7 +2280,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             this.program = program;
             this.uniforms = uniformLocations;
 
-            gl_useProgram(program);
+            gl.useProgram(program);
 
             this.material = { ...material };
 
@@ -2444,43 +2292,43 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         {
             let { uniforms, material } = this;
 
-            gl_uniform1i(uniforms.get(standardMaterial_var_ALBEDO)!, 0);
-            gl_uniform1i(uniforms.get(standardMaterial_var_NORMALMAP)!, 1);
-            gl_uniform1i(uniforms.get(standardMaterial_var_ROUGHNESSMAP)!, 2);
-            gl_uniform1i(uniforms.get(standardMaterial_var_HASALBEDO)!, 0);
-            gl_uniform1i(uniforms.get(standardMaterial_var_HASNORMALMAP)!, 0);
-            gl_uniform1i(uniforms.get(standardMaterial_var_HASROUGHNESSMAP)!, 0);
-            gl_uniform1i(uniforms.get(standardMaterial_var_ENABLESHADOWS)!, this.receiveShadows ? 1 : 0);
-            gl_uniform1f(uniforms.get(standardMaterial_var_SHARPNESS)!, 1);
+            gl.uniform1i(uniforms.get(standardMaterial_var_ALBEDO)!, 0);
+            gl.uniform1i(uniforms.get(standardMaterial_var_NORMALMAP)!, 1);
+            gl.uniform1i(uniforms.get(standardMaterial_var_ROUGHNESSMAP)!, 2);
+            gl.uniform1i(uniforms.get(standardMaterial_var_HASALBEDO)!, 0);
+            gl.uniform1i(uniforms.get(standardMaterial_var_HASNORMALMAP)!, 0);
+            gl.uniform1i(uniforms.get(standardMaterial_var_HASROUGHNESSMAP)!, 0);
+            gl.uniform1i(uniforms.get(standardMaterial_var_ENABLESHADOWS)!, this.receiveShadows ? 1 : 0);
+            gl.uniform1f(uniforms.get(standardMaterial_var_SHARPNESS)!, 1);
             gl.uniform3f(uniforms.get(standardMaterial_var_SCALE)!, 1, 1, 1);
             gl.uniform3f(uniforms.get(standardMaterial_var_OFFSET)!, 0, 0, 0);
 
             for (let i = 0; i < 8; ++i)
             {
-                gl_activeTexture(gl_TEXTURE0 + i);
-                gl_bindTexture(gl_TEXTURE_2D, null);
+                gl.activeTexture(gl.TEXTURE0 + i);
+                gl.bindTexture(gl.TEXTURE_2D, null);
             }
 
             if (material)
             {
                 gl.uniform4f(uniforms.get(standardMaterial_var_BASECOLOR)!, material.r, material.g, material.b, material.a);
-                gl_uniform1f(uniforms.get(standardMaterial_var_METALLIC)!, material.metallic ?? 0);
+                gl.uniform1f(uniforms.get(standardMaterial_var_METALLIC)!, material.metallic ?? 0);
 
                 let coeff = 0.2;
                 let eps = 1e-5;
                 let roughness = 1.0 + coeff - coeff / Clamp(material.roughness ?? 0.5, eps, 1.0 - eps);
 
-                gl_uniform1f(uniforms.get(standardMaterial_var_ROUGHNESS)!, roughness);
+                gl.uniform1f(uniforms.get(standardMaterial_var_ROUGHNESS)!, roughness);
 
-                gl_uniform1f(uniforms.get(standardMaterial_var_SHARPNESS)!, material.textureBlendSharpness ?? 1);
-                material.textureScale && gl_uniform3fv(uniforms.get(standardMaterial_var_SCALE)!, material.textureScale);
-                material.textureOffset && gl_uniform3fv(uniforms.get(standardMaterial_var_OFFSET)!, material.textureOffset);
+                gl.uniform1f(uniforms.get(standardMaterial_var_SHARPNESS)!, material.textureBlendSharpness ?? 1);
+                material.textureScale && gl.uniform3fv(uniforms.get(standardMaterial_var_SCALE)!, material.textureScale);
+                material.textureOffset && gl.uniform3fv(uniforms.get(standardMaterial_var_OFFSET)!, material.textureOffset);
 
                 for (let [slot, tex] of this.textures)
                 {
-                    gl_activeTexture(gl_TEXTURE0 + slot);
-                    gl_bindTexture(gl_TEXTURE_2D, tex);
-                    gl_uniform1i(uniforms.get([
+                    gl.activeTexture(gl.TEXTURE0 + slot);
+                    gl.bindTexture(gl.TEXTURE_2D, tex);
+                    gl.uniform1i(uniforms.get([
                         standardMaterial_var_HASALBEDO,
                         standardMaterial_var_HASNORMALMAP,
                         standardMaterial_var_HASROUGHNESSMAP
@@ -2490,22 +2338,22 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
             if (this.cull != null)
             {
-                gl_enable(gl_CULL_FACE);
+                gl.enable(gl.CULL_FACE);
                 gl.cullFace(this.cull);
             }
             else
             {
-                gl.disable(gl_CULL_FACE);
+                gl.disable(gl.CULL_FACE);
             }
 
             if (this.transparent)
             {
-                gl_enable(gl_BLEND);
+                gl.enable(gl.BLEND);
                 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
             }
             else
             {
-                gl.disable(gl_BLEND);
+                gl.disable(gl.BLEND);
             }
         }
 
@@ -2539,8 +2387,8 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             let { uniforms } = this;
             let { viewMatrix, viewProjectionMatrix } = viewMatrices;
 
-            gl_useProgram(mode == RenderMode.Normal ? this.program : this.shadowProgram);
-            gl_bindVertexArray(this.vao);
+            gl.useProgram(mode == RenderMode.Normal ? this.program : this.shadowProgram);
+            gl.bindVertexArray(this.vao);
 
             if (mode == RenderMode.Normal)
             {
@@ -2549,41 +2397,41 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 let worldViewNormalMatrix = worldViewMatrix.topLeft3x3(tmpWorldViewNormalMatrix).invert() /* .transpose() */;
                 let worldNormalMatrix = worldMatrix.topLeft3x3(tmpWorldNormalMatrix).invert() /* .transpose() */;
 
-                gl_uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWMAT)!, false, worldViewMatrix);
-                gl_uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWPROJMAT)!, false, worldViewProjectionMatrix);
-                gl_uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDMAT)!, false, worldMatrix);
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWMAT)!, false, worldViewMatrix);
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWPROJMAT)!, false, worldViewProjectionMatrix);
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDMAT)!, false, worldMatrix);
                 gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDVIEWNORMALMAT)!, true, worldViewNormalMatrix);
                 gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDNORMALMAT)!, true, worldNormalMatrix);
-                gl_uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOS)!,
+                gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOS)!,
                     tmpVec3
                         .copyFrom(light.P)
                         .a(viewMatrices.cameraPosition)
                         .applyMatrix4x4(light.matrix(tmpTransformMatrix_mesh_ts).p(viewMatrix))
                         .r()
                 );
-                gl_uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.P).r());
+                gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.P).r());
 
                 this.prepareMaterial();
 
-                gl_activeTexture(gl_TEXTURE0 + 3);
-                gl_bindTexture(gl_TEXTURE_2D, light.depthTexture);
+                gl.activeTexture(gl.TEXTURE0 + 3);
+                gl.bindTexture(gl.TEXTURE_2D, light.depthTexture);
 
-                gl_uniformMatrix4fv(uniforms.get(standardMaterial_var_SHADOWMVP)!, false, light.depthMVP);
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_SHADOWMVP)!, false, light.depthMVP);
 
-                gl_depthMask(!this.transparent);
+                gl.depthMask(!this.transparent);
             }
             else
             {
-                gl_activeTexture(gl_TEXTURE0);
-                gl_bindTexture(gl_TEXTURE_2D, null);
-                gl_uniformMatrix4fv(light.worldMatLocation, false, worldMatrix);
-                gl_depthMask(true);
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, null);
+                gl.uniformMatrix4fv(light.worldMatLocation, false, worldMatrix);
+                gl.depthMask(true);
             }
 
             gl.drawElements(gl.TRIANGLES, this.triangleCount, gl.UNSIGNED_INT, 0);
 
-            gl_bindVertexArray(null);
-            gl_depthMask(true); // re-enable depth write so it doesn't mess up other stuff
+            gl.bindVertexArray(null);
+            gl.depthMask(true); // re-enable depth write so it doesn't mess up other stuff
         }
     }
 
@@ -2729,6 +2577,23 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     // https://www.iquilezles.org/www/articles/voronoilines/voronoilines.htm
     /** @noinline */
     let VoronoiDistance = `float vD(vec2 i){vec2 v=floor(i),n=fract(i),d,D;float f=8.;for(int h=-1;h<=1;++h)for(int M=-1;M<=1;++M){vec2 m=vec2(M,h),K=m+h2(v+m)-n;float J=dot(K,K);if(J<f)f=J,D=K,d=m;}f=8.;for(int h=-2;h<=2;++h)for(int M=-2;M<=2;++M){vec2 m=d+vec2(M,h),K=m+h2(v+m)-n;float J=dot(.5*(D+K),normalize(K-D));f=min(f,J);}return f;}`;
+
+
+
+
+    // util/shader-utils.ts
+
+    // https://iquilezles.org/www/articles/fbm/fbm.htm
+    // https://www.shadertoy.com/view/XdXGW8
+
+    /** @noinline */
+    let ShaderUtilsWithFBM = `float h1(float n){return fract(sin(n)*43758.5453);}vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}float se(float x){return clamp(x,0.,1.);}float ul(float a,float b,float x){return(x-a)/(b-a);}float rp(float a,float b,float c,float d,float x){return mix(c,d,ul(a,b,x));}float sr(float e,float f,float x){return se(ul(e,f,x));}vec4 cr(vec4 a,float A,vec4 b,float B,float t){return mix(a,b,sr(A,B,t));}vec3 cr3(vec3 a,float A,vec3 b,float B,float t){return mix(a,b,sr(A,B,t));}float vr(float a,float A,float b,float B,float t){return mix(a,b,sr(A,B,t));}vec2 grad(ivec2 x){int f=x.x+x.y*11111;f=f<<13^f;f=f*(f*f*15731+789221)+1376312589>>16;return vec2(cos(float(f)),sin(float(f)));}float noise(vec2 f){ivec2 g=ivec2(floor(f));vec2 x=fract(f),d=x*x*(3.-2.*x),i=vec2(ivec2(0,1));return mix(mix(dot(grad(g+ivec2(0,1).xx),x-i.xx),dot(grad(g+ivec2(0,1).yx),x-i.yx),d.x),mix(dot(grad(g+ivec2(0,1).xy),x-i.xy),dot(grad(g+ivec2(0,1).yy),x-i.yy),d.x),d.y)*.5+.5;}float fbm(vec2 f,int g,float x,float y){float d=0.,i=1.;for(int r=0;r<g;++r)i*=.5,d+=i*noise(f*x),f*=y;return d/(1.-i);}`;
+
+
+
+
+    let edgeBlend = (fnName: string, blend = 0.2, returnType = "vec4", edgeBlendFnName = "eb") => `
+${returnType} ${edgeBlendFnName}(vec2 u){vec2 w=vec2(${blend}),s=1.-w,o=u*s,b=clamp((u-s)/w,0.,1.);return b.y*b.x*${fnName}(fract(o+(w*2.)))+b.y*(1.-b.x)*${fnName}(vec2(fract(o.x+w.x),fract(o.y+(w.y*2.))))+(1.-b.y)*(1.-b.x)*${fnName}(fract(o+w))+(1.-b.y)*b.x*${fnName}(vec2(fract(o.x+(w.x*2.)),fract(o.y+w.y)));}`;
 
 
 
@@ -3871,11 +3736,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     // game-2023/main.ts
 
-    document.body.appendChild(globalCanvas);
-    globalCanvas.style.position = "absolute";
-    globalCanvas.style.top = "0px";
-    globalCanvas.style.left = "0px";
-
     let scene = new Scene();
 
     let camera = new Camera();
@@ -4141,7 +4001,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         // health bar
         let { setHealthPercent, healthBar, healthBarContainer } = CreateHealthBar(node, 2);
-        healthBar.style.backgroundColor = isEnemy ? "#ff0000" : "#00ff00";
+        healthBar.style.background = isEnemy ? "#f00" : "#0f0";
         node.onAfterRender.push(_ => setHealthPercent(human.health, human.maxHealth));
 
         let secondsPerFood = 1;
@@ -5242,7 +5102,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         castle.R.setFromAxisAngle(0, 1, 0, -0.1);
         AddLevelObject(castle);
         let { setHealthPercent, healthBar, healthBarContainer } = CreateHealthBar(castle, 25);
-        healthBar.style.backgroundColor = "#00ff00";
+        healthBar.style.background = "#0f0";
         healthBarContainer.style.width = "25vh";
         castle.onAfterRender.push(_ => setHealthPercent(castleHealth, castleMaxHealth));
         castleHealthBarContainer = healthBarContainer;
@@ -5430,7 +5290,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 });
             });
 
-            destroy.b.style.backgroundColor = "#bb3333";
+            destroy.b.style.background = "#b33";
             uiElement.container.appendChild(destroy.c);
 
             buildingDatas.push(buildingData);
@@ -5519,7 +5379,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         globalCanvas.addEventListener("mousemove", Move);
     }
 
-    let buildingButtonsContainer = getElementById("building-buttons-container")!;
+    let buildingButtonsContainer = getElementById("bc")!;
     for (let buildingType of [BuildingType.House, BuildingType.Blacksmith, BuildingType.Windmill, BuildingType.Tower, BuildingType.Church])
     {
         let { c: cost, n: name } = buildingTemplates[buildingType];
