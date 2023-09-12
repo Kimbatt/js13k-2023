@@ -2806,10 +2806,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let windmillBaseGeometry = CreateCylinderGeometry(windmillHeight, 4, 3, 32);
         let windmillRoofGeometry = CreateCylinderGeometry(windmillRoofHeight, 3.2, 0, 32);
         let windmillBladeGeometry = JoinGeometries(
-            TransformGeometry(
-                CreateCylinderGeometry(5, 0.2, 0.2),
-                NewMatrix4x4Compose(NewVector3(0, 0, 2), NewQuaternionFromAxisAngle(1, 0, 0, HalfPI), NewVector3(1))
-            ),
+            TranslateGeometry(CreateBoxGeometry(0.3, 0.3, 5), 0, 0, 2.5),
             CreateBoxGeometry(0.3, 12, 0.3),
             CreateBoxGeometry(12, 0.3, 0.3)
         );
@@ -3075,71 +3072,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             return group.a(walls, roofs, door);
         }
 
-        let churchTowerBaseHeight = 12;
-        let churchTowerWidth = 5;
-        let churchTowerRoofHeight = 5;
-
-        let churchScaleMatrix = NewMatrix4x4Compose(NewVector3(), NewQuaternion(), NewVector3(1.5, 1.7, 2));
-        let churchRoofGeometry = TransformGeometry(CloneGeometry(houseRoofGeometry), churchScaleMatrix);
-
-        let churchTowerRoofGeometry = TranslateGeometry(
-            RotateGeometryWithAxisAngle(
-                FlatShade(CreateCylinderGeometry(churchTowerRoofHeight, 3.6, 0, 4)),
-                0, 1, 0, HalfPI / 2
-            ),
-            0, churchTowerBaseHeight + churchTowerRoofHeight / 2, -10
-        );
-
-        let churchBaseGeometry = JoinGeometries(
-            // main building
-            TransformGeometry(CloneGeometry(houseBaseGeometry), churchScaleMatrix),
-
-            // tower
-            TranslateGeometry(CreateBoxGeometry(churchTowerWidth, churchTowerBaseHeight, churchTowerWidth), 0, churchTowerBaseHeight / 2, -10),
-        );
-
-        let churchWindowGeometry = TransformGeometry(
-            CloneGeometry(castleDoorGeometry),
-            NewMatrix4x4Compose(NewVector3(), NewQuaternionFromAxisAngle(0, 1, 0, HalfPI), NewVector3(0.5))
-        );
-
-        let churchCombinedWindowGeometries = JoinGeometries(
-            TranslateGeometry(CloneGeometry(churchWindowGeometry), 3.6, 1.7, -3),
-            TranslateGeometry(CloneGeometry(churchWindowGeometry), 3.6, 1.7, 3),
-            TranslateGeometry(CloneGeometry(churchWindowGeometry), -3.6, 1.7, -3),
-            TranslateGeometry(CloneGeometry(churchWindowGeometry), -3.6, 1.7, 3),
-            TranslateGeometry(CloneGeometry(churchWindowGeometry), 2.5, 8, -10),
-            TranslateGeometry(CloneGeometry(churchWindowGeometry), -2.5, 8, -10),
-        );
-
-        let Church = () =>
-        {
-            let base = new Mesh(churchBaseGeometry, defaultMaterial);
-            let roofMaterial: Material = {
-                r: 0.8, g: 0.4, b: 0.3, a: 1,
-                textureScale: NewVector3(0.1, 0.3, 0.3),
-                textureOffset: NewVector3(0.5, 0.5, 0),
-                textureBlendSharpness: 10
-            };
-
-            let roof = new Mesh(churchRoofGeometry, roofMaterial);
-            let towerRoof = new Mesh(churchTowerRoofGeometry, roofMaterial);
-
-            let windowMaterial: Material = { ...defaultMaterial, r: 0.2, g: 0.2, b: 0.2, a: 1, roughness: 0.2 };
-            let windows = new Mesh(churchCombinedWindowGeometries, windowMaterial);
-
-            base.setTextures(greyBrickTexture);
-            roof.setTextures(houseRoofTexture);
-            towerRoof.setTextures(windmillRoofTexture);
-
-            let group = new SceneNode();
-            group.a(base, roof, towerRoof, windows);
-            group.P.z += 2.5;
-            let pivot = new SceneNode();
-            pivot.R.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2) + HalfPI);
-            return pivot.a(group);
-        }
-
         return {
             House: () => House(false),
             Blacksmith: () => House(true),
@@ -3147,7 +3079,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             Tower,
             Wall,
             Castle,
-            Church,
         };
     }
 
@@ -3157,7 +3088,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         Blacksmith,
         Windmill,
         Tower,
-        Church,
         Castle
     }
 
@@ -3909,7 +3839,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let roadTexture = BrickTexture(2048, 2048, 90, 90, 0.02, 0.5, 0.03, 0.4, 4, 0.2, true, 0.7, 1, [0.85, 0.85, 0.8], [0.5, 0.5, 0.5], 3);
     let roadMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.03) };
 
-    let groundMaterial: Material = { r: 0.4, g: 0.6, b: 0.3, a: 1, textureScale: NewVector3(0.2), roughness: 1, metallic: 0 };
+    let groundMaterial: Material = { r: 0.3, g: 0.5, b: 0.3, a: 1, textureScale: NewVector3(0.2), roughness: 1, metallic: 0 };
 
     let groundMesh = new Mesh(CreateBoxGeometry(500, 1, 500), groundMaterial);
     groundMesh.P.y = -0.5;
@@ -3967,7 +3897,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         };
     }
 
-    let { House, Blacksmith, Windmill, Tower, Wall, Castle, Church } = InitializeBuildingData();
+    let { House, Blacksmith, Windmill, Tower, Wall, Castle } = InitializeBuildingData();
     let castleMaxHealth = 2000;
     let castleHealth = castleMaxHealth;
 
@@ -4131,132 +4061,129 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 return false;
             }
 
-            if (!isEnemy || judgmentRemainingDuration <= 0)
+            let isWalkingTowardsEnemy = state == HumanBehaviorState.WalkingTowardsEnemy;
+            let isWalking = state == HumanBehaviorState.WalkingTowardsWaypoint || isWalkingTowardsEnemy;
+
+            let targetPosition = targetEnemy?.node.P ?? waypoint;
+
+            if (isWalking)
             {
-                let isWalkingTowardsEnemy = state == HumanBehaviorState.WalkingTowardsEnemy;
-                let isWalking = state == HumanBehaviorState.WalkingTowardsWaypoint || isWalkingTowardsEnemy;
-
-                let targetPosition = targetEnemy?.node.P ?? waypoint;
-
-                if (isWalking)
+                if (P.distanceSqr(targetPosition) < distanceThresholdSqr)
                 {
-                    if (P.distanceSqr(targetPosition) < distanceThresholdSqr)
+                    if (isWalkingTowardsEnemy)
                     {
-                        if (isWalkingTowardsEnemy)
-                        {
-                            state = HumanBehaviorState.AttackingEnemy;
-                            isWalking = false;
-                            stopWalking();
-                        }
-                        else if (!NextWaypoint())
-                        {
-                            state = HumanBehaviorState.Stopped;
-                            isWalking = false;
-                            stopWalking();
-                        }
+                        state = HumanBehaviorState.AttackingEnemy;
+                        isWalking = false;
+                        stopWalking();
+                    }
+                    else if (!NextWaypoint())
+                    {
+                        state = HumanBehaviorState.Stopped;
+                        isWalking = false;
+                        stopWalking();
                     }
                 }
-
-                smoothedWalkDir.r().lerp(rawWalkDir.r(), turnFactor).r();
-                rawWalkDir.copyFrom(targetPosition).s(P).r();
-
-                // always rotate towards the target, even when not walking
-                R.setFromAxisAngle(0, 1, 0, atan2(-smoothedWalkDir.x, -smoothedWalkDir.z));
-
-                if (isWalking)
-                {
-                    // update position
-                    P.a(smoothedWalkDir.mulScalar(fixedDeltaTime * walkSpeed));
-                }
-
-                if (state == HumanBehaviorState.WalkingTowardsWaypoint || state == HumanBehaviorState.Stopped)
-                {
-                    // look for enemies
-                    let searchRadius = 5;
-                    let searchRadiusSqr = searchRadius * searchRadius;
-
-                    let closestEnemyDistance = searchRadiusSqr;
-                    for (let { human: otherHuman } of allHumans)
-                    {
-                        // skip friendly units
-                        if (otherHuman.isEnemy != isEnemy)
-                        {
-                            let dist = otherHuman.node.P.distanceSqr(P)
-                            if (dist < closestEnemyDistance)
-                            {
-                                closestEnemyDistance = dist;
-                                targetEnemy = otherHuman;
-                                state = HumanBehaviorState.WalkingTowardsEnemy;
-                                startWalking();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // already has a target
-                    if (targetEnemy!.health <= 0)
-                    {
-                        targetEnemy = null;
-                        state = HumanBehaviorState.WalkingTowardsWaypoint;
-                        startWalking();
-                    }
-                }
-
-                let tryAttack = () =>
-                {
-                    if (remainingAttackTimer < 0)
-                    {
-                        remainingAttackTimer += attackTimer;
-                        currentAttackDelay = attackDelay;
-                        human.playAttackAnimation();
-                    }
-
-                    currentAttackDelay -= fixedDeltaTime;
-                    if (currentAttackDelay < 0)
-                    {
-                        currentAttackDelay = attackDelay;
-                        return true;
-                    }
-
-                    return false;
-                };
-
-                remainingAttackTimer -= fixedDeltaTime;
-                if (state == HumanBehaviorState.AttackingEnemy)
-                {
-                    if (tryAttack())
-                    {
-                        let enemyDamageMultiplier = 1 + currentLevel;
-                        let damageMultiplier = isEnemy
-
-                            // reduce damage dealt by enemies, by armor upgrade percent
-                            // also increase damage for every level
-                            ? (0.95 ** totalArmorUpgrade) * enemyDamageMultiplier
-
-                            // increase damage dealt by friendly units, by damage upgrade percent
-                            : (1.05 ** totalDamageUpgrade);
-
-                        targetEnemy!.health -= damagePerAttack * damageMultiplier;
-                        SwordImpactSound(audioNode);
-                    }
-                }
-                else if (isEnemy && state == HumanBehaviorState.Stopped)
-                {
-                    // enemy has reached the last waypoint, attack the castle
-                    if (castleHealth > 0 && tryAttack())
-                    {
-                        castleHealth -= damagePerAttack;
-                        SwordImpactSound(audioNode);
-                    }
-                }
-                else
-                {
-                    remainingAttackTimer = max(0, remainingAttackTimer);
-                }
-
-                human.isWalking = isWalking;
             }
+
+            smoothedWalkDir.r().lerp(rawWalkDir.r(), turnFactor).r();
+            rawWalkDir.copyFrom(targetPosition).s(P).r();
+
+            // always rotate towards the target, even when not walking
+            R.setFromAxisAngle(0, 1, 0, atan2(-smoothedWalkDir.x, -smoothedWalkDir.z));
+
+            if (isWalking)
+            {
+                // update position
+                P.a(smoothedWalkDir.mulScalar(fixedDeltaTime * walkSpeed));
+            }
+
+            if (state == HumanBehaviorState.WalkingTowardsWaypoint || state == HumanBehaviorState.Stopped)
+            {
+                // look for enemies
+                let searchRadius = 5;
+                let searchRadiusSqr = searchRadius * searchRadius;
+
+                let closestEnemyDistance = searchRadiusSqr;
+                for (let { human: otherHuman } of allHumans)
+                {
+                    // skip friendly units
+                    if (otherHuman.isEnemy != isEnemy)
+                    {
+                        let dist = otherHuman.node.P.distanceSqr(P)
+                        if (dist < closestEnemyDistance)
+                        {
+                            closestEnemyDistance = dist;
+                            targetEnemy = otherHuman;
+                            state = HumanBehaviorState.WalkingTowardsEnemy;
+                            startWalking();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // already has a target
+                if (targetEnemy!.health <= 0)
+                {
+                    targetEnemy = null;
+                    state = HumanBehaviorState.WalkingTowardsWaypoint;
+                    startWalking();
+                }
+            }
+
+            let tryAttack = () =>
+            {
+                if (remainingAttackTimer < 0)
+                {
+                    remainingAttackTimer += attackTimer;
+                    currentAttackDelay = attackDelay;
+                    human.playAttackAnimation();
+                }
+
+                currentAttackDelay -= fixedDeltaTime;
+                if (currentAttackDelay < 0)
+                {
+                    currentAttackDelay = attackDelay;
+                    return true;
+                }
+
+                return false;
+            };
+
+            remainingAttackTimer -= fixedDeltaTime;
+            if (state == HumanBehaviorState.AttackingEnemy)
+            {
+                if (tryAttack())
+                {
+                    let enemyDamageMultiplier = 1 + currentLevel;
+                    let damageMultiplier = isEnemy
+
+                        // reduce damage dealt by enemies, by armor upgrade percent
+                        // also increase damage for every level
+                        ? (0.95 ** totalArmorUpgrade) * enemyDamageMultiplier
+
+                        // increase damage dealt by friendly units, by damage upgrade percent
+                        : (1.05 ** totalDamageUpgrade);
+
+                    targetEnemy!.health -= damagePerAttack * damageMultiplier;
+                    SwordImpactSound(audioNode);
+                }
+            }
+            else if (isEnemy && state == HumanBehaviorState.Stopped)
+            {
+                // enemy has reached the last waypoint, attack the castle
+                if (castleHealth > 0 && tryAttack())
+                {
+                    castleHealth -= damagePerAttack;
+                    SwordImpactSound(audioNode);
+                }
+            }
+            else
+            {
+                remainingAttackTimer = max(0, remainingAttackTimer);
+            }
+
+            human.isWalking = isWalking;
 
             // make sure that the humans are not inside each other
             // push other humans out of the way
@@ -4606,72 +4533,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         return DefaultShowHideFnForHtmlElement(container, () => { });
     }
 
-    let judgmentRemainingDuration = 0;
-    scene.onFixedUpdate.push(_ =>
-    {
-        judgmentRemainingDuration = max(judgmentRemainingDuration - fixedDeltaTime, 0);
-    });
-
-    let CreateChurchUI = () =>
-    {
-        let container = CreateUIContainerBase("Church", "Provides abilities that can turn the combat in your favor.");
-
-        let blessingHealthRestorePercent = 0;
-        let judgmentStunDuration = 0;
-        let upgradeLevel = 1;
-
-        let UpdateValues = () =>
-        {
-            blessingHealthRestorePercent = upgradeLevel * 0.2;
-            blessing.d.textContent = `Restores ${upgradeLevel * 20}% health to all friendly soldiers.`;
-
-            judgmentStunDuration = upgradeLevel * 2;
-            judgment.d.textContent = `Stuns all enemies, making them unable to move or attack for ${judgmentStunDuration} seconds.`;
-
-            upgrade.b.disabled = totalGold < 20;
-            upgrade.d.textContent = `Increase the power of the church's abilities. (${upgradeLevel}/3)`;
-        }
-
-        let blessing = CreateAbilityContainer("Blessing", "", () =>
-        {
-            for (let { human } of allHumans)
-            {
-                if (!human.isEnemy)
-                {
-                    human.health = min(human.maxHealth, human.health + human.maxHealth * blessingHealthRestorePercent);
-                }
-            }
-        }, 15);
-
-        let judgment = CreateAbilityContainer("Judgment", "", () =>
-        {
-            judgmentRemainingDuration += judgmentStunDuration;
-        }, 30);
-
-        let upgrade = CreateAbilityContainer("Upgrade (20 gold)", "", () =>
-        {
-            if (++upgradeLevel == 3)
-            {
-                upgrade.b.remove();
-            }
-
-            UpdateGold(-20);
-        });
-
-        container.appendChild(blessing.c);
-        container.appendChild(judgment.c);
-        container.appendChild(upgrade.c);
-
-        UpdateValues();
-
-        onGoldChanged.push(UpdateValues);
-
-        return DefaultShowHideFnForHtmlElement(container, () =>
-        {
-            RemoveItemFromArray(onGoldChanged, UpdateValues);
-        });
-    }
-
     let totalArmorUpgrade = 0;
     let totalDamageUpgrade = 0;
 
@@ -4967,11 +4828,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             s: NewVector3(22, 23, 22),
             c: 0, // not buildable
             n: "castle",
-        },
-        [BuildingType.Church]: {
-            s: NewVector3(10, 10, 22),
-            c: 25,
-            n: "church",
         }
     };
 
@@ -5237,7 +5093,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             let ray = camera.getWorldRayFromMouseEvent(ev);
             let hitDistance = GroundPlaneLineIntersectionDistance(ray);
 
-            let building = [House, Blacksmith, Windmill, Tower, Church][buildingType]();
+            let building = [House, Blacksmith, Windmill, Tower][buildingType]();
 
             ray.getPoint(hitDistance, building.P);
             AddLevelObject(building);
@@ -5259,7 +5115,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
             building.onUpdate.push(_ => bouncyAnimation(Scene.now - buildStartTime, false));
 
-            let uiElement = [CreateHouseUI, CreateBlacksmithUI, CreateWindmillUI, CreateTowerUI, CreateChurchUI][buildingType](building);
+            let uiElement = [CreateHouseUI, CreateBlacksmithUI, CreateWindmillUI, CreateTowerUI][buildingType](building);
 
             let buildingData: BuildingData = {
                 node: building,
@@ -5380,7 +5236,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     }
 
     let buildingButtonsContainer = getElementById("bc")!;
-    for (let buildingType of [BuildingType.House, BuildingType.Blacksmith, BuildingType.Windmill, BuildingType.Tower, BuildingType.Church])
+    for (let buildingType of [BuildingType.House, BuildingType.Blacksmith, BuildingType.Windmill, BuildingType.Tower])
     {
         let { c: cost, n: name } = buildingTemplates[buildingType];
         let button = createElement("button");
