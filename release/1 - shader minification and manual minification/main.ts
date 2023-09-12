@@ -1226,34 +1226,40 @@ void main(){${shaderMainImage}}`;
         textureBlendSharpness?: number;
     }
 
-    let standardMaterial_var_ALBEDO = "a"
-    let standardMaterial_var_BASECOLOR = "b"
-    let standardMaterial_var_FRAGCOLOR = "r"
-    let standardMaterial_var_HASALBEDO = "p"
-    let standardMaterial_var_HASNORMALMAP = "I"
-    let standardMaterial_var_HASROUGHNESSMAP = "H"
-    let standardMaterial_var_LIGHTPOS = "C"
-    let standardMaterial_var_LIGHTPOSWORLD = "E"
-    let standardMaterial_var_METALLIC = "x"
+
+    // Generated with Shader Minifier 1.3.6 (https://github.com/laurentlb/Shader_Minifier/)
+    let standardMaterial_var_ALBEDO = "d"
+    let standardMaterial_var_BASECOLOR = "B"
+    let standardMaterial_var_DEPTHMAP = "h"
+    let standardMaterial_var_ENABLESHADOWS = "M"
+    let standardMaterial_var_FRAGCOLOR = "o"
+    let standardMaterial_var_HASALBEDO = "D"
+    let standardMaterial_var_HASNORMALMAP = "E"
+    let standardMaterial_var_HASROUGHNESSMAP = "C"
+    let standardMaterial_var_LIGHTPOS = "K"
+    let standardMaterial_var_LIGHTPOSWORLD = "L"
+    let standardMaterial_var_METALLIC = "F"
     let standardMaterial_var_MODELNORMAL = "n"
     let standardMaterial_var_MODELPOS = "f"
-    let standardMaterial_var_NORMALMAP = "D"
-    let standardMaterial_var_OFFSET = "A"
-    let standardMaterial_var_ROUGHNESS = "h"
-    let standardMaterial_var_ROUGHNESSMAP = "K"
-    let standardMaterial_var_SCALE = "B"
-    let standardMaterial_var_SHARPNESS = "w"
+    let standardMaterial_var_NORMALMAP = "a"
+    let standardMaterial_var_OFFSET = "J"
+    let standardMaterial_var_ROUGHNESS = "A"
+    let standardMaterial_var_ROUGHNESSMAP = "w"
+    let standardMaterial_var_SCALE = "I"
+    let standardMaterial_var_SHADOWMVP = "p"
+    let standardMaterial_var_SHADOWPOS = "i"
+    let standardMaterial_var_SHARPNESS = "H"
     let standardMaterial_var_VNORMAL = "m"
     let standardMaterial_var_VPOSITION = "v"
     let standardMaterial_var_VIEWNORMAL = "u"
     let standardMaterial_var_VIEWPOS = "y"
-    let standardMaterial_var_WORLDMAT = "t"
+    let standardMaterial_var_WORLDMAT = "s"
     let standardMaterial_var_WORLDNORMAL = "z"
-    let standardMaterial_var_WORLDNORMALMAT = "e"
-    let standardMaterial_var_WORLDPOS = "l"
-    let standardMaterial_var_WORLDVIEWMAT = "s"
-    let standardMaterial_var_WORLDVIEWNORMALMAT = "d"
-    let standardMaterial_var_WORLDVIEWPROJMAT = "i"
+    let standardMaterial_var_WORLDNORMALMAT = "b"
+    let standardMaterial_var_WORLDPOS = "r"
+    let standardMaterial_var_WORLDVIEWMAT = "t"
+    let standardMaterial_var_WORLDVIEWNORMALMAT = "l"
+    let standardMaterial_var_WORLDVIEWPROJMAT = "e"
 
 
     let standardMaterialProgram: ReturnType<typeof CreateWebglProgram> | null = null;
@@ -1262,33 +1268,53 @@ void main(){${shaderMainImage}}`;
         if (!standardMaterialProgram)
         {
             let vert_glsl = `#version 300 es
-layout(location=0) in vec4 v;layout(location=1) in vec3 m;out vec3 y,u,f,n,l,z;uniform mat4 t;uniform mat3 e;uniform mat4 s;uniform mat3 d;uniform mat4 i;void main(){y=(s*v).xyz;u=d*m;f=v.xyz;n=m;l=(t*v).xyz;z=e*m;gl_Position=i*v;}`
+layout(location=0) in vec4 v;layout(location=1) in vec3 m;out vec3 y,u,f,n,r,z;out vec4 i;uniform mat4 s;uniform mat3 b;uniform mat4 t;uniform mat3 l;uniform mat4 e,p;void main(){y=(t*v).xyz;u=l*m;f=v.xyz;n=m;r=(s*v).xyz;z=b*m;gl_Position=e*v;i=p*s*v*.5+.5;}`
 
             let frag_glsl = `#version 300 es
-precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;uniform vec4 b;uniform float h,x,w;uniform vec3 B,A,C,E;in vec3 y,u,f,n,l,z;out vec4 r;vec3 g(vec3 v){vec3 m=pow(abs(v),vec3(w));return m/vec3(dot(m,vec3(1)));}vec4 g(sampler2D v,vec3 m,vec3 y){vec3 b=g(y);return texture(v,m.zy)*b.x+texture(v,m.zx)*b.y+texture(v,m.xy)*b.z;}vec3 F(sampler2D v,vec3 m,vec3 y){vec3 b=g(y),n=texture(v,m.zx).xyz*2.-1.;return normalize(vec3(0,(texture(v,m.zy).xyz*2.-1.).yx)*b.x+vec3(n.y,0,n)*b.y+vec3((texture(v,m.xy).xyz*2.-1.).xy,0)*b.z+y);}float F(vec3 v,vec3 m){return max(dot(v,m),0.);}vec3 g(vec3 v,float m){return v+(1.-v)*pow(1.-m,5.);}vec3 F(vec3 v,vec3 m,vec3 y,vec3 b,vec3 z,vec3 d,vec3 n,float x){float f=F(v,y);vec3 l=normalize(y+m),A=g(n,dot(y,l));float B=pow(F(v,l),x)*(x+2.)/8.;vec3 u=(d+A*B)*f*b;u+=d*z;return u;}vec3 G(vec3 v,vec3 m){vec3 y=normalize(n);v=I?normalize(d*F(D,f*B+A,y)):v;vec3 l=p?g(a,f*B+A,y).xyz*b.xyz:b.xyz;float u=H?g(K,f*B+A,y).x:h;vec3 e=mix(l*(1.-vec3(.04).x),vec3(0),x)/acos(-1.),r=mix(vec3(.04),l,x);u=1.2-.2/clamp(u,1e-5,.99999);float i=log(2.-u)*185.;vec3 t=vec3(0),s[]=vec3[1](C),w[]=vec3[1](vec3(1)),G[]=vec3[1](vec3(1));{vec3 J=G[0]*(1.-F(z,-E)*.1);t+=F(v,m,s[0],w[0],J,e,r,i);}return t;}void main(){vec3 v=G(normalize(u),normalize(-y));r=vec4(mix(v,vec3(.4,.45,.5),smoothstep(150.,250.,length(l))),b.w);}`
-
+precision highp float;precision highp sampler2DShadow;uniform sampler2D d,a,w;uniform sampler2DShadow h;uniform mat3 b,l;uniform bool D,E,C;uniform vec4 B;uniform float A,F,G,H;uniform vec3 I,J,K,L;uniform bool M;in vec3 y,u,f,n,r,z;in vec4 i;out vec4 o;vec3 g(vec3 v){vec3 m=pow(abs(v),vec3(H));return m/vec3(dot(m,vec3(1)));}vec4 g(sampler2D v,vec3 m,vec3 y){vec3 i=g(y);return texture(v,m.zy)*i.x+texture(v,m.zx)*i.y+texture(v,m.xy)*i.z;}vec3 N(sampler2D v,vec3 m,vec3 y){vec3 i=g(y),n=texture(v,m.zx).xyz*2.-1.;return normalize(vec3(0,(texture(v,m.zy).xyz*2.-1.).yx)*i.x+vec3(n.y,0,n)*i.y+vec3((texture(v,m.xy).xyz*2.-1.).xy,0)*i.z+y);}float N(vec3 v,vec3 m){return max(dot(v,m),0.);}vec3 g(vec3 v,float m){return v+(1.-v)*pow(1.-m,5.);}vec3 N(vec3 v,vec3 m,vec3 y,vec3 b,vec3 s,vec3 n,vec3 d,float f){float I=N(v,y);vec3 x=normalize(y+m),J=g(d,dot(y,x));float e=pow(N(v,x),f)*(f+2.)/8.,u=0.;if(M){vec3 l=i.xyz/i.w;vec2 B=abs(vec2(.5)-l.xy);u=l.z>1.||B.x>.5||B.y>.5?1.:(l.z-=max(.001*(1.-dot(normalize(z),L)),1e-4)/i.w,texture(h,l));}else u=1.;vec3 o=u*(n+J*e)*I*b;o+=n*s;return o;}vec3 O(vec3 v,vec3 m){vec3 y=normalize(n);v=E?normalize(l*N(a,f*I+J,y)):v;vec3 s=D?g(d,f*I+J,y).xyz*B.xyz:B.xyz;float u=C?g(w,f*I+J,y).x:A;vec3 i=mix(s*(1.-vec3(.04).x),vec3(0),F)/acos(-1.),r=mix(vec3(.04),s,F);u=1.2-.2/clamp(u,1e-5,.99999);float x=log(2.-u)*185.;vec3 o=vec3(0),G[]=vec3[1](K),H[]=vec3[1](vec3(1)),p[]=vec3[1](vec3(1));{vec3 b=p[0]*(1.-N(z,-L)*.1);o+=N(v,m,G[0],H[0],b,i,r,x);}return o;}void main(){vec3 v=O(normalize(u),normalize(-y));o=vec4(mix(v,vec3(.4,.45,.5),smoothstep(150.,250.,length(r))),B.w);}`
 
             standardMaterialProgram = CreateWebglProgram(vert_glsl, frag_glsl,
-                standardMaterial_var_WORLDVIEWMAT, standardMaterial_var_WORLDVIEWNORMALMAT, standardMaterial_var_WORLDVIEWPROJMAT, standardMaterial_var_WORLDMAT, standardMaterial_var_WORLDNORMALMAT,
-                standardMaterial_var_ALBEDO, standardMaterial_var_NORMALMAP, standardMaterial_var_ROUGHNESSMAP,
+                standardMaterial_var_WORLDVIEWMAT, standardMaterial_var_WORLDVIEWNORMALMAT, standardMaterial_var_WORLDVIEWPROJMAT, standardMaterial_var_WORLDMAT, standardMaterial_var_WORLDNORMALMAT, standardMaterial_var_SHADOWMVP,
+                standardMaterial_var_ALBEDO, standardMaterial_var_NORMALMAP, standardMaterial_var_ROUGHNESSMAP, standardMaterial_var_DEPTHMAP,
                 standardMaterial_var_HASALBEDO, standardMaterial_var_HASNORMALMAP, standardMaterial_var_HASROUGHNESSMAP,
                 standardMaterial_var_BASECOLOR, standardMaterial_var_METALLIC, standardMaterial_var_ROUGHNESS,
                 standardMaterial_var_SHARPNESS, standardMaterial_var_SCALE, standardMaterial_var_OFFSET,
-                standardMaterial_var_LIGHTPOS, standardMaterial_var_LIGHTPOSWORLD
+                standardMaterial_var_LIGHTPOS, standardMaterial_var_LIGHTPOSWORLD, standardMaterial_var_ENABLESHADOWS
             );
 
             gl.useProgram(standardMaterialProgram.program);
             gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ALBEDO)!, 0);
             gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_NORMALMAP)!, 1);
             gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ROUGHNESSMAP)!, 2);
+            gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_DEPTHMAP)!, 3);
         }
 
         return standardMaterialProgram;
     }
 
+    let shadow_var_DEPTHMVP = "e"
+    let shadow_var_TEX = "t"
+    let shadow_var_UV = "v"
+    let shadow_var_VPOSITION = "m"
+    let shadow_var_WORLDMAT = "d"
 
 
+    let shadowProgram: ReturnType<typeof CreateWebglProgram> | null = null;
+    let GetOrCreateShadowProgram = () =>
+    {
+        if (!shadowProgram)
+        {
+            shadowProgram = CreateWebglProgram(
+                `#version 300 es
+layout(location=0) in vec4 m;out vec2 v;uniform mat4 e,d;void main(){v=m.xy+.5;gl_Position=e*d*m;}`,
+                `#version 300 es
+precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).w<.5)discard;}`,
+                shadow_var_DEPTHMVP, shadow_var_WORLDMAT, shadow_var_TEX
+            );
+        }
 
+        return shadowProgram;
+    }
 
 
 
@@ -1640,6 +1666,71 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
 
 
+    // scenegraph/audio.ts
+
+
+    // need to use setPosition/setPosition because firefox doesn't support the other method
+
+    // function UpdateAudioVector(x: AudioParam, y: AudioParam, z: AudioParam, v: Vector3)
+    // {
+    //     // need to update the audio params with a delay and with a transition, otherwise the audio will crackle
+    //     // a very small delay is not noticeable anyways
+    //     const delay = 0.02;
+    //     const now = actx.currentTime;
+    //     x.linearRampToValueAtTime(v.x, now + delay);
+    //     y.linearRampToValueAtTime(v.y, now + delay);
+    //     z.linearRampToValueAtTime(v.z, now + delay);
+    // }
+
+    let AttachAudioListener = (node: SceneNode) =>
+    {
+        let { listener } = actx;
+
+        node.onAfterRender.push(() =>
+        {
+            let worldPos = node.worldPosition;
+            let { u: up, f: forward } = node.dirs;
+
+            listener.setPosition(worldPos.x, worldPos.y, worldPos.z);
+            listener.setOrientation(forward.x, forward.y, forward.z, up.x, up.y, up.z);
+
+            // UpdateAudioVector(listener.positionX, listener.positionY, listener.positionZ, node.worldPosition);
+            // UpdateAudioVector(listener.forwardX, listener.forwardY, listener.forwardZ, forward);
+            // UpdateAudioVector(listener.upX, listener.upY, listener.upZ, up);
+        });
+    }
+
+    let AttachAudioSource = (node: SceneNode) =>
+    {
+        let panner = actx.createPanner();
+        let gain = actx.createGain();
+        gain.gain.value = 0.2;
+        panner.connect(gain).connect(globalTargetNode);
+        panner.refDistance = 10;
+
+        node.onAfterRender.push(() =>
+        {
+            let worldPos = node.worldPosition;
+            let forward = node.dirs.f;
+
+            panner.setPosition(worldPos.x, worldPos.y, worldPos.z);
+            panner.setOrientation(forward.x, forward.y, forward.z);
+            // UpdateAudioVector(panner.positionX, panner.positionY, panner.positionZ, node.worldPosition);
+            // UpdateAudioVector(panner.orientationX, panner.orientationY, panner.orientationZ, node.dirs.forward);
+        });
+
+        return panner;
+    }
+
+
+
+
+
+
+
+
+
+
 
     // scenegraph/scene.ts
 
@@ -1647,6 +1738,11 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
     let tmpTransformMatrix_scene_ts = NewMatrix4x4();
     let tmpVec3_0 = NewVector3()
     let tmpVec3_1 = NewVector3()
+
+    const enum RenderMode
+    {
+        Normal, Shadow
+    }
 
     interface ViewMatrices
     {
@@ -1769,7 +1865,7 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
         //// Render
 
-        render(_viewMatrices: ViewMatrices, _worldMatrix: Matrix4x4, light: SceneNode) { }
+        render(_mode: RenderMode, _viewMatrices: ViewMatrices, _worldMatrix: Matrix4x4, _light: DirectionalLight) { }
 
         //// Misc
 
@@ -1854,11 +1950,58 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
         }
     }
 
+    class DirectionalLight extends Camera
+    {
+        depthFrameBuffer: WebGLFramebuffer;
+        depthTexture: WebGLTexture;
+        depthMVP = NewMatrix4x4();
+        resolution: number;
+        worldMatLocation: WebGLUniformLocation;
+
+        constructor()
+        {
+            super();
+
+            this.resolution = min(gl.getParameter(gl.MAX_TEXTURE_SIZE), 2048);
+
+            let size = 250;
+            let near = -100;
+            let far = 500;
+            this.setProjectionMatrixOrthographic(size, size, near, far);
+
+            this.depthFrameBuffer = gl.createFramebuffer()!;
+            this.depthTexture = gl.createTexture()!;
+
+            gl.bindTexture(gl.TEXTURE_2D, this.depthTexture);
+            // use DEPTH_STENCIL for higher depth precision
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH24_STENCIL8, this.resolution, this.resolution, 0, gl.DEPTH_STENCIL, gl.UNSIGNED_INT_24_8, null);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.COMPARE_REF_TO_TEXTURE);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, this.depthFrameBuffer);
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.TEXTURE_2D, this.depthTexture, 0);
+
+            this.worldMatLocation = GetOrCreateShadowProgram().uniformLocations.get(shadow_var_WORLDMAT)!;
+        }
+
+        prepare()
+        {
+            // let frustumCenter = NewVector3();
+            // let lightView = NewMatrix4x4().lookAt(frustumCenter.c().a(lightDirection), frustumCenter, NewVector3(0, 1, 0));
+            let lightView = NewMatrix4x4().set([0.894, 0.358, -0.267, 0, 0, 0.6, 0.8, 0, 0.447, -0.717, 0.535, 0, 0, 0, -1, 1]);
+
+            this.depthMVP.set(this.projectionMatrix).m(lightView);
+            let shadowProgram = GetOrCreateShadowProgram();
+            gl.useProgram(shadowProgram.program);
+            gl.uniformMatrix4fv(shadowProgram.uniformLocations.get(shadow_var_DEPTHMVP)!, false, this.depthMVP);
+        }
+    }
+
     let matrixPool: Matrix4x4[] = [];
 
     class Scene extends SceneNode
     {
-        light = new SceneNode();
+        light: DirectionalLight;
         clearColor = NewVector3();
 
         static deltaTime = 0.01;
@@ -1873,6 +2016,8 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
             gl.depthFunc(gl.LEQUAL);
             gl.enable(gl.CULL_FACE);
             gl.cullFace(gl.BACK);
+
+            this.light = new DirectionalLight();
 
             Scene.now = performance.now() / 1000;
         }
@@ -1903,13 +2048,32 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
         renderScene(camera: Camera)
         {
-            let { clearColor } = this;
+            let { light, clearColor } = this;
+
+            // shadow maps first
+            gl.viewport(0, 0, light.resolution, light.resolution);
+            // gl.cullFace(gl.FRONT);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, light.depthFrameBuffer);
+            gl.clear(gl.DEPTH_BUFFER_BIT);
+            light.prepare();
+            this.renderSceneInternal(light, RenderMode.Shadow, light);
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            // gl.cullFace(gl.BACK);
 
             // normal render
             gl.viewport(0, 0, globalCanvas.width, globalCanvas.height);
             gl.clearColor(clearColor.x, clearColor.y, clearColor.z, 1);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            this.renderSceneInternal(camera, RenderMode.Normal, light);
 
+            this.traverse(node =>
+            {
+                node.onAfterRender = node.onAfterRender.filter(callback => callback(node) !== false);
+            });
+        }
+
+        renderSceneInternal(camera: Camera, mode: RenderMode, light: DirectionalLight)
+        {
             let viewMatrix = camera.worldToLocalMatrix();
             let cameraWorldPos = camera.worldPosition;
             let cameraWorldForward = camera.dirs.f;
@@ -1970,13 +2134,8 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
             renderData.forEach(({ n: node, worldMatrix }) =>
             {
-                node.render(viewMatrices, worldMatrix, this.light);
+                node.render(mode, viewMatrices, worldMatrix, light);
                 matrixPool.push(worldMatrix);
-            });
-
-            this.traverse(node =>
-            {
-                node.onAfterRender = node.onAfterRender.filter(callback => callback(node) !== false);
             });
         }
     }
@@ -2096,9 +2255,12 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
     class Mesh extends Renderable
     {
         program: WebGLProgram;
+        shadowProgram: WebGLProgram;
         uniforms: Map<string, WebGLUniformLocation>;
         material: Material;
         textures = new Map<number, WebGLTexture>();
+        castShadows = true;
+        receiveShadows = true;
         cull: number | null = gl.BACK;
 
         constructor(geometry: Geometry, material: Material)
@@ -2115,6 +2277,9 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
             gl.useProgram(program);
 
             this.material = { ...material };
+
+            // shadows
+            this.shadowProgram = GetOrCreateShadowProgram().program;
         }
 
         prepareMaterial()
@@ -2127,6 +2292,7 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
             gl.uniform1i(uniforms.get(standardMaterial_var_HASALBEDO)!, 0);
             gl.uniform1i(uniforms.get(standardMaterial_var_HASNORMALMAP)!, 0);
             gl.uniform1i(uniforms.get(standardMaterial_var_HASROUGHNESSMAP)!, 0);
+            gl.uniform1i(uniforms.get(standardMaterial_var_ENABLESHADOWS)!, this.receiveShadows ? 1 : 0);
             gl.uniform1f(uniforms.get(standardMaterial_var_SHARPNESS)!, 1);
             gl.uniform3f(uniforms.get(standardMaterial_var_SCALE)!, 1, 1, 1);
             gl.uniform3f(uniforms.get(standardMaterial_var_OFFSET)!, 0, 0, 0);
@@ -2193,37 +2359,56 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
             return this;
         }
 
-        render(viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: SceneNode)
+        render(mode: RenderMode, viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: DirectionalLight)
         {
+            if (mode == RenderMode.Shadow && !this.castShadows)
+            {
+                return;
+            }
+
             let { uniforms } = this;
             let { viewMatrix, viewProjectionMatrix } = viewMatrices;
 
-            gl.useProgram(this.program);
+            gl.useProgram(mode == RenderMode.Normal ? this.program : this.shadowProgram);
             gl.bindVertexArray(this.vao);
 
-            let worldViewMatrix = tmpWorldViewMatrix.set(viewMatrix).m(worldMatrix);
-            let worldViewProjectionMatrix = tmpWorldViewProjectionMatrix.set(viewProjectionMatrix).m(worldMatrix);
-            let worldViewNormalMatrix = worldViewMatrix.topLeft3x3(tmpWorldViewNormalMatrix).invert() /* .transpose() */;
-            let worldNormalMatrix = worldMatrix.topLeft3x3(tmpWorldNormalMatrix).invert() /* .transpose() */;
+            if (mode == RenderMode.Normal)
+            {
+                let worldViewMatrix = tmpWorldViewMatrix.set(viewMatrix).m(worldMatrix);
+                let worldViewProjectionMatrix = tmpWorldViewProjectionMatrix.set(viewProjectionMatrix).m(worldMatrix);
+                let worldViewNormalMatrix = worldViewMatrix.topLeft3x3(tmpWorldViewNormalMatrix).invert() /* .transpose() */;
+                let worldNormalMatrix = worldMatrix.topLeft3x3(tmpWorldNormalMatrix).invert() /* .transpose() */;
 
-            gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWMAT)!, false, worldViewMatrix);
-            gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWPROJMAT)!, false, worldViewProjectionMatrix);
-            gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDMAT)!, false, worldMatrix);
-            gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDVIEWNORMALMAT)!, true, worldViewNormalMatrix);
-            gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDNORMALMAT)!, true, worldNormalMatrix);
-            gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOS)!,
-                tmpVec3
-                    .copyFrom(light.P)
-                    .a(viewMatrices.cameraPosition)
-                    .applyMatrix4x4(light.matrix(tmpTransformMatrix_mesh_ts).p(viewMatrix))
-                    .r()
-            );
-            gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.P).r());
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWMAT)!, false, worldViewMatrix);
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWPROJMAT)!, false, worldViewProjectionMatrix);
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDMAT)!, false, worldMatrix);
+                gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDVIEWNORMALMAT)!, true, worldViewNormalMatrix);
+                gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDNORMALMAT)!, true, worldNormalMatrix);
+                gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOS)!,
+                    tmpVec3
+                        .copyFrom(light.P)
+                        .a(viewMatrices.cameraPosition)
+                        .applyMatrix4x4(light.matrix(tmpTransformMatrix_mesh_ts).p(viewMatrix))
+                        .r()
+                );
+                gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.P).r());
 
-            this.prepareMaterial();
+                this.prepareMaterial();
 
-            gl.depthMask(!this.transparent);
+                gl.activeTexture(gl.TEXTURE0 + 3);
+                gl.bindTexture(gl.TEXTURE_2D, light.depthTexture);
 
+                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_SHADOWMVP)!, false, light.depthMVP);
+
+                gl.depthMask(!this.transparent);
+            }
+            else
+            {
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, null);
+                gl.uniformMatrix4fv(light.worldMatLocation, false, worldMatrix);
+                gl.depthMask(true);
+            }
 
             gl.drawElements(gl.TRIANGLES, this.triangleCount, gl.UNSIGNED_INT, 0);
 
@@ -2362,6 +2547,10 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
     // https://iquilezles.org/www/articles/smoothvoronoi/smoothvoronoi.htm
 
+    // yzw - cell color, x - distance to cell
+    /** @noinline */
+    let Voronoi = `vec4 voro(vec2 i,float s){vec2 v=floor(i),f=fract(i);vec4 d=vec4(8,0,0,0);for(int w=-2;w<=2;++w)for(int x=-2;x<=2;++x){vec2 h=vec2(x,w),P=h2(v+h);float O=length(h-f+P);vec3 m=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+3.5+vec3(2,3,0));m*=m;float M=smoothstep(0.,1.,.5+.5*(d.x-O)/s);d.x=mix(d.x,O,M)-M*(1.-M)*s/(1.+3.*s);d.yzw=mix(d.yzw,m,M)-M*(1.-M)*s/(1.+3.*s);}return d;}`;
+
     // x - cell color, y - distance to cell
     /** @noinline */
     let VoronoiGrayscale = `vec2 voro(vec2 i,float s){vec2 v=floor(i),f=fract(i),d=vec2(0,8);for(int x=-2;x<=2;++x)for(int y=-2;y<=2;++y){vec2 h=vec2(y,x),N=h2(v+h);float M=length(h-f+N),L=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+5.),K=smoothstep(0.,1.,.5+.5*(d.y-M)/s);d.y=mix(d.y,M,K)-K*(1.-K)*s/(1.+3.*s);d.x=mix(d.x,L,K)-K*(1.-K)*s/(1.+3.*s);}return d;}`;
@@ -2467,6 +2656,41 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
 
 
+    // texture-generator/impl/dirt.ts
+
+    let DirtTexture = (): TextureCollection =>
+    {
+        let w = 1024, h = 1024, normalIntensity = 1;
+
+        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*50.;float q=rp(0.,1.,.3,1.,fbm(c*1.5,3,1.,2.)),h=se(1.-se(1.-vD(vec2(1)-vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*4.)*40.)*sr(.45,.52,fbm(c*2.,3,1.,2.)))*q;${isAlbedo
+            ? `return cr(vec4(0,0,0,1),.08,vec4(.7,.9,.4,1),.67,q)*vec4(h,h,h,1);`
+            : `return vec4(vec3(rp(0.,1.,.7,1.,h)),1);`
+            }}`;
+
+        let mainImage = `oc=eb(pc);`;
+
+        let albedo = ca.CreateTexture(w, h);
+        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiDistance, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
+
+        let heightMap = ca.CreateTexture(w, h);
+        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiDistance, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
+
+        let normalMap = ca.CreateTexture(w, h);
+        ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
+
+        return {
+            albedo,
+            roughness: heightMap,
+            normalMap
+        };
+    }
+
+
+
+
+
+
+
 
 
 
@@ -2504,6 +2728,38 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
 
 
+    // texture-generator/impl/wood.ts
+
+    let WoodTexture = (): TextureCollection =>
+    {
+        let w = 2048, h = 2048, normalIntensity = 0.5;
+
+        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){u.y*=.1;float n=rp(.1,.6,0.,1.,fbm(voro(u*15.,1.5)*vec2(10,3),4,10.,3.));${isAlbedo
+            ? `return vec4(n<.65?cr3(vec3(0),.35,vec3(.55,.35,.2),.65,n):n<.85?cr3(vec3(.55,.35,.2),.65,vec3(.75,.55,.45),.85,n):cr3(vec3(.75,.55,.45),.85,vec3(.75,.6,.5),.9,n),1);`
+            : `return vec4(vec3(mix(.5,1.,smoothstep(.4,.8,n))),1);`
+            }}`;
+
+        let mainImage = `oc=eb(pc);`;
+
+        let albedo = ca.CreateTexture(w, h);
+        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiGrayscale, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
+
+        let heightMap = ca.CreateTexture(w, h);
+        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiGrayscale, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
+
+        let normalMap = ca.CreateTexture(w, h);
+        ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
+
+        return {
+            albedo,
+            roughness: heightMap,
+            normalMap
+        };
+    }
+
+
+
+
 
 
 
@@ -2531,6 +2787,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
             undefined,
             3);
 
+        let woodTexture = WoodTexture();
+
         let houseRoofTexture = BrickTexture(1024, 1024, 1, 8, 0.01, 0, 0.05, 0.05, 1, 0.05, false, 0.5, 0.8, [1, 1, 1], [1, 1, 1], 2);
 
         // house length = 8
@@ -2554,6 +2812,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
         ], 7.5);
 
         let houseDoorGeometry = CreateBoxGeometry(1.2, 2.2, 0.1);
+        let houseWindowGeometry = CreateBoxGeometry(0.1, 1, 0.8);
 
         let House = (isBlacksmith: boolean) =>
         {
@@ -2571,12 +2830,22 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
                 textureOffset: NewVector3(0.5, 0.5, 0),
                 textureBlendSharpness: 10
             });
-            let door = new Mesh(houseDoorGeometry, { r: 0.55, g: .35, b: 0.2, a: 1, textureScale: NewVector3(0.5) });
+
+            let door = new Mesh(houseDoorGeometry, { ...defaultMaterial, textureScale: NewVector3(0.5) });
+
+            let windowMaterial: Material = { ...defaultMaterial, r: 0.2, g: 0.2, b: 0.2, a: 1, roughness: 0.2 };
+            let window0 = new Mesh(houseWindowGeometry, windowMaterial);
+            let window1 = new Mesh(houseWindowGeometry, windowMaterial);
+            let window2 = new Mesh(houseWindowGeometry, windowMaterial);
 
             base.setTextures(greyBrickTexture);
+            door.setTextures(woodTexture);
             roof.setTextures(houseRoofTexture);
 
             door.P.setValues(0, 2.2 * 0.5, -7.5 * 0.5);
+            window0.P.setValues(2.4, 1.8, -2);
+            window1.P.setValues(2.4, 1.8, 2);
+            window2.P.setValues(-2.4, 1.8, 1);
 
             let group = new SceneNode();
             group.R.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2));
@@ -2587,7 +2856,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
                 roof.material.r = roof.material.g = roof.material.b = 0.2;
             }
 
-            return group.a(base, roof, door);
+            return group.a(base, roof, door, window0, window1, window2);
         }
 
         let windmillRoofTexture = PlasticTexture();
@@ -2597,7 +2866,10 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
         let windmillBaseGeometry = CreateCylinderGeometry(windmillHeight, 4, 3, 32);
         let windmillRoofGeometry = CreateCylinderGeometry(windmillRoofHeight, 3.2, 0, 32);
         let windmillBladeGeometry = JoinGeometries(
-            TranslateGeometry(CreateBoxGeometry(0.3, 0.3, 5), 0, 0, 2.5),
+            TransformGeometry(
+                CreateCylinderGeometry(5, 0.2, 0.2),
+                NewMatrix4x4Compose(NewVector3(0, 0, 2), NewQuaternionFromAxisAngle(1, 0, 0, HalfPI), NewVector3(1))
+            ),
             CreateBoxGeometry(0.3, 12, 0.3),
             CreateBoxGeometry(12, 0.3, 0.3)
         );
@@ -2662,15 +2934,20 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
         {
             let base = new Mesh(windmillBaseGeometry, { ...defaultMaterial, textureScale: NewVector3(0.75), textureBlendSharpness: 100 });
             let roof = new Mesh(windmillRoofGeometry, { r: 0.4, g: 0.4, b: 0.4, a: 1, textureBlendSharpness: 100 });
-            let blades = new Mesh(windmillBladeGeometry, { r: 0.5, g: 0.3, b: 0.2, a: 1 });
+            let blades = new Mesh(windmillBladeGeometry, defaultMaterial);
             let bladesCloth = new Mesh(windmillBladeClothGeometry, defaultMaterial);
+            let door = new Mesh(houseDoorGeometry, { ...defaultMaterial, textureScale: NewVector3(0.5) });
             let field = new Mesh(windmillFieldGeometry, { r: 1, g: 0.9, b: 0, a: 1, metallic: 0, roughness: 0.9 });
 
             base.setTextures(greyBrickTexture);
             roof.setTextures(windmillRoofTexture);
+            blades.setTextures(woodTexture);
+            door.setTextures(woodTexture);
 
             base.P.y = windmillHeight / 2;
             roof.P.y = windmillHeight + windmillRoofHeight / 2;
+            door.P.setValues(3.85, 2.2 * 0.5, 0);
+            door.R.setFromAxisAngle(0, 1, 0, HalfPI).multiply(NewQuaternionFromAxisAngle(1, 0, 0, -0.13));
             field.P.z = -5;
 
             let bladesContainer = new SceneNode();
@@ -2853,14 +3130,80 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
                 textureBlendSharpness: 1
             });
 
-            let door = new Mesh(castleDoorGeometry, { r: 0.7 * 0.55, g: 0.7 * 0.35, b: 0.7 * 0.2, a: 1, textureScale: NewVector3(0.5) });
+            let door = new Mesh(castleDoorGeometry, { r: 0.7, g: 0.7, b: 0.7, a: 1, textureScale: NewVector3(0.5) });
 
             walls.setTextures(greyBrickTexture);
             roofs.setTextures(windmillRoofTexture);
+            door.setTextures(woodTexture);
 
             door.P.z = castleWallLength / 2 + wallHalfThickness;
 
             return group.a(walls, roofs, door);
+        }
+
+        let churchTowerBaseHeight = 12;
+        let churchTowerWidth = 5;
+        let churchTowerRoofHeight = 5;
+
+        let churchScaleMatrix = NewMatrix4x4Compose(NewVector3(), NewQuaternion(), NewVector3(1.5, 1.7, 2));
+        let churchRoofGeometry = TransformGeometry(CloneGeometry(houseRoofGeometry), churchScaleMatrix);
+
+        let churchTowerRoofGeometry = TranslateGeometry(
+            RotateGeometryWithAxisAngle(
+                FlatShade(CreateCylinderGeometry(churchTowerRoofHeight, 3.6, 0, 4)),
+                0, 1, 0, HalfPI / 2
+            ),
+            0, churchTowerBaseHeight + churchTowerRoofHeight / 2, -10
+        );
+
+        let churchBaseGeometry = JoinGeometries(
+            // main building
+            TransformGeometry(CloneGeometry(houseBaseGeometry), churchScaleMatrix),
+
+            // tower
+            TranslateGeometry(CreateBoxGeometry(churchTowerWidth, churchTowerBaseHeight, churchTowerWidth), 0, churchTowerBaseHeight / 2, -10),
+        );
+
+        let churchWindowGeometry = TransformGeometry(
+            CloneGeometry(castleDoorGeometry),
+            NewMatrix4x4Compose(NewVector3(), NewQuaternionFromAxisAngle(0, 1, 0, HalfPI), NewVector3(0.5))
+        );
+
+        let churchCombinedWindowGeometries = JoinGeometries(
+            TranslateGeometry(CloneGeometry(churchWindowGeometry), 3.6, 1.7, -3),
+            TranslateGeometry(CloneGeometry(churchWindowGeometry), 3.6, 1.7, 3),
+            TranslateGeometry(CloneGeometry(churchWindowGeometry), -3.6, 1.7, -3),
+            TranslateGeometry(CloneGeometry(churchWindowGeometry), -3.6, 1.7, 3),
+            TranslateGeometry(CloneGeometry(churchWindowGeometry), 2.5, 8, -10),
+            TranslateGeometry(CloneGeometry(churchWindowGeometry), -2.5, 8, -10),
+        );
+
+        let Church = () =>
+        {
+            let base = new Mesh(churchBaseGeometry, defaultMaterial);
+            let roofMaterial: Material = {
+                r: 0.8, g: 0.4, b: 0.3, a: 1,
+                textureScale: NewVector3(0.1, 0.3, 0.3),
+                textureOffset: NewVector3(0.5, 0.5, 0),
+                textureBlendSharpness: 10
+            };
+
+            let roof = new Mesh(churchRoofGeometry, roofMaterial);
+            let towerRoof = new Mesh(churchTowerRoofGeometry, roofMaterial);
+
+            let windowMaterial: Material = { ...defaultMaterial, r: 0.2, g: 0.2, b: 0.2, a: 1, roughness: 0.2 };
+            let windows = new Mesh(churchCombinedWindowGeometries, windowMaterial);
+
+            base.setTextures(greyBrickTexture);
+            roof.setTextures(houseRoofTexture);
+            towerRoof.setTextures(windmillRoofTexture);
+
+            let group = new SceneNode();
+            group.a(base, roof, towerRoof, windows);
+            group.P.z += 2.5;
+            let pivot = new SceneNode();
+            pivot.R.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2) + HalfPI);
+            return pivot.a(group);
         }
 
         return {
@@ -2870,6 +3213,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
             Tower,
             Wall,
             Castle,
+            Church,
         };
     }
 
@@ -2879,6 +3223,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
         Blacksmith,
         Windmill,
         Tower,
+        Church,
         Castle
     }
 
@@ -2898,6 +3243,35 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
 
     // game-2023/audio.ts
+
+
+    let SwordImpactSound = (target: AudioNode) =>
+    {
+        let when = actx.currentTime + 0.05;
+
+        let PlaySound = (freq: number, fadeOutDuration: number, volume: number) =>
+        {
+            let sourceNode = actx.createOscillator();
+            let startFreq = freq;
+            sourceNode.frequency.value = startFreq;
+
+            Drum(volume, when, sourceNode, false, 0, 0, 0.001, fadeOutDuration, 0.001, undefined, target);
+        }
+
+        PlaySound(6000, 0.1, 0.5);
+        PlaySound(5000, 0.9, 0.3);
+        PlaySound(4500, 0.3, 0.3);
+        PlaySound(3500, 0.4, 1);
+        PlaySound(1500, 1, 0.4);
+        HiHat(when, 3500, 0.13, target);
+    }
+
+    let BowShotSound = (target: AudioNode) =>
+    {
+        let when = actx.currentTime + 0.05;
+        Snare(when, 0.05, target);
+        Drum(0.3, when + 0.01, CreateNoiseNode(), false, 0, 0, 0.05, 0.5, 0.001, undefined, target);
+    }
 
     let StartMusic = () =>
     {
@@ -3162,7 +3536,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
     let CreateHuman = (isEnemy: boolean, isArcher: boolean) =>
     {
         /** @noinline */
-        let meshFactory = (geometry: Geometry) => new Mesh(geometry, defaultMaterial);
+        let meshFactory = (geometry: Geometry) => new Mesh(geometry, { ...defaultMaterial, roughness: 0.6 });
         let head = meshFactory(headGeometry);
         let body = meshFactory(bodyGeometry);
         let lowerBody = meshFactory(lowerBodyGeometry);
@@ -3432,8 +3806,11 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
     let camera = new Camera();
     let cameraControl = new CameraControl(camera);
+    cameraControl.distanceFromTarget = 50;
     cameraControl.updateTransform();
     scene.a(cameraControl);
+
+    AttachAudioListener(camera);
 
     let panButton = 1;
     let rotateButton = 2;
@@ -3590,9 +3967,11 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
     let roadTexture = BrickTexture(2048, 2048, 90, 90, 0.02, 0.5, 0.03, 0.4, 4, 0.2, true, 0.7, 1, [0.85, 0.85, 0.8], [0.5, 0.5, 0.5], 3);
     let roadMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.03) };
 
-    let groundMaterial: Material = { r: 0.2, g: 0.5, b: 0.2, a: 1, textureScale: NewVector3(0.2), roughness: 1, metallic: 0 };
+    let groundTexture = DirtTexture();
+    let groundMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.2) };
 
     let groundMesh = new Mesh(CreateBoxGeometry(500, 1, 500), groundMaterial);
+    groundMesh.setTextures(groundTexture);
     groundMesh.P.y = -0.5;
     groundMesh.renderOrder = 100;
     scene.a(groundMesh);
@@ -3648,7 +4027,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
         };
     }
 
-    let { House, Blacksmith, Windmill, Tower, Wall, Castle } = InitializeBuildingData();
+    let { House, Blacksmith, Windmill, Tower, Wall, Castle, Church } = InitializeBuildingData();
     let castleMaxHealth = 2000;
     let castleHealth = castleMaxHealth;
 
@@ -3693,6 +4072,9 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
                 human.health -= 10;
             };
         });
+
+        // audio
+        let audioNode = AttachAudioSource(node);
 
         // waypoints
         let castleWaypointIndex = 42;
@@ -3809,127 +4191,132 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
                 return false;
             }
 
-            let isWalkingTowardsEnemy = state == HumanBehaviorState.WalkingTowardsEnemy;
-            let isWalking = state == HumanBehaviorState.WalkingTowardsWaypoint || isWalkingTowardsEnemy;
-
-            let targetPosition = targetEnemy?.node.P ?? waypoint;
-
-            if (isWalking)
+            if (!isEnemy || judgmentRemainingDuration <= 0)
             {
-                if (P.distanceSqr(targetPosition) < distanceThresholdSqr)
+                let isWalkingTowardsEnemy = state == HumanBehaviorState.WalkingTowardsEnemy;
+                let isWalking = state == HumanBehaviorState.WalkingTowardsWaypoint || isWalkingTowardsEnemy;
+
+                let targetPosition = targetEnemy?.node.P ?? waypoint;
+
+                if (isWalking)
                 {
-                    if (isWalkingTowardsEnemy)
+                    if (P.distanceSqr(targetPosition) < distanceThresholdSqr)
                     {
-                        state = HumanBehaviorState.AttackingEnemy;
-                        isWalking = false;
-                        stopWalking();
-                    }
-                    else if (!NextWaypoint())
-                    {
-                        state = HumanBehaviorState.Stopped;
-                        isWalking = false;
-                        stopWalking();
-                    }
-                }
-            }
-
-            smoothedWalkDir.r().lerp(rawWalkDir.r(), turnFactor).r();
-            rawWalkDir.copyFrom(targetPosition).s(P).r();
-
-            // always rotate towards the target, even when not walking
-            R.setFromAxisAngle(0, 1, 0, atan2(-smoothedWalkDir.x, -smoothedWalkDir.z));
-
-            if (isWalking)
-            {
-                // update position
-                P.a(smoothedWalkDir.mulScalar(fixedDeltaTime * walkSpeed));
-            }
-
-            if (state == HumanBehaviorState.WalkingTowardsWaypoint || state == HumanBehaviorState.Stopped)
-            {
-                // look for enemies
-                let searchRadius = 5;
-                let searchRadiusSqr = searchRadius * searchRadius;
-
-                let closestEnemyDistance = searchRadiusSqr;
-                for (let { human: otherHuman } of allHumans)
-                {
-                    // skip friendly units
-                    if (otherHuman.isEnemy != isEnemy)
-                    {
-                        let dist = otherHuman.node.P.distanceSqr(P)
-                        if (dist < closestEnemyDistance)
+                        if (isWalkingTowardsEnemy)
                         {
-                            closestEnemyDistance = dist;
-                            targetEnemy = otherHuman;
-                            state = HumanBehaviorState.WalkingTowardsEnemy;
-                            startWalking();
+                            state = HumanBehaviorState.AttackingEnemy;
+                            isWalking = false;
+                            stopWalking();
+                        }
+                        else if (!NextWaypoint())
+                        {
+                            state = HumanBehaviorState.Stopped;
+                            isWalking = false;
+                            stopWalking();
                         }
                     }
                 }
-            }
-            else
-            {
-                // already has a target
-                if (targetEnemy!.health <= 0)
-                {
-                    targetEnemy = null;
-                    state = HumanBehaviorState.WalkingTowardsWaypoint;
-                    startWalking();
-                }
-            }
 
-            let tryAttack = () =>
-            {
-                if (remainingAttackTimer < 0)
+                smoothedWalkDir.r().lerp(rawWalkDir.r(), turnFactor).r();
+                rawWalkDir.copyFrom(targetPosition).s(P).r();
+
+                // always rotate towards the target, even when not walking
+                R.setFromAxisAngle(0, 1, 0, atan2(-smoothedWalkDir.x, -smoothedWalkDir.z));
+
+                if (isWalking)
                 {
-                    remainingAttackTimer += attackTimer;
-                    currentAttackDelay = attackDelay;
-                    human.playAttackAnimation();
+                    // update position
+                    P.a(smoothedWalkDir.mulScalar(fixedDeltaTime * walkSpeed));
                 }
 
-                currentAttackDelay -= fixedDeltaTime;
-                if (currentAttackDelay < 0)
+                if (state == HumanBehaviorState.WalkingTowardsWaypoint || state == HumanBehaviorState.Stopped)
                 {
-                    currentAttackDelay = attackDelay;
-                    return true;
+                    // look for enemies
+                    let searchRadius = 5;
+                    let searchRadiusSqr = searchRadius * searchRadius;
+
+                    let closestEnemyDistance = searchRadiusSqr;
+                    for (let { human: otherHuman } of allHumans)
+                    {
+                        // skip friendly units
+                        if (otherHuman.isEnemy != isEnemy)
+                        {
+                            let dist = otherHuman.node.P.distanceSqr(P)
+                            if (dist < closestEnemyDistance)
+                            {
+                                closestEnemyDistance = dist;
+                                targetEnemy = otherHuman;
+                                state = HumanBehaviorState.WalkingTowardsEnemy;
+                                startWalking();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // already has a target
+                    if (targetEnemy!.health <= 0)
+                    {
+                        targetEnemy = null;
+                        state = HumanBehaviorState.WalkingTowardsWaypoint;
+                        startWalking();
+                    }
                 }
 
-                return false;
-            };
-
-            remainingAttackTimer -= fixedDeltaTime;
-            if (state == HumanBehaviorState.AttackingEnemy)
-            {
-                if (tryAttack())
+                let tryAttack = () =>
                 {
-                    let enemyDamageMultiplier = 1 + currentLevel;
-                    let damageMultiplier = isEnemy
+                    if (remainingAttackTimer < 0)
+                    {
+                        remainingAttackTimer += attackTimer;
+                        currentAttackDelay = attackDelay;
+                        human.playAttackAnimation();
+                    }
 
-                        // reduce damage dealt by enemies, by armor upgrade percent
-                        // also increase damage for every level
-                        ? (0.95 ** totalArmorUpgrade) * enemyDamageMultiplier
+                    currentAttackDelay -= fixedDeltaTime;
+                    if (currentAttackDelay < 0)
+                    {
+                        currentAttackDelay = attackDelay;
+                        return true;
+                    }
 
-                        // increase damage dealt by friendly units, by damage upgrade percent
-                        : (1.05 ** totalDamageUpgrade);
+                    return false;
+                };
 
-                    targetEnemy!.health -= damagePerAttack * damageMultiplier;
-                }
-            }
-            else if (isEnemy && state == HumanBehaviorState.Stopped)
-            {
-                // enemy has reached the last waypoint, attack the castle
-                if (castleHealth > 0 && tryAttack())
+                remainingAttackTimer -= fixedDeltaTime;
+                if (state == HumanBehaviorState.AttackingEnemy)
                 {
-                    castleHealth -= damagePerAttack;
-                }
-            }
-            else
-            {
-                remainingAttackTimer = max(0, remainingAttackTimer);
-            }
+                    if (tryAttack())
+                    {
+                        let enemyDamageMultiplier = 1 + currentLevel;
+                        let damageMultiplier = isEnemy
 
-            human.isWalking = isWalking;
+                            // reduce damage dealt by enemies, by armor upgrade percent
+                            // also increase damage for every level
+                            ? (0.95 ** totalArmorUpgrade) * enemyDamageMultiplier
+
+                            // increase damage dealt by friendly units, by damage upgrade percent
+                            : (1.05 ** totalDamageUpgrade);
+
+                        targetEnemy!.health -= damagePerAttack * damageMultiplier;
+                        SwordImpactSound(audioNode);
+                    }
+                }
+                else if (isEnemy && state == HumanBehaviorState.Stopped)
+                {
+                    // enemy has reached the last waypoint, attack the castle
+                    if (castleHealth > 0 && tryAttack())
+                    {
+                        castleHealth -= damagePerAttack;
+                        SwordImpactSound(audioNode);
+                    }
+                }
+                else
+                {
+                    remainingAttackTimer = max(0, remainingAttackTimer);
+                }
+
+                human.isWalking = isWalking;
+            }
 
             // make sure that the humans are not inside each other
             // push other humans out of the way
@@ -4279,6 +4666,72 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
         return DefaultShowHideFnForHtmlElement(container, () => { });
     }
 
+    let judgmentRemainingDuration = 0;
+    scene.onFixedUpdate.push(_ =>
+    {
+        judgmentRemainingDuration = max(judgmentRemainingDuration - fixedDeltaTime, 0);
+    });
+
+    let CreateChurchUI = () =>
+    {
+        let container = CreateUIContainerBase("Church", "Provides abilities that can turn the combat in your favor.");
+
+        let blessingHealthRestorePercent = 0;
+        let judgmentStunDuration = 0;
+        let upgradeLevel = 1;
+
+        let UpdateValues = () =>
+        {
+            blessingHealthRestorePercent = upgradeLevel * 0.2;
+            blessing.d.textContent = `Restores ${upgradeLevel * 20}% health to all friendly soldiers.`;
+
+            judgmentStunDuration = upgradeLevel * 2;
+            judgment.d.textContent = `Stuns all enemies, making them unable to move or attack for ${judgmentStunDuration} seconds.`;
+
+            upgrade.b.disabled = totalGold < 20;
+            upgrade.d.textContent = `Increase the power of the church's abilities. (${upgradeLevel}/3)`;
+        }
+
+        let blessing = CreateAbilityContainer("Blessing", "", () =>
+        {
+            for (let { human } of allHumans)
+            {
+                if (!human.isEnemy)
+                {
+                    human.health = min(human.maxHealth, human.health + human.maxHealth * blessingHealthRestorePercent);
+                }
+            }
+        }, 15);
+
+        let judgment = CreateAbilityContainer("Judgment", "", () =>
+        {
+            judgmentRemainingDuration += judgmentStunDuration;
+        }, 30);
+
+        let upgrade = CreateAbilityContainer("Upgrade (20 gold)", "", () =>
+        {
+            if (++upgradeLevel == 3)
+            {
+                upgrade.b.remove();
+            }
+
+            UpdateGold(-20);
+        });
+
+        container.appendChild(blessing.c);
+        container.appendChild(judgment.c);
+        container.appendChild(upgrade.c);
+
+        UpdateValues();
+
+        onGoldChanged.push(UpdateValues);
+
+        return DefaultShowHideFnForHtmlElement(container, () =>
+        {
+            RemoveItemFromArray(onGoldChanged, UpdateValues);
+        });
+    }
+
     let totalArmorUpgrade = 0;
     let totalDamageUpgrade = 0;
 
@@ -4384,6 +4837,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
         let rangeIndicator = new Mesh(towerRangeIndicatorGeometry, { r: 0, g: 0.2, b: 0.8, a: 0.3 });
         rangeIndicator.transparent = true;
+        rangeIndicator.castShadows = false;
+        rangeIndicator.receiveShadows = false;
         rangeIndicator.v = false;
         node.a(rangeIndicator);
 
@@ -4436,6 +4891,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
         let archer = CreateHuman(false, true);
         archer.node.P.y = 9;
         node.a(archer.node);
+        let audioNode = AttachAudioSource(archer.node);
 
         let attackInterval = 2;
         let attackTimer = attackInterval;
@@ -4479,6 +4935,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
                 {
                     closestEnemy.health -= baseDamage * damageMultiplier;
                     attackTimer = attackInterval;
+                    BowShotSound(audioNode);
 
                     let srcPosition = archer.bow!.worldPosition;
                     let targetPosition = closestEnemy.node.P.c();
@@ -4570,6 +5027,11 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
             s: NewVector3(22, 23, 22),
             c: 0, // not buildable
             n: "castle",
+        },
+        [BuildingType.Church]: {
+            s: NewVector3(10, 10, 22),
+            c: 25,
+            n: "church",
         }
     };
 
@@ -4577,6 +5039,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
     let buildingPlaceholder = new Mesh(TranslateGeometry(CreateBoxGeometry(), 0, 0.5, 0), { r: 1, g: 0, b: 0, a: 0.3 });
     buildingPlaceholder.transparent = true;
+    buildingPlaceholder.castShadows = false;
+    buildingPlaceholder.receiveShadows = false;
     buildingPlaceholder.cull = null;
 
     let cancelBuilding = () => { };
@@ -4833,7 +5297,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
             let ray = camera.getWorldRayFromMouseEvent(ev);
             let hitDistance = GroundPlaneLineIntersectionDistance(ray);
 
-            let building = [House, Blacksmith, Windmill, Tower][buildingType]();
+            let building = [House, Blacksmith, Windmill, Tower, Church][buildingType]();
 
             ray.getPoint(hitDistance, building.P);
             AddLevelObject(building);
@@ -4855,7 +5319,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
             building.onUpdate.push(_ => bouncyAnimation(Scene.now - buildStartTime, false));
 
-            let uiElement = [CreateHouseUI, CreateBlacksmithUI, CreateWindmillUI, CreateTowerUI][buildingType](building);
+            let uiElement = [CreateHouseUI, CreateBlacksmithUI, CreateWindmillUI, CreateTowerUI, CreateChurchUI][buildingType](building);
 
             let buildingData: BuildingData = {
                 node: building,
@@ -4976,7 +5440,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
     }
 
     let buildingButtonsContainer = getElementById("bc")!;
-    for (let buildingType of [BuildingType.House, BuildingType.Blacksmith, BuildingType.Windmill, BuildingType.Tower])
+    for (let buildingType of [BuildingType.House, BuildingType.Blacksmith, BuildingType.Windmill, BuildingType.Tower, BuildingType.Church])
     {
         let { c: cost, n: name } = buildingTemplates[buildingType];
         let button = createElement("button");
