@@ -284,7 +284,7 @@ let LoadEverything = () =>
 
         applyMatrix3x3(mat: Matrix3x3)
         {
-            let { x, y, z } = this;
+            let [x, y, z] = this;
             let [m11, m21, m31, m12, m22, m32, m13, m23, m33] = mat;
 
             this.x = m11 * x + m12 * y + m13 * z;
@@ -296,7 +296,7 @@ let LoadEverything = () =>
 
         applyMatrix4x4(mat: Matrix4x4)
         {
-            let { x, y, z } = this;
+            let [x, y, z] = this;
             let [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44] = mat;
 
             let iw = m41 * x + m42 * y + m43 * z + m44;
@@ -1226,40 +1226,34 @@ void main(){${shaderMainImage}}`;
         textureBlendSharpness?: number;
     }
 
-
-    // Generated with Shader Minifier 1.3.6 (https://github.com/laurentlb/Shader_Minifier/)
-    let standardMaterial_var_ALBEDO = "d"
-    let standardMaterial_var_BASECOLOR = "B"
-    let standardMaterial_var_DEPTHMAP = "h"
-    let standardMaterial_var_ENABLESHADOWS = "M"
-    let standardMaterial_var_FRAGCOLOR = "o"
-    let standardMaterial_var_HASALBEDO = "D"
-    let standardMaterial_var_HASNORMALMAP = "E"
-    let standardMaterial_var_HASROUGHNESSMAP = "C"
-    let standardMaterial_var_LIGHTPOS = "K"
-    let standardMaterial_var_LIGHTPOSWORLD = "L"
-    let standardMaterial_var_METALLIC = "F"
+    let standardMaterial_var_ALBEDO = "a"
+    let standardMaterial_var_BASECOLOR = "b"
+    let standardMaterial_var_FRAGCOLOR = "r"
+    let standardMaterial_var_HASALBEDO = "p"
+    let standardMaterial_var_HASNORMALMAP = "I"
+    let standardMaterial_var_HASROUGHNESSMAP = "H"
+    let standardMaterial_var_LIGHTPOS = "C"
+    let standardMaterial_var_LIGHTPOSWORLD = "E"
+    let standardMaterial_var_METALLIC = "x"
     let standardMaterial_var_MODELNORMAL = "n"
     let standardMaterial_var_MODELPOS = "f"
-    let standardMaterial_var_NORMALMAP = "a"
-    let standardMaterial_var_OFFSET = "J"
-    let standardMaterial_var_ROUGHNESS = "A"
-    let standardMaterial_var_ROUGHNESSMAP = "w"
-    let standardMaterial_var_SCALE = "I"
-    let standardMaterial_var_SHADOWMVP = "p"
-    let standardMaterial_var_SHADOWPOS = "i"
-    let standardMaterial_var_SHARPNESS = "H"
+    let standardMaterial_var_NORMALMAP = "D"
+    let standardMaterial_var_OFFSET = "A"
+    let standardMaterial_var_ROUGHNESS = "h"
+    let standardMaterial_var_ROUGHNESSMAP = "K"
+    let standardMaterial_var_SCALE = "B"
+    let standardMaterial_var_SHARPNESS = "w"
     let standardMaterial_var_VNORMAL = "m"
     let standardMaterial_var_VPOSITION = "v"
     let standardMaterial_var_VIEWNORMAL = "u"
     let standardMaterial_var_VIEWPOS = "y"
-    let standardMaterial_var_WORLDMAT = "s"
+    let standardMaterial_var_WORLDMAT = "t"
     let standardMaterial_var_WORLDNORMAL = "z"
-    let standardMaterial_var_WORLDNORMALMAT = "b"
-    let standardMaterial_var_WORLDPOS = "r"
-    let standardMaterial_var_WORLDVIEWMAT = "t"
-    let standardMaterial_var_WORLDVIEWNORMALMAT = "l"
-    let standardMaterial_var_WORLDVIEWPROJMAT = "e"
+    let standardMaterial_var_WORLDNORMALMAT = "e"
+    let standardMaterial_var_WORLDPOS = "l"
+    let standardMaterial_var_WORLDVIEWMAT = "s"
+    let standardMaterial_var_WORLDVIEWNORMALMAT = "d"
+    let standardMaterial_var_WORLDVIEWPROJMAT = "i"
 
 
     let standardMaterialProgram: ReturnType<typeof CreateWebglProgram> | null = null;
@@ -1268,55 +1262,29 @@ void main(){${shaderMainImage}}`;
         if (!standardMaterialProgram)
         {
             let vert_glsl = `#version 300 es
-layout(location=0) in vec4 v;layout(location=1) in vec3 m;out vec3 y,u,f,n,r,z;out vec4 i;uniform mat4 s;uniform mat3 b;uniform mat4 t;uniform mat3 l;uniform mat4 e,p;void main(){y=(t*v).xyz;u=l*m;f=v.xyz;n=m;r=(s*v).xyz;z=b*m;gl_Position=e*v;i=p*s*v*.5+.5;}`
+layout(location=0) in vec4 v;layout(location=1) in vec3 m;out vec3 y,u,f,n,l,z;uniform mat4 t;uniform mat3 e;uniform mat4 s;uniform mat3 d;uniform mat4 i;void main(){y=(s*v).xyz;u=d*m;f=v.xyz;n=m;l=(t*v).xyz;z=e*m;gl_Position=i*v;}`
 
             let frag_glsl = `#version 300 es
-precision highp float;precision highp sampler2DShadow;uniform sampler2D d,a,w;uniform sampler2DShadow h;uniform mat3 b,l;uniform bool D,E,C;uniform vec4 B;uniform float A,F,G,H;uniform vec3 I,J,K,L;uniform bool M;in vec3 y,u,f,n,r,z;in vec4 i;out vec4 o;vec3 g(vec3 v){vec3 m=pow(abs(v),vec3(H));return m/vec3(dot(m,vec3(1)));}vec4 g(sampler2D v,vec3 m,vec3 y){vec3 i=g(y);return texture(v,m.zy)*i.x+texture(v,m.zx)*i.y+texture(v,m.xy)*i.z;}vec3 N(sampler2D v,vec3 m,vec3 y){vec3 i=g(y),n=texture(v,m.zx).xyz*2.-1.;return normalize(vec3(0,(texture(v,m.zy).xyz*2.-1.).yx)*i.x+vec3(n.y,0,n)*i.y+vec3((texture(v,m.xy).xyz*2.-1.).xy,0)*i.z+y);}float N(vec3 v,vec3 m){return max(dot(v,m),0.);}vec3 g(vec3 v,float m){return v+(1.-v)*pow(1.-m,5.);}vec3 N(vec3 v,vec3 m,vec3 y,vec3 b,vec3 s,vec3 n,vec3 d,float f){float I=N(v,y);vec3 x=normalize(y+m),J=g(d,dot(y,x));float e=pow(N(v,x),f)*(f+2.)/8.,u=0.;if(M){vec3 l=i.xyz/i.w;vec2 B=abs(vec2(.5)-l.xy);u=l.z>1.||B.x>.5||B.y>.5?1.:(l.z-=max(.001*(1.-dot(normalize(z),L)),1e-4)/i.w,texture(h,l));}else u=1.;vec3 o=u*(n+J*e)*I*b;o+=n*s;return o;}vec3 O(vec3 v,vec3 m){vec3 y=normalize(n);v=E?normalize(l*N(a,f*I+J,y)):v;vec3 s=D?g(d,f*I+J,y).xyz*B.xyz:B.xyz;float u=C?g(w,f*I+J,y).x:A;vec3 i=mix(s*(1.-vec3(.04).x),vec3(0),F)/acos(-1.),r=mix(vec3(.04),s,F);u=1.2-.2/clamp(u,1e-5,.99999);float x=log(2.-u)*185.;vec3 o=vec3(0),G[]=vec3[1](K),H[]=vec3[1](vec3(1)),p[]=vec3[1](vec3(1));{vec3 b=p[0]*(1.-N(z,-L)*.1);o+=N(v,m,G[0],H[0],b,i,r,x);}return o;}void main(){vec3 v=O(normalize(u),normalize(-y));o=vec4(mix(v,vec3(.4,.45,.5),smoothstep(150.,250.,length(r))),B.w);}`
+precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;uniform vec4 b;uniform float h,x,w;uniform vec3 B,A,C,E;in vec3 y,u,f,n,l,z;out vec4 r;vec3 g(vec3 v){vec3 m=pow(abs(v),vec3(w));return m/vec3(dot(m,vec3(1)));}vec4 g(sampler2D v,vec3 m,vec3 y){vec3 b=g(y);return texture(v,m.zy)*b.x+texture(v,m.zx)*b.y+texture(v,m.xy)*b.z;}vec3 F(sampler2D v,vec3 m,vec3 y){vec3 b=g(y),n=texture(v,m.zx).xyz*2.-1.;return normalize(vec3(0,(texture(v,m.zy).xyz*2.-1.).yx)*b.x+vec3(n.y,0,n)*b.y+vec3((texture(v,m.xy).xyz*2.-1.).xy,0)*b.z+y);}float F(vec3 v,vec3 m){return max(dot(v,m),0.);}vec3 g(vec3 v,float m){return v+(1.-v)*pow(1.-m,5.);}vec3 F(vec3 v,vec3 m,vec3 y,vec3 b,vec3 z,vec3 d,vec3 n,float x){float f=F(v,y);vec3 l=normalize(y+m),A=g(n,dot(y,l));float B=pow(F(v,l),x)*(x+2.)/8.;vec3 u=(d+A*B)*f*b;u+=d*z;return u;}vec3 G(vec3 v,vec3 m){vec3 y=normalize(n);v=I?normalize(d*F(D,f*B+A,y)):v;vec3 l=p?g(a,f*B+A,y).xyz*b.xyz:b.xyz;float u=H?g(K,f*B+A,y).x:h;vec3 e=mix(l*(1.-vec3(.04).x),vec3(0),x)/acos(-1.),r=mix(vec3(.04),l,x);u=1.2-.2/clamp(u,1e-5,.99999);float i=log(2.-u)*185.;vec3 t=vec3(0),s[]=vec3[1](C),w[]=vec3[1](vec3(1)),G[]=vec3[1](vec3(1));{vec3 J=G[0]*(1.-F(z,-E)*.1);t+=F(v,m,s[0],w[0],J,e,r,i);}return t;}void main(){vec3 v=G(normalize(u),normalize(-y));r=vec4(mix(v,vec3(.4,.45,.5),smoothstep(150.,250.,length(l))),b.w);}`
+
 
             standardMaterialProgram = CreateWebglProgram(vert_glsl, frag_glsl,
-                standardMaterial_var_WORLDVIEWMAT, standardMaterial_var_WORLDVIEWNORMALMAT, standardMaterial_var_WORLDVIEWPROJMAT, standardMaterial_var_WORLDMAT, standardMaterial_var_WORLDNORMALMAT, standardMaterial_var_SHADOWMVP,
-                standardMaterial_var_ALBEDO, standardMaterial_var_NORMALMAP, standardMaterial_var_ROUGHNESSMAP, standardMaterial_var_DEPTHMAP,
+                standardMaterial_var_WORLDVIEWMAT, standardMaterial_var_WORLDVIEWNORMALMAT, standardMaterial_var_WORLDVIEWPROJMAT, standardMaterial_var_WORLDMAT, standardMaterial_var_WORLDNORMALMAT,
+                standardMaterial_var_ALBEDO, standardMaterial_var_NORMALMAP, standardMaterial_var_ROUGHNESSMAP,
                 standardMaterial_var_HASALBEDO, standardMaterial_var_HASNORMALMAP, standardMaterial_var_HASROUGHNESSMAP,
                 standardMaterial_var_BASECOLOR, standardMaterial_var_METALLIC, standardMaterial_var_ROUGHNESS,
                 standardMaterial_var_SHARPNESS, standardMaterial_var_SCALE, standardMaterial_var_OFFSET,
-                standardMaterial_var_LIGHTPOS, standardMaterial_var_LIGHTPOSWORLD, standardMaterial_var_ENABLESHADOWS
+                standardMaterial_var_LIGHTPOS, standardMaterial_var_LIGHTPOSWORLD
             );
 
             gl.useProgram(standardMaterialProgram.program);
             gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ALBEDO)!, 0);
             gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_NORMALMAP)!, 1);
             gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_ROUGHNESSMAP)!, 2);
-            gl.uniform1i(standardMaterialProgram.uniformLocations.get(standardMaterial_var_DEPTHMAP)!, 3);
         }
 
         return standardMaterialProgram;
     }
-
-    let shadow_var_DEPTHMVP = "e"
-    let shadow_var_TEX = "t"
-    let shadow_var_UV = "v"
-    let shadow_var_VPOSITION = "m"
-    let shadow_var_WORLDMAT = "d"
-
-
-    let shadowProgram: ReturnType<typeof CreateWebglProgram> | null = null;
-    let GetOrCreateShadowProgram = () =>
-    {
-        if (!shadowProgram)
-        {
-            shadowProgram = CreateWebglProgram(
-                `#version 300 es
-layout(location=0) in vec4 m;out vec2 v;uniform mat4 e,d;void main(){v=m.xy+.5;gl_Position=e*d*m;}`,
-                `#version 300 es
-precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).w<.5)discard;}`,
-                shadow_var_DEPTHMVP, shadow_var_WORLDMAT, shadow_var_TEX
-            );
-        }
-
-        return shadowProgram;
-    }
-
-
 
 
 
@@ -1680,11 +1648,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     let tmpVec3_0 = NewVector3()
     let tmpVec3_1 = NewVector3()
 
-    const enum RenderMode
-    {
-        Normal, Shadow
-    }
-
     interface ViewMatrices
     {
         viewMatrix: Matrix4x4;
@@ -1806,7 +1769,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
         //// Render
 
-        render(_mode: RenderMode, _viewMatrices: ViewMatrices, _worldMatrix: Matrix4x4, _light: DirectionalLight) { }
+        render(_viewMatrices: ViewMatrices, _worldMatrix: Matrix4x4, light: SceneNode) { }
 
         //// Misc
 
@@ -1891,58 +1854,11 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         }
     }
 
-    class DirectionalLight extends Camera
-    {
-        depthFrameBuffer: WebGLFramebuffer;
-        depthTexture: WebGLTexture;
-        depthMVP = NewMatrix4x4();
-        resolution: number;
-        worldMatLocation: WebGLUniformLocation;
-
-        constructor()
-        {
-            super();
-
-            this.resolution = min(gl.getParameter(gl.MAX_TEXTURE_SIZE), 2048);
-
-            let size = 250;
-            let near = -100;
-            let far = 500;
-            this.setProjectionMatrixOrthographic(size, size, near, far);
-
-            this.depthFrameBuffer = gl.createFramebuffer()!;
-            this.depthTexture = gl.createTexture()!;
-
-            gl.bindTexture(gl.TEXTURE_2D, this.depthTexture);
-            // use DEPTH_STENCIL for higher depth precision
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH24_STENCIL8, this.resolution, this.resolution, 0, gl.DEPTH_STENCIL, gl.UNSIGNED_INT_24_8, null);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.COMPARE_REF_TO_TEXTURE);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, this.depthFrameBuffer);
-            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.TEXTURE_2D, this.depthTexture, 0);
-
-            this.worldMatLocation = GetOrCreateShadowProgram().uniformLocations.get(shadow_var_WORLDMAT)!;
-        }
-
-        prepare()
-        {
-            // let frustumCenter = NewVector3();
-            // let lightView = NewMatrix4x4().lookAt(frustumCenter.c().a(lightDirection), frustumCenter, NewVector3(0, 1, 0));
-            let lightView = NewMatrix4x4().set([0.894, 0.358, -0.267, 0, 0, 0.6, 0.8, 0, 0.447, -0.717, 0.535, 0, 0, 0, -1, 1]);
-
-            this.depthMVP.set(this.projectionMatrix).m(lightView);
-            let shadowProgram = GetOrCreateShadowProgram();
-            gl.useProgram(shadowProgram.program);
-            gl.uniformMatrix4fv(shadowProgram.uniformLocations.get(shadow_var_DEPTHMVP)!, false, this.depthMVP);
-        }
-    }
-
     let matrixPool: Matrix4x4[] = [];
 
     class Scene extends SceneNode
     {
-        light: DirectionalLight;
+        light = new SceneNode();
         clearColor = NewVector3();
 
         static deltaTime = 0.01;
@@ -1957,8 +1873,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             gl.depthFunc(gl.LEQUAL);
             gl.enable(gl.CULL_FACE);
             gl.cullFace(gl.BACK);
-
-            this.light = new DirectionalLight();
 
             Scene.now = performance.now() / 1000;
         }
@@ -1989,32 +1903,13 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
         renderScene(camera: Camera)
         {
-            let { light, clearColor } = this;
-
-            // shadow maps first
-            gl.viewport(0, 0, light.resolution, light.resolution);
-            // gl.cullFace(gl.FRONT);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, light.depthFrameBuffer);
-            gl.clear(gl.DEPTH_BUFFER_BIT);
-            light.prepare();
-            this.renderSceneInternal(light, RenderMode.Shadow, light);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-            // gl.cullFace(gl.BACK);
+            let { clearColor } = this;
 
             // normal render
             gl.viewport(0, 0, globalCanvas.width, globalCanvas.height);
             gl.clearColor(clearColor.x, clearColor.y, clearColor.z, 1);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            this.renderSceneInternal(camera, RenderMode.Normal, light);
 
-            this.traverse(node =>
-            {
-                node.onAfterRender = node.onAfterRender.filter(callback => callback(node) !== false);
-            });
-        }
-
-        renderSceneInternal(camera: Camera, mode: RenderMode, light: DirectionalLight)
-        {
             let viewMatrix = camera.worldToLocalMatrix();
             let cameraWorldPos = camera.worldPosition;
             let cameraWorldForward = camera.dirs.f;
@@ -2075,8 +1970,13 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
             renderData.forEach(({ n: node, worldMatrix }) =>
             {
-                node.render(mode, viewMatrices, worldMatrix, light);
+                node.render(viewMatrices, worldMatrix, this.light);
                 matrixPool.push(worldMatrix);
+            });
+
+            this.traverse(node =>
+            {
+                node.onAfterRender = node.onAfterRender.filter(callback => callback(node) !== false);
             });
         }
     }
@@ -2196,12 +2096,9 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     class Mesh extends Renderable
     {
         program: WebGLProgram;
-        shadowProgram: WebGLProgram;
         uniforms: Map<string, WebGLUniformLocation>;
         material: Material;
         textures = new Map<number, WebGLTexture>();
-        castShadows = true;
-        receiveShadows = true;
         cull: number | null = gl.BACK;
 
         constructor(geometry: Geometry, material: Material)
@@ -2218,9 +2115,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             gl.useProgram(program);
 
             this.material = { ...material };
-
-            // shadows
-            this.shadowProgram = GetOrCreateShadowProgram().program;
         }
 
         prepareMaterial()
@@ -2233,7 +2127,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             gl.uniform1i(uniforms.get(standardMaterial_var_HASALBEDO)!, 0);
             gl.uniform1i(uniforms.get(standardMaterial_var_HASNORMALMAP)!, 0);
             gl.uniform1i(uniforms.get(standardMaterial_var_HASROUGHNESSMAP)!, 0);
-            gl.uniform1i(uniforms.get(standardMaterial_var_ENABLESHADOWS)!, this.receiveShadows ? 1 : 0);
             gl.uniform1f(uniforms.get(standardMaterial_var_SHARPNESS)!, 1);
             gl.uniform3f(uniforms.get(standardMaterial_var_SCALE)!, 1, 1, 1);
             gl.uniform3f(uniforms.get(standardMaterial_var_OFFSET)!, 0, 0, 0);
@@ -2292,76 +2185,45 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             }
         }
 
-        setTexture(slot: MeshTextureSlot, tex: WebGLTexture | null)
-        {
-            if (tex)
-            {
-                this.textures.set(slot, tex);
-            }
-            else
-            {
-                this.textures.delete(slot);
-            }
-        }
-
         setTextures(textures: TextureCollection)
         {
-            this.setTexture(MeshTextureSlot.Albedo, textures.albedo);
-            this.setTexture(MeshTextureSlot.Normal, textures.normalMap);
-            this.setTexture(MeshTextureSlot.Roughness, textures.roughness);
+            this.textures.set(MeshTextureSlot.Albedo, textures.albedo);
+            this.textures.set(MeshTextureSlot.Normal, textures.normalMap);
+            this.textures.set(MeshTextureSlot.Roughness, textures.roughness);
             return this;
         }
 
-        render(mode: RenderMode, viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: DirectionalLight)
+        render(viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: SceneNode)
         {
-            if (mode == RenderMode.Shadow && !this.castShadows)
-            {
-                return;
-            }
-
             let { uniforms } = this;
             let { viewMatrix, viewProjectionMatrix } = viewMatrices;
 
-            gl.useProgram(mode == RenderMode.Normal ? this.program : this.shadowProgram);
+            gl.useProgram(this.program);
             gl.bindVertexArray(this.vao);
 
-            if (mode == RenderMode.Normal)
-            {
-                let worldViewMatrix = tmpWorldViewMatrix.set(viewMatrix).m(worldMatrix);
-                let worldViewProjectionMatrix = tmpWorldViewProjectionMatrix.set(viewProjectionMatrix).m(worldMatrix);
-                let worldViewNormalMatrix = worldViewMatrix.topLeft3x3(tmpWorldViewNormalMatrix).invert() /* .transpose() */;
-                let worldNormalMatrix = worldMatrix.topLeft3x3(tmpWorldNormalMatrix).invert() /* .transpose() */;
+            let worldViewMatrix = tmpWorldViewMatrix.set(viewMatrix).m(worldMatrix);
+            let worldViewProjectionMatrix = tmpWorldViewProjectionMatrix.set(viewProjectionMatrix).m(worldMatrix);
+            let worldViewNormalMatrix = worldViewMatrix.topLeft3x3(tmpWorldViewNormalMatrix).invert() /* .transpose() */;
+            let worldNormalMatrix = worldMatrix.topLeft3x3(tmpWorldNormalMatrix).invert() /* .transpose() */;
 
-                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWMAT)!, false, worldViewMatrix);
-                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWPROJMAT)!, false, worldViewProjectionMatrix);
-                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDMAT)!, false, worldMatrix);
-                gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDVIEWNORMALMAT)!, true, worldViewNormalMatrix);
-                gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDNORMALMAT)!, true, worldNormalMatrix);
-                gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOS)!,
-                    tmpVec3
-                        .copyFrom(light.P)
-                        .a(viewMatrices.cameraPosition)
-                        .applyMatrix4x4(light.matrix(tmpTransformMatrix_mesh_ts).p(viewMatrix))
-                        .r()
-                );
-                gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.P).r());
+            gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWMAT)!, false, worldViewMatrix);
+            gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDVIEWPROJMAT)!, false, worldViewProjectionMatrix);
+            gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_WORLDMAT)!, false, worldMatrix);
+            gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDVIEWNORMALMAT)!, true, worldViewNormalMatrix);
+            gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDNORMALMAT)!, true, worldNormalMatrix);
+            gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOS)!,
+                tmpVec3
+                    .copyFrom(light.P)
+                    .a(viewMatrices.cameraPosition)
+                    .applyMatrix4x4(light.matrix(tmpTransformMatrix_mesh_ts).p(viewMatrix))
+                    .r()
+            );
+            gl.uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.P).r());
 
-                this.prepareMaterial();
+            this.prepareMaterial();
 
-                gl.activeTexture(gl.TEXTURE0 + 3);
-                gl.bindTexture(gl.TEXTURE_2D, light.depthTexture);
+            gl.depthMask(!this.transparent);
 
-                gl.uniformMatrix4fv(uniforms.get(standardMaterial_var_SHADOWMVP)!, false, light.depthMVP);
-
-                gl.depthMask(!this.transparent);
-            }
-            else
-            {
-                gl.activeTexture(gl.TEXTURE0);
-                gl.bindTexture(gl.TEXTURE_2D, null);
-                gl.uniformMatrix4fv(light.worldMatLocation, false, worldMatrix);
-                gl.depthMask(true);
-            }
 
             gl.drawElements(gl.TRIANGLES, this.triangleCount, gl.UNSIGNED_INT, 0);
 
@@ -4536,8 +4398,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
         let rangeIndicator = new Mesh(towerRangeIndicatorGeometry, { r: 0, g: 0.2, b: 0.8, a: 0.3 });
         rangeIndicator.transparent = true;
-        rangeIndicator.castShadows = false;
-        rangeIndicator.receiveShadows = false;
         rangeIndicator.v = false;
         node.a(rangeIndicator);
 
@@ -4731,8 +4591,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
     let buildingPlaceholder = new Mesh(TranslateGeometry(CreateBoxGeometry(), 0, 0.5, 0), { r: 1, g: 0, b: 0, a: 0.3 });
     buildingPlaceholder.transparent = true;
-    buildingPlaceholder.castShadows = false;
-    buildingPlaceholder.receiveShadows = false;
     buildingPlaceholder.cull = null;
 
     let cancelBuilding = () => { };
