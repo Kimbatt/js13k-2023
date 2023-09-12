@@ -1,10 +1,9 @@
-
-function LoadEverything()
+let LoadEverything = () =>
 {
     let getElementById = document.getElementById.bind(document), createElement = document.createElement.bind(document);
 
-    let minifiedCSS = `#overlay,.fullscreen{top:0;width:100vw;height:100vh;position:absolute;left:0}#overlay,.health-bar{background-color:#000;display:flex}body{background:#323639;color:#fff;user-select:none;font-family:Verdana,sans-serif;overflow:hidden}canvas{z-index:-10;filter:saturate(1.3) brightness(1.4) contrast(1.4)}.fullscreen{pointer-events:none;display:flex;flex-direction:column;align-items:center;z-index:9}#overlay{opacity:1;visibility:visible;transition:opacity .5s linear,visibility .5s linear;justify-content:space-evenly;font-size:4vh;text-align:center;white-space:pre-line;flex-direction:column;justify-content:center;align-items:center;gap:5vh}.worldspace-element{position:absolute;z-index:-9;transform:translate(-50%,-50%);pointer-events:none;user-select:none}.health-bar{width:8vh;height:.6vh}.health-bar>div{margin:.15vh}#building-buttons-container,#building-info{position:absolute;width:30vh;height:fit-content;font-size:1.2vh;background-color:#000000e0;border-radius:1vh;margin:1vh;padding:1.5vh;white-space:pre-line}#building-info{bottom:5vh;right:20%}#building-buttons-container{display:flex;flex-direction:column;bottom:0;left:0;gap:1vh}#building-info>div{display:flex;flex-direction:column;gap:3vh;width:100%}button{cursor:pointer;width:100%;font-size:1.2vh;background-color:#0064bb;color:#fff;padding:.8vh;border:0;border-radius:1vh}button:hover{background-color:#4084c0}button:disabled{background-color:#5f6e7a;pointer-events:none}.ability-container{display:flex;flex-direction:column;gap:1vh}.title{font-size:2vh;font-weight:700}@keyframes pulse{50%{color:#c75555}}.danger{animation:1s ease-in-out infinite pulse}#overlay.hidden{opacity:0;visibility:hidden}`;
-    let minifiedHTML = `<div id=building-buttons-container></div><div id=building-info style=display:none></div><div style=position:absolute;top:0;right:20%;display:flex;background-color:#000000a0;border-radius:1vh;padding:1vh;margin:1vh;font-size:2vh;gap:4vh><div style=display:flex;gap:1vh;align-items:center><div id=food-count></div><svg style=height:2vh viewBox="0 0 120 100" stroke-width=5 stroke=#000><path d="M60 100q-10 0-10-10V40c0-10-10-10-10-20Q30 0 70 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#faae3b /><path d="M20 100q-10 0-10-10V40C10 30 0 30 0 20Q0 0 40 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#f8e6c5 /></svg></div><div style=display:flex;gap:1vh;align-items:center><div id=gold-count></div><svg style=height:2vh viewBox="0 0 125 100" stroke-width=5 stroke=#000><circle cx=75 cy=50 r=50 fill=#ff960c /><circle cx=50 cy=50 r=50 fill=#ffc60c /></svg></div></div><div id=overlay><div id=overlay-text></div><button id=start-level style="width:auto;font-size:4vh;padding:2vh 5vh"></button></div>`;
+    let minifiedCSS = `#overlay,.fullscreen{top:0;width:100vw;height:100vh;position:absolute;left:0}#overlay,.hb{background-color:#000;display:flex}body{background:#323639;color:#fff;user-select:none;font-family:Verdana,sans-serif;overflow:hidden}canvas{z-index:-10;filter:saturate(1.3) brightness(1.4) contrast(1.4)}.fullscreen{pointer-events:none;display:flex;flex-direction:column;align-items:center;z-index:9}#overlay{opacity:1;visibility:visible;transition:opacity .5s linear,visibility .5s linear;justify-content:space-evenly;font-size:4vh;text-align:center;white-space:pre-line;flex-direction:column;justify-content:center;align-items:center;gap:5vh}.we{position:absolute;z-index:-9;transform:translate(-50%,-50%);pointer-events:none;user-select:none}.hb{width:8vh;height:.6vh}.hb>div{margin:.15vh}#building-buttons-container,#bi{position:absolute;width:30vh;height:fit-content;font-size:1.2vh;background-color:#000000e0;border-radius:1vh;margin:1vh;padding:1.5vh;white-space:pre-line}#bi{bottom:5vh;right:20%}#building-buttons-container{display:flex;flex-direction:column;bottom:0;left:0;gap:1vh}#bi>div{display:flex;flex-direction:column;gap:3vh;width:100%}button{cursor:pointer;width:100%;font-size:1.2vh;background-color:#0064bb;color:#fff;padding:.8vh;border:0;border-radius:1vh}button:hover{background-color:#4084c0}button:disabled{background-color:#5f6e7a;pointer-events:none}.ability-container{display:flex;flex-direction:column;gap:1vh}.title{font-size:2vh;font-weight:700}@keyframes pulse{50%{color:#c75555}}.danger{animation:1s ease-in-out infinite pulse}#overlay.hidden{opacity:0;visibility:hidden}`;
+    let minifiedHTML = `<div id=building-buttons-container></div><div id=bi style=display:none></div><div style=position:absolute;top:0;right:20%;display:flex;background-color:#000000a0;border-radius:1vh;padding:1vh;margin:1vh;font-size:2vh;gap:4vh><div style=display:flex;gap:1vh;align-items:center><div id=food-count></div><svg style=height:2vh viewBox="0 0 120 100" stroke-width=5 stroke=#000><path d="M60 100q-10 0-10-10V40c0-10-10-10-10-20Q30 0 70 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#faae3b /><path d="M20 100q-10 0-10-10V40C10 30 0 30 0 20Q0 0 40 0q40 0 40 20c0 10-10 10-10 20v50q0 10-10 10z" fill=#f8e6c5 /></svg></div><div style=display:flex;gap:1vh;align-items:center><div id=gold-count></div><svg style=height:2vh viewBox="0 0 125 100" stroke-width=5 stroke=#000><circle cx=75 cy=50 r=50 fill=#ff960c /><circle cx=50 cy=50 r=50 fill=#ffc60c /></svg></div></div><div id=overlay><div id=overlay-text></div><button id=start-level style="width:auto;font-size:4vh;padding:2vh 5vh"></button></div>`;
 
     getElementById("st")!.innerHTML = minifiedCSS;
     getElementById("ui")!.innerHTML = minifiedHTML;
@@ -25,7 +24,6 @@ function LoadEverything()
         floor,
         round,
         sqrt,
-        hypot,
         sign,
         min,
         max,
@@ -36,10 +34,7 @@ function LoadEverything()
 
     let HalfPI = PI / 2;
     let NegHalfPI = -HalfPI;
-    let ThreeHalfPI = HalfPI * 3;
     let TwoPI = PI * 2;
-
-    let RandRange = (min: number, max: number) => random() * (min - max) + min;
 
     let Lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -545,11 +540,6 @@ function LoadEverything()
             return this;
         }
 
-        copy(other: Matrix4x4)
-        {
-            return this.set(other);
-        }
-
         m(other: Matrix4x4) // multiply
         {
             return this.multiplyMatrices(this, other);
@@ -692,17 +682,34 @@ function LoadEverything()
         ]);
     }
 
+    /** @noinline */
     let NewVector2 = (x?: number, y?: number) => new Vector2(x, y);
+
+    /** @noinline */
     let NewVector3 = (x?: number, y?: number, z?: number) => new Vector3(x, y, z);
+
+    /** @noinline */
     let NewQuaternion = (x?: number, y?: number, z?: number, w?: number) => new Quaternion(x, y, z, w);
+
+    /** @noinline */
     let NewMatrix3x3 = () => new Matrix3x3();
+
+    /** @noinline */
     let NewMatrix4x4 = () => new Matrix4x4();
 
+    /** @noinline */
     let NewQuaternionFromAxisAngle = (x: number, y: number, z: number, angle: number) => NewQuaternion().setFromAxisAngle(x, y, z, angle);
+
+    /** @noinline */
     let NewMatrix4x4Compose = (position: Vector3, rotation: Quaternion, scale: Vector3) => NewMatrix4x4().compose(position, rotation, scale);
 
+    /** @noinline */
     let tmpVec2 = NewVector2();
+
+    /** @noinline */
     let tmpVec3_linear_ts = NewVector3();
+
+    /** @noinline */
     let tmpQuaternion = NewQuaternion();
 
 
@@ -736,13 +743,11 @@ function LoadEverything()
         getPoint = (distance: number, target?: Vector3) => (target ?? NewVector3()).copyFrom(this.d).mulScalar(distance).a(this.o);
     }
 
-    function GroundPlaneLineIntersectionDistance({ o: origin, d: direction }: Ray)
-    {
+    let GroundPlaneLineIntersectionDistance = ({ o: origin, d: direction }: Ray) =>
         // ground plane is on the y axis, 0 coordinate
-        return -origin.y / direction.y;
-    }
+        -origin.y / direction.y;
 
-    function IntersectRayBoundingBox({ o: origin, d: direction }: Ray, bboxMin: Vector3, bboxMax: Vector3): number | null
+    let IntersectRayBoundingBox = ({ o: origin, d: direction }: Ray, bboxMin: Vector3, bboxMax: Vector3): number | null =>
     {
         let tmin = -Infinity;
         let tmax = Infinity;
@@ -829,13 +834,13 @@ function LoadEverything()
         noiseBuffers.push(noiseBuffer);
     }
 
-    function CreateNoiseNode(bufferIdx = 0)
+    let CreateNoiseNode = (bufferIdx = 0) =>
     {
         let node = actx.createBufferSource();
         node.buffer = noiseBuffers[bufferIdx];
         node.loop = true;
         return node;
-    }
+    };
 
 
 
@@ -852,7 +857,7 @@ function LoadEverything()
     // audio/instruments/string.ts
 
 
-    function CreateInstrumentFromWave(numWaves: number, attack: boolean, real: NumberArray, imag: NumberArray)
+    let CreateInstrumentFromWave = (numWaves: number, attack: boolean, real: NumberArray, imag: NumberArray) =>
     {
         let wave = actx.createPeriodicWave(real, imag);
 
@@ -917,7 +922,7 @@ function LoadEverything()
                 noise.connect(gain2).connect(filter2).connect(target);
             }
         };
-    }
+    };
 
     let Guitar2 = CreateInstrumentFromWave(1, true,
         [-0.02, -0.2, -0.4, -0.1, 1, -0.04, -0.07, 0, 0.1, -0.3, -0.1, 0.2, 0.15, 0.15, -0.02, -0.02, 0.02, -0.1, 0.1, -0.1],
@@ -947,8 +952,8 @@ function LoadEverything()
     // audio/instruments/percussion.ts
 
 
-    function Drum(volume: number, when: number, sourceNode: AudioScheduledSourceNode, filter: boolean, filterFrequency: number, Q: number,
-        fadeInDuration = 0.01, fadeOutDuration = 0.1, duration = 0, fadeOutCurve: number[] | Float32Array = x4FadeOutCurve, target?: AudioNode)
+    let Drum = (volume: number, when: number, sourceNode: AudioScheduledSourceNode, filter: boolean, filterFrequency: number, Q: number,
+        fadeInDuration = 0.01, fadeOutDuration = 0.1, duration = 0, fadeOutCurve: number[] | Float32Array = x4FadeOutCurve, target?: AudioNode) =>
     {
         let gainNode = actx.createGain();
         let filterNode = actx.createBiquadFilter();
@@ -970,9 +975,9 @@ function LoadEverything()
 
         sourceNode.start(when);
         sourceNode.stop(time);
-    }
+    };
 
-    function Snare(when: number, duration = 0.25, target?: AudioNode)
+    let Snare = (when: number, duration = 0.25, target?: AudioNode) =>
     {
         let volume = 0.7;
         {
@@ -1007,11 +1012,8 @@ function LoadEverything()
         }
     }
 
-    function HiHat(when: number, frequency = 8000, fadeOutDuration = 0.1, target?: AudioNode)
-    {
-        let volume = 1;
-        Drum(volume, when, CreateNoiseNode(), true, frequency, 3, 0.001, fadeOutDuration, 0.005, undefined, target);
-    }
+    let HiHat = (when: number, frequency = 8000, fadeOutDuration = 0.1, target?: AudioNode) =>
+        Drum(1, when, CreateNoiseNode(), true, frequency, 3, 0.001, fadeOutDuration, 0.005, undefined, target);
 
 
 
@@ -1057,60 +1059,30 @@ function LoadEverything()
         gl_viewport = gl.viewport.bind(gl);
 
     let {
-        LINK_STATUS: gl_LINK_STATUS,
-
         VERTEX_SHADER: gl_VERTEX_SHADER,
         FRAGMENT_SHADER: gl_FRAGMENT_SHADER,
 
         ARRAY_BUFFER: gl_ARRAY_BUFFER,
         ELEMENT_ARRAY_BUFFER: gl_ELEMENT_ARRAY_BUFFER,
 
-        TRIANGLES: gl_TRIANGLES,
-        TRIANGLE_STRIP: gl_TRIANGLE_STRIP,
-        UNSIGNED_BYTE: gl_UNSIGNED_BYTE,
-        UNSIGNED_INT: gl_UNSIGNED_INT,
-        UNSIGNED_INT_24_8: gl_UNSIGNED_INT_24_8,
         FLOAT: gl_FLOAT,
-        RGB10_A2: gl_RGB10_A2,
-        UNSIGNED_INT_2_10_10_10_REV: gl_UNSIGNED_INT_2_10_10_10_REV,
 
         STATIC_DRAW: gl_STATIC_DRAW,
-        MAX_TEXTURE_SIZE: gl_MAX_TEXTURE_SIZE,
 
         TEXTURE0: gl_TEXTURE0,
         TEXTURE_2D: gl_TEXTURE_2D,
-        DEPTH_STENCIL: gl_DEPTH_STENCIL,
-        DEPTH24_STENCIL8: gl_DEPTH24_STENCIL8,
         TEXTURE_MIN_FILTER: gl_TEXTURE_MIN_FILTER,
-        TEXTURE_MAG_FILTER: gl_TEXTURE_MAG_FILTER,
         LINEAR: gl_LINEAR,
-        LINEAR_MIPMAP_NEAREST: gl_LINEAR_MIPMAP_NEAREST,
-        TEXTURE_COMPARE_MODE: gl_TEXTURE_COMPARE_MODE,
-        COMPARE_REF_TO_TEXTURE: gl_COMPARE_REF_TO_TEXTURE,
-        TEXTURE_WRAP_S: gl_TEXTURE_WRAP_S,
-        TEXTURE_WRAP_T: gl_TEXTURE_WRAP_T,
         REPEAT: gl_REPEAT,
-        LINEAR_MIPMAP_LINEAR: gl_LINEAR_MIPMAP_LINEAR,
-        RGBA: gl_RGBA,
 
         FRAMEBUFFER: gl_FRAMEBUFFER,
-        DEPTH_STENCIL_ATTACHMENT: gl_DEPTH_STENCIL_ATTACHMENT,
-        COLOR_ATTACHMENT0: gl_COLOR_ATTACHMENT0,
-
-        DEPTH_TEST: gl_DEPTH_TEST,
-        LEQUAL: gl_LEQUAL,
-        LESS: gl_LESS,
 
         CULL_FACE: gl_CULL_FACE,
         BACK: gl_BACK,
-        FRONT: gl_FRONT,
 
-        COLOR_BUFFER_BIT: gl_COLOR_BUFFER_BIT,
         DEPTH_BUFFER_BIT: gl_DEPTH_BUFFER_BIT,
 
         BLEND: gl_BLEND,
-        SRC_ALPHA: gl_SRC_ALPHA,
-        ONE_MINUS_SRC_ALPHA: gl_ONE_MINUS_SRC_ALPHA,
     } = gl;
 
 
@@ -1175,7 +1147,7 @@ function LoadEverything()
 
         if (webglDebugMode)
         {
-            let success = gl.getProgramParameter(program, gl_LINK_STATUS) as boolean;
+            let success = gl.getProgramParameter(program, gl.LINK_STATUS) as boolean;
 
             let programInfo = gl.getProgramInfoLog(program);
             if (programInfo && programInfo.length !== 0)
@@ -1285,13 +1257,13 @@ void main(){${shaderMainImage}}`;
             });
 
             gl_bindFramebuffer(gl_FRAMEBUFFER, framebuffer);
-            gl.framebufferTexture2D(gl_FRAMEBUFFER, gl_COLOR_ATTACHMENT0, gl_TEXTURE_2D, resultTexture, 0);
+            gl.framebufferTexture2D(gl_FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl_TEXTURE_2D, resultTexture, 0);
 
             // draw
             gl_bindBuffer(gl_ARRAY_BUFFER, vertexBuffer);
             gl_enableVertexAttribArray(vertexLocation);
             gl_vertexAttribPointer(vertexLocation, 2, gl_FLOAT, false, 0, 0);
-            gl.drawArrays(gl_TRIANGLE_STRIP, 0, vertexPositions.length / 2);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexPositions.length / 2);
 
             // cleanup
             gl.deleteShader(fragShaderObj);
@@ -1307,11 +1279,11 @@ void main(){${shaderMainImage}}`;
         {
             let tex = gl.createTexture()!;
             gl_bindTexture(gl_TEXTURE_2D, tex);
-            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_WRAP_S, gl_REPEAT);
-            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_WRAP_T, gl_REPEAT);
-            gl.texImage2D(gl_TEXTURE_2D, 0, gl_RGB10_A2, width, height, 0, gl_RGBA, gl_UNSIGNED_INT_2_10_10_10_REV, null);
+            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_WRAP_S, gl_REPEAT);
+            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_WRAP_T, gl_REPEAT);
+            gl.texImage2D(gl_TEXTURE_2D, 0, gl.RGB10_A2, width, height, 0, gl.RGBA, gl.UNSIGNED_INT_2_10_10_10_REV, null);
 
-            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_MIN_FILTER, gl_LINEAR_MIPMAP_LINEAR);
+            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
 
             // only needed for non power of 2 textures
             // {
@@ -1352,6 +1324,7 @@ void main(){${shaderMainImage}}`;
     // https://iquilezles.org/www/articles/fbm/fbm.htm
     // https://www.shadertoy.com/view/XdXGW8
 
+    /** @noinline */
     let ShaderUtilsWithFBM = `float h1(float n){return fract(sin(n)*43758.5453);}vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}float se(float x){return clamp(x,0.,1.);}float ul(float a,float b,float x){return(x-a)/(b-a);}float rp(float a,float b,float c,float d,float x){return mix(c,d,ul(a,b,x));}float sr(float e,float f,float x){return se(ul(e,f,x));}vec4 cr(vec4 a,float A,vec4 b,float B,float t){return mix(a,b,sr(A,B,t));}vec3 cr3(vec3 a,float A,vec3 b,float B,float t){return mix(a,b,sr(A,B,t));}float vr(float a,float A,float b,float B,float t){return mix(a,b,sr(A,B,t));}vec2 grad(ivec2 x){int f=x.x+x.y*11111;f=f<<13^f;f=f*(f*f*15731+789221)+1376312589>>16;return vec2(cos(float(f)),sin(float(f)));}float noise(vec2 f){ivec2 g=ivec2(floor(f));vec2 x=fract(f),d=x*x*(3.-2.*x),i=vec2(ivec2(0,1));return mix(mix(dot(grad(g+ivec2(0,1).xx),x-i.xx),dot(grad(g+ivec2(0,1).yx),x-i.yx),d.x),mix(dot(grad(g+ivec2(0,1).xy),x-i.xy),dot(grad(g+ivec2(0,1).yy),x-i.yy),d.x),d.y)*.5+.5;}float fbm(vec2 f,int g,float x,float y){float d=0.,i=1.;for(int r=0;r<g;++r)i*=.5,d+=i*noise(f*x),f*=y;return d/(1.-i);}`;
 
 
@@ -1362,33 +1335,6 @@ ${returnType} ${edgeBlendFnName}(vec2 u){vec2 w=vec2(${blend}),s=1.-w,o=u*s,b=cl
 
 
 
-
-
-
-
-
-
-
-    // scenegraph/transform.ts
-
-    class Transform
-    {
-        p = NewVector3(); // position
-        r = NewQuaternion(); // rotation
-        s = NewVector3(1, 1, 1); // scale
-
-        matrix = (target?: Matrix4x4) => (target ?? NewMatrix4x4()).compose(this.p, this.r, this.s);
-
-        matrixInverse = (target?: Matrix4x4) =>
-        {
-            let invRotation = this.r.c().invert();
-            return (target ?? NewMatrix4x4()).compose(
-                this.p.c().mulScalar(-1).applyQuaternion(invRotation),
-                invRotation,
-                NewVector3(1, 1, 1).div(this.s)
-            );
-        }
-    }
 
 
 
@@ -1458,7 +1404,7 @@ ${returnType} ${edgeBlendFnName}(vec2 u){vec2 w=vec2(${blend}),s=1.-w,o=u*s,b=cl
     let standardMaterialProgram: ReturnType<typeof CreateWebglProgram> | null = null;
     function GetOrCreateStandardMaterial()
     {
-        if (standardMaterialProgram === null)
+        if (!standardMaterialProgram)
         {
             let vert_glsl = `#version 300 es
 layout(location=0) in vec4 v;layout(location=1) in vec3 m;out vec3 y,u,f,n,r,z;out vec4 i;uniform mat4 s;uniform mat3 b;uniform mat4 t;uniform mat3 l;uniform mat4 e,p;void main(){y=(t*v).xyz;u=l*m;f=v.xyz;n=m;r=(s*v).xyz;z=b*m;gl_Position=e*v;i=p*s*v*.5+.5;}`
@@ -1495,7 +1441,7 @@ precision highp float;precision highp sampler2DShadow;uniform bool x;uniform sam
     let shadowProgram: ReturnType<typeof CreateWebglProgram> | null = null;
     function GetOrCreateShadowProgram()
     {
-        if (shadowProgram === null)
+        if (!shadowProgram)
         {
             shadowProgram = CreateWebglProgram(
                 `#version 300 es
@@ -1831,12 +1777,16 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         }
 
         // front and back
-        for (let point of points)
+        for (let { x, y } of points)
         {
-            vertices.push(point.x, point.y, extrudeThickness / -2);
-            vertices.push(point.x, point.y, extrudeThickness / 2);
-            normals.push(0, 0, -1);
-            normals.push(0, 0, 1);
+            vertices.push(
+                x, y, extrudeThickness / -2,
+                x, y, extrudeThickness / 2
+            );
+            normals.push(
+                0, 0, -1,
+                0, 0, 1
+            );
         }
 
         for (let i = 2; i < points.length; ++i)
@@ -1860,16 +1810,17 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 point.x, point.y, extrudeThickness / -2,
             );
 
-            let normal = point.c().s(prev).r();
-            let x = normal.x;
-            normal.x = -normal.y;
-            normal.y = x;
+            let normal = point.c().s(prev).r(),
+                y = normal.x,
+                x = -normal.y;
             prev = point;
 
-            normals.push(normal.x, normal.y, 0);
-            normals.push(normal.x, normal.y, 0);
-            normals.push(normal.x, normal.y, 0);
-            normals.push(normal.x, normal.y, 0);
+            normals.push(
+                x, y, 0,
+                x, y, 0,
+                x, y, 0,
+                x, y, 0,
+            );
 
             triangles.push(idx, idx + 3, idx + 1, idx, idx + 2, idx + 3);
         }
@@ -1881,7 +1832,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     {
         // separates all triangles, and calculates flat normals
 
-        let { v: vertices, t: triangles, n: normals } = geometry;
+        let { v: vertices, t: triangles } = geometry;
 
         let newVertices: number[] = [];
         let newTriangles: number[] = [];
@@ -2019,14 +1970,32 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     {
         c = new Set<SceneNode>(); // children
         p: SceneNode | null = null; // parent
-        t = new Transform();
         onUpdate: OnUpdateCallback[] = [];
         onFixedUpdate: OnUpdateCallback[] = [];
         onAfterRender: OnUpdateCallback[] = [];
 
+        P = NewVector3(); // position
+        R = NewQuaternion(); // rotation
+        S = NewVector3(1, 1, 1); // scale
+
         v = true; // visible
         renderOrder = 0;
         transparent = false;
+
+
+        //// Transform
+
+        matrix = (target?: Matrix4x4) => (target ?? NewMatrix4x4()).compose(this.P, this.R, this.S);
+
+        matrixInverse = (target?: Matrix4x4) =>
+        {
+            let invRotation = this.R.c().invert();
+            return (target ?? NewMatrix4x4()).compose(
+                this.P.c().mulScalar(-1).applyQuaternion(invRotation),
+                invRotation,
+                NewVector3(1, 1, 1).div(this.S)
+            );
+        }
 
         //// Hierarchy
 
@@ -2045,12 +2014,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             node.p = null;
         }
 
-        setParent(parent?: SceneNode)
-        {
-            this.p?.r(this);
-            parent?.a(this);
-        }
-
         traverse(callback: (node: SceneNode) => void)
         {
             (function traverseInner(node: SceneNode)
@@ -2064,7 +2027,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
         localToWorldMatrix(): Matrix4x4
         {
-            let mat = this.t.matrix();
+            let mat = this.matrix();
             return this.p?.localToWorldMatrix().c().m(mat) ?? mat.c();
         }
 
@@ -2072,7 +2035,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         {
             // TODO: test this to make sure this is correct
             // seems to work without parents, but not tested with parents
-            let mat = this.t.matrixInverse();
+            let mat = this.matrixInverse();
             return this.p?.worldToLocalMatrix().c().p(mat) ?? mat.c();
         }
 
@@ -2085,10 +2048,10 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         {
             let rot = NewQuaternion();
             let node: SceneNode | null = this;
-            while (node !== null)
+            while (node)
             {
                 // TODO: this might be premultiply
-                rot.multiply(node.t.r);
+                rot.multiply(node.R);
                 node = node.p;
             }
 
@@ -2117,7 +2080,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
         dispose()
         {
-            this.setParent();
+            this.p?.r(this);
             this.onUpdate = [];
             this.onFixedUpdate = [];
             this.onAfterRender = [];
@@ -2209,7 +2172,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         {
             super();
 
-            this.resolution = min(gl.getParameter(gl_MAX_TEXTURE_SIZE), 2048);
+            this.resolution = min(gl.getParameter(gl.MAX_TEXTURE_SIZE), 2048);
 
             let near = -100;
             let far = 500;
@@ -2220,19 +2183,19 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
             gl_bindTexture(gl_TEXTURE_2D, this.depthTexture);
             // use DEPTH_STENCIL for higher depth precision
-            gl.texImage2D(gl_TEXTURE_2D, 0, gl_DEPTH24_STENCIL8, this.resolution, this.resolution, 0, gl_DEPTH_STENCIL, gl_UNSIGNED_INT_24_8, null);
+            gl.texImage2D(gl_TEXTURE_2D, 0, gl.DEPTH24_STENCIL8, this.resolution, this.resolution, 0, gl.DEPTH_STENCIL, gl.UNSIGNED_INT_24_8, null);
             gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_MIN_FILTER, gl_LINEAR);
-            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_MAG_FILTER, gl_LINEAR);
-            gl_texParameteri(gl_TEXTURE_2D, gl_TEXTURE_COMPARE_MODE, gl_COMPARE_REF_TO_TEXTURE);
+            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl_LINEAR);
+            gl_texParameteri(gl_TEXTURE_2D, gl.TEXTURE_COMPARE_MODE, gl.COMPARE_REF_TO_TEXTURE);
             gl_bindFramebuffer(gl_FRAMEBUFFER, this.depthFrameBuffer);
-            gl.framebufferTexture2D(gl_FRAMEBUFFER, gl_DEPTH_STENCIL_ATTACHMENT, gl_TEXTURE_2D, this.depthTexture, 0);
+            gl.framebufferTexture2D(gl_FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl_TEXTURE_2D, this.depthTexture, 0);
 
             this.worldMatLocation = GetOrCreateShadowProgram().uniformLocations.get(shadow_var_WORLDMAT)!;
         }
 
         prepare()
         {
-            let lightDirection = this.t.p.c().s(this.target).r();
+            let lightDirection = this.P.c().s(this.target).r();
 
             // for the 2023 game, it's better to have the shadow center at a fixed position
             // so don't move the shadow with the camera
@@ -2241,7 +2204,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             // let frustumCenter = NewVector3(0, 0, -centerDistanceFromCamera).applyMatrix4x4(camera.localToWorldMatrix());
             let lightView = NewMatrix4x4().lookAt(frustumCenter.c().a(lightDirection), frustumCenter, NewVector3(0, 1, 0));
 
-            this.depthMVP.copy(this.projectionMatrix).m(lightView);
+            this.depthMVP.set(this.projectionMatrix).m(lightView);
             let shadowProgram = GetOrCreateShadowProgram();
             gl_useProgram(shadowProgram.program);
             gl_uniformMatrix4fv(shadowProgram.uniformLocations.get(shadow_var_DEPTHMVP)!, false, this.depthMVP);
@@ -2263,13 +2226,13 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         {
             super();
 
-            gl_enable(gl_DEPTH_TEST);
-            gl.depthFunc(gl_LEQUAL);
+            gl_enable(gl.DEPTH_TEST);
+            gl.depthFunc(gl.LEQUAL);
             gl_enable(gl_CULL_FACE);
             gl.cullFace(gl_BACK);
 
             this.light = new DirectionalLight(250);
-            this.light.t.p.setValues(0, 1, 1);
+            this.light.P.setValues(0, 1, 1);
 
             Scene.now = performance.now() / 1000;
         }
@@ -2315,7 +2278,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             // normal render
             gl_viewport(0, 0, globalCanvas.width, globalCanvas.height);
             gl.clearColor(clearColor.x, clearColor.y, clearColor.z, 1);
-            gl.clear(gl_COLOR_BUFFER_BIT | gl_DEPTH_BUFFER_BIT);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl_DEPTH_BUFFER_BIT);
             this.renderSceneInternal(camera, RenderMode.Normal, light);
 
             this.traverse(node =>
@@ -2329,7 +2292,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             let viewMatrix = camera.worldToLocalMatrix();
             let cameraWorldPos = camera.worldPosition;
             let cameraWorldForward = camera.dirs.forward;
-            let viewProjectionMatrix = Scene.lastViewProjectionMatrix.copy(camera.projectionMatrix).m(viewMatrix);
+            let viewProjectionMatrix = Scene.lastViewProjectionMatrix.set(camera.projectionMatrix).m(viewMatrix);
 
             let viewMatrices: ViewMatrices = { viewMatrix, viewProjectionMatrix, cameraPosition: cameraWorldPos };
 
@@ -2354,7 +2317,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 }
 
                 let tmpMatrix = matrixPool.pop() ?? NewMatrix4x4();
-                let currentWorldMatrix = tmpMatrix.multiplyMatrices(worldMatrix, node.t.matrix(tmpTransformMatrix_scene_ts));
+                let currentWorldMatrix = tmpMatrix.multiplyMatrices(worldMatrix, node.matrix(tmpTransformMatrix_scene_ts));
                 let worldPos = tmpVec3_1.setScalar(0).applyMatrix4x4(currentWorldMatrix);
                 renderData.push({ node, worldMatrix: currentWorldMatrix, distanceFromCamera: distanceFn(worldPos) });
 
@@ -2366,13 +2329,13 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             renderData.sort((a, b) =>
             {
                 let multiplier = a.node.transparent ? 1 : -1;
-                if (a.node.transparent !== b.node.transparent)
+                if (a.node.transparent != b.node.transparent)
                 {
                     // different transparency, always render opaque first
                     return multiplier;
                 }
 
-                if (a.node.renderOrder !== b.node.renderOrder)
+                if (a.node.renderOrder != b.node.renderOrder)
                 {
                     // different render order, render the node with the lower render order first
                     return a.node.renderOrder - b.node.renderOrder;
@@ -2432,7 +2395,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             this.geometry = geometry;
 
             let data = geometryMap.get(geometry);
-            if (data !== undefined)
+            if (data)
             {
                 this.vao = data.vao;
                 this.vertexBuffer = data.vertexBuffer;
@@ -2456,7 +2419,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 gl_bindBuffer(gl_ELEMENT_ARRAY_BUFFER, this.indexBuffer);
                 gl_bufferData(gl_ELEMENT_ARRAY_BUFFER, geometry.t, gl_STATIC_DRAW);
 
-                if (geometry.n && normalLoc !== undefined)
+                if (geometry.n && normalLoc)
                 {
                     let normalBuffer = gl_createBuffer()!;
                     gl_bindBuffer(gl_ARRAY_BUFFER, normalBuffer);
@@ -2585,7 +2548,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 }
             }
 
-            if (this.cull !== null)
+            if (this.cull != null)
             {
                 gl_enable(gl_CULL_FACE);
                 gl.cullFace(this.cull);
@@ -2598,7 +2561,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             if (this.transparent)
             {
                 gl_enable(gl_BLEND);
-                gl.blendFunc(gl_SRC_ALPHA, gl_ONE_MINUS_SRC_ALPHA);
+                gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
             }
             else
             {
@@ -2627,7 +2590,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
         render(mode: RenderMode, viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: DirectionalLight)
         {
-            if (mode === RenderMode.Shadow && !this.castShadows)
+            if (mode == RenderMode.Shadow && !this.castShadows)
             {
                 return;
             }
@@ -2635,13 +2598,13 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             let { uniforms } = this;
             let { viewMatrix, viewProjectionMatrix } = viewMatrices;
 
-            gl_useProgram(mode === RenderMode.Normal ? this.program : this.shadowProgram);
+            gl_useProgram(mode == RenderMode.Normal ? this.program : this.shadowProgram);
             gl_bindVertexArray(this.vao);
 
-            if (mode === RenderMode.Normal)
+            if (mode == RenderMode.Normal)
             {
-                let worldViewMatrix = tmpWorldViewMatrix.copy(viewMatrix).m(worldMatrix);
-                let worldViewProjectionMatrix = tmpWorldViewProjectionMatrix.copy(viewProjectionMatrix).m(worldMatrix);
+                let worldViewMatrix = tmpWorldViewMatrix.set(viewMatrix).m(worldMatrix);
+                let worldViewProjectionMatrix = tmpWorldViewProjectionMatrix.set(viewProjectionMatrix).m(worldMatrix);
                 let worldViewNormalMatrix = worldViewMatrix.topLeft3x3(tmpWorldViewNormalMatrix).invert() /* .transpose() */;
                 let worldNormalMatrix = worldMatrix.topLeft3x3(tmpWorldNormalMatrix).invert() /* .transpose() */;
 
@@ -2652,12 +2615,12 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 gl.uniformMatrix3fv(uniforms.get(standardMaterial_var_WORLDNORMALMAT)!, true, worldNormalMatrix);
                 gl_uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOS)!,
                     tmpVec3
-                        .copyFrom(light.t.p)
+                        .copyFrom(light.P)
                         .a(viewMatrices.cameraPosition)
-                        .applyMatrix4x4(light.t.matrix(tmpTransformMatrix_mesh_ts).p(viewMatrix))
+                        .applyMatrix4x4(light.matrix(tmpTransformMatrix_mesh_ts).p(viewMatrix))
                         .r()
                 );
-                gl_uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.t.p).r());
+                gl_uniform3fv(uniforms.get(standardMaterial_var_LIGHTPOSWORLD)!, tmpVec3.copyFrom(light.P).r());
 
                 this.prepareMaterial();
 
@@ -2676,7 +2639,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 gl_depthMask(true);
             }
 
-            gl.drawElements(gl_TRIANGLES, this.triangleCount, gl_UNSIGNED_INT, 0);
+            gl.drawElements(gl.TRIANGLES, this.triangleCount, gl.UNSIGNED_INT, 0);
 
             gl_bindVertexArray(null);
             gl_depthMask(true); // re-enable depth write so it doesn't mess up other stuff
@@ -2752,9 +2715,8 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             let currentY = mouseToScreenPercent(this.distanceFromTarget * speed, mouseDeltaY);
 
             let offset = right.mulScalar(currentX).s(up.mulScalar(currentY));
-            let { p: position } = this.t;
-            position.s(offset);
-            position.clamp(this.minTargetPosition, this.maxTargetPosition);
+            this.P.s(offset);
+            this.P.clamp(this.minTargetPosition, this.maxTargetPosition);
         }
 
         zoom(mouseWheelDelta: number)
@@ -2772,8 +2734,8 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             let rotation = horizontalRotation.multiply(verticalRotation);
             let localPosition = NewVector3(0, 0, this.distanceFromTarget).applyQuaternion(rotation);
 
-            this.camera.t.r.copyFrom(rotation);
-            this.camera.t.p.copyFrom(localPosition);
+            this.camera.R.copyFrom(rotation);
+            this.camera.P.copyFrom(localPosition);
         }
     }
 
@@ -2824,13 +2786,16 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     // https://iquilezles.org/www/articles/smoothvoronoi/smoothvoronoi.htm
 
     // yzw - cell color, x - distance to cell
-    let Voronoi = `vec4 voronoi(vec2 i,float s){vec2 v=floor(i),f=fract(i);vec4 d=vec4(8,0,0,0);for(int w=-2;w<=2;++w)for(int x=-2;x<=2;++x){vec2 h=vec2(x,w),P=h2(v+h);float O=length(h-f+P);vec3 m=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+3.5+vec3(2,3,0));m*=m;float M=smoothstep(0.,1.,.5+.5*(d.x-O)/s);d.x=mix(d.x,O,M)-M*(1.-M)*s/(1.+3.*s);d.yzw=mix(d.yzw,m,M)-M*(1.-M)*s/(1.+3.*s);}return d;}`;
+    /** @noinline */
+    let Voronoi = `vec4 voro(vec2 i,float s){vec2 v=floor(i),f=fract(i);vec4 d=vec4(8,0,0,0);for(int w=-2;w<=2;++w)for(int x=-2;x<=2;++x){vec2 h=vec2(x,w),P=h2(v+h);float O=length(h-f+P);vec3 m=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+3.5+vec3(2,3,0));m*=m;float M=smoothstep(0.,1.,.5+.5*(d.x-O)/s);d.x=mix(d.x,O,M)-M*(1.-M)*s/(1.+3.*s);d.yzw=mix(d.yzw,m,M)-M*(1.-M)*s/(1.+3.*s);}return d;}`;
 
     // x - cell color, y - distance to cell
-    let VoronoiGrayscale = `vec2 voronoi(vec2 i,float s){vec2 v=floor(i),f=fract(i),d=vec2(0,8);for(int x=-2;x<=2;++x)for(int y=-2;y<=2;++y){vec2 h=vec2(y,x),N=h2(v+h);float M=length(h-f+N),L=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+5.),K=smoothstep(0.,1.,.5+.5*(d.y-M)/s);d.y=mix(d.y,M,K)-K*(1.-K)*s/(1.+3.*s);d.x=mix(d.x,L,K)-K*(1.-K)*s/(1.+3.*s);}return d;}`;
+    /** @noinline */
+    let VoronoiGrayscale = `vec2 voro(vec2 i,float s){vec2 v=floor(i),f=fract(i),d=vec2(0,8);for(int x=-2;x<=2;++x)for(int y=-2;y<=2;++y){vec2 h=vec2(y,x),N=h2(v+h);float M=length(h-f+N),L=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+5.),K=smoothstep(0.,1.,.5+.5*(d.y-M)/s);d.y=mix(d.y,M,K)-K*(1.-K)*s/(1.+3.*s);d.x=mix(d.x,L,K)-K*(1.-K)*s/(1.+3.*s);}return d;}`;
 
     // https://www.iquilezles.org/www/articles/voronoilines/voronoilines.htm
-    let VoronoiDistance = `float voronoiDistance(vec2 i){vec2 v=floor(i),n=fract(i),d,D;float f=8.;for(int h=-1;h<=1;++h)for(int M=-1;M<=1;++M){vec2 m=vec2(M,h),K=m+h2(v+m)-n;float J=dot(K,K);if(J<f)f=J,D=K,d=m;}f=8.;for(int h=-2;h<=2;++h)for(int M=-2;M<=2;++M){vec2 m=d+vec2(M,h),K=m+h2(v+m)-n;float J=dot(.5*(D+K),normalize(K-D));f=min(f,J);}return f;}`;
+    /** @noinline */
+    let VoronoiDistance = `float vD(vec2 i){vec2 v=floor(i),n=fract(i),d,D;float f=8.;for(int h=-1;h<=1;++h)for(int M=-1;M<=1;++M){vec2 m=vec2(M,h),K=m+h2(v+m)-n;float J=dot(K,K);if(J<f)f=J,D=K,d=m;}f=8.;for(int h=-2;h<=2;++h)for(int M=-2;M<=2;++M){vec2 m=d+vec2(M,h),K=m+h2(v+m)-n;float J=dot(.5*(D+K),normalize(K-D));f=min(f,J);}return f;}`;
 
 
 
@@ -2865,7 +2830,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
         let shader = (isAlbedo: boolean) => `
 vec2 gn(vec2 c){c*=float(${noiseFrequency});return vec2(fbm(c,5,10.,2.),fbm(c+vec2(1.23,4.56),5,10.,2.));}
-float gv(vec2 c){return voronoiDistance(c*float(${rowCount}));}
+float gv(vec2 c){return vD(c*${rowCount}.);}
 ${edgeBlend("gn", 0.2, "vec2", "gsn")}
 ${edgeBlend("gv", 0.01, "float", "gsv")}
 vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
@@ -2916,15 +2881,13 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     // texture-generator/impl/dirt.ts
 
-    function DirtTexture(w: number, h: number,
-        scale = 5,
-        minRoughness = 0.5, maxRoughness = 1.0,
-        baseColor: [number, number, number] = [0.3, 0.22, 0.07],
-        normalIntensity = 1): TextureCollection
+    function DirtTexture(): TextureCollection
     {
-        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*float(${scale});float q=rp(0.,1.,.3,1.,fbm(c*1.5,3,1.,2.)),h=se(1.-se(1.-voronoiDistance(vec2(1)-vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*4.)*40.)*sr(.45,.52,fbm(c*2.,3,1.,2.)))*q;${isAlbedo
-            ? `return cr(vec4(0,0,0,1),.08,vec4(${baseColor.join(",")},1),.67,q)*vec4(h,h,h,1);`
-            : `return vec4(vec3(rp(0.,1.,float(${minRoughness}),float(${maxRoughness}),h)),1);`
+        let w = 1024, h = 1024, normalIntensity = 1;
+
+        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*50.;float q=rp(0.,1.,.3,1.,fbm(c*1.5,3,1.,2.)),h=se(1.-se(1.-vD(vec2(1)-vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*4.)*40.)*sr(.45,.52,fbm(c*2.,3,1.,2.)))*q;${isAlbedo
+            ? `return cr(vec4(0,0,0,1),.08,vec4(.7,.9,.4,1),.67,q)*vec4(h,h,h,1);`
+            : `return vec4(vec3(rp(0.,1.,.7,1.,h)),1);`
             }}`;
 
         let mainImage = `oc=eb(pc);`;
@@ -2957,15 +2920,13 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     // texture-generator/impl/metal.ts
 
-    function MetalTexture(w: number, h: number,
-        scale = 5,
-        minRoughness = 0.5, maxRoughness = 1.0,
-        baseColor: [number, number, number] = [1, 1, 1],
-        normalIntensity = 0.2): TextureCollection
+    function MetalTexture(): TextureCollection
     {
-        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*float(${scale}),n=vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*5.;float v=sqrt(voronoi(c*5.+n,.01).y)*1.5-n.x;${isAlbedo
-            ? `return vec4(${baseColor.join(",")},1);`
-            : `return vec4(vec3(rp(0.,1.,float(${minRoughness}),float(${maxRoughness}),rp(0.,1.,.9,1.,v))),1);`
+        let w = 1024, h = 1024, normalIntensity = 0.2;
+
+        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*5.,n=vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*5.;float v=sqrt(voro(c*5.+n,.01).y)*1.5-n.x;${isAlbedo
+            ? `return vec4(1);`
+            : `return vec4(vec3(rp(0.,1.,.5,1.,rp(0.,1.,.9,1.,v))),1);`
             }}`;
 
         let mainImage = `oc=eb(pc);`;
@@ -2998,15 +2959,13 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     // texture-generator/impl/plastic.ts
 
-    function PlasticTexture(w: number, h: number,
-        scale = 5,
-        minRoughness = 0.5, maxRoughness = 1.0,
-        baseColor: [number, number, number] = [0.3, 0.22, 0.07],
-        normalIntensity = 0.5): TextureCollection
+    function PlasticTexture(): TextureCollection
     {
-        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*float(${scale}),n=vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.));float v=sqrt(voronoi(n*10.,1.).y)*1.5;${isAlbedo
-            ? `return cr(vec4(.95,.95,.95,1),.2,vec4(1),.8,mix(v,n.x,.5))*vec4(${baseColor.join(",")},1);`
-            : `return vec4(vec3(rp(0.,1.,float(${minRoughness}),float(${maxRoughness}),se(vr(.4,.3,.6,.7,v))*.2-n.x*1.)),1);`
+        let w = 1024, h = 1024, normalIntensity = 5;
+
+        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*10.,n=vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.));float v=sqrt(voro(n*10.,1.).y)*1.5;${isAlbedo
+            ? `return cr(vec4(.95,.95,.95,1),.2,vec4(1),.8,mix(v,n.x,.5))*vec4(1);`
+            : `return vec4(vec3(rp(0.,1.,.8,1.,se(vr(.4,.3,.6,.7,v))*.2-n.x*1.)),1);`
             }}`;
 
         let mainImage = `oc=eb(pc);`;
@@ -3039,18 +2998,13 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     // texture-generator/impl/wood.ts
 
-    function WoodTexture(w: number, h: number,
-        minRoughness = 0.5, maxRoughness = 1.0,
-        color0: [number, number, number] = [0, 0, 0],
-        color1: [number, number, number] = [0.55, 0.35, 0.2],
-        color2: [number, number, number] = [0.75, 0.55, 0.45],
-        color3: [number, number, number] = [0.75, 0.6, 0.5],
-        scale = 5,
-        normalIntensity = 0.5): TextureCollection
+    function WoodTexture(): TextureCollection
     {
-        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){u.y*=.1;float n=rp(.1,.6,0.,1.,fbm(voronoi(u*float(${scale}),1.5)*vec2(10,3),4,10.,3.));${isAlbedo
-            ? `return vec4(n<.65?cr3(vec3(${color0}),.35,vec3(${color1}),.65,n):n<.85?cr3(vec3(${color1}),.65,vec3(${color2}),.85,n):cr3(vec3(${color2}),.85,vec3(${color3}),.9,n),1);`
-            : `return vec4(vec3(mix(float(${minRoughness}),float(${maxRoughness}),smoothstep(.4,.8,n))),1);`
+        let w = 2048, h = 2048, normalIntensity = 0.5;
+
+        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){u.y*=.1;float n=rp(.1,.6,0.,1.,fbm(voro(u*15.,1.5)*vec2(10,3),4,10.,3.));${isAlbedo
+            ? `return vec4(n<.65?cr3(vec3(0),.35,vec3(.55,.35,.2),.65,n):n<.85?cr3(vec3(.55,.35,.2),.65,vec3(.75,.55,.45),.85,n):cr3(vec3(.75,.55,.45),.85,vec3(.75,.6,.5),.9,n),1);`
+            : `return vec4(vec3(mix(.5,1.,smoothstep(.4,.8,n))),1);`
             }}`;
 
         let mainImage = `oc=eb(pc);`;
@@ -3102,9 +3056,9 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             undefined,
             3);
 
-        let woodTexture = WoodTexture(2048, 2048, undefined, undefined, undefined, undefined, undefined, undefined, 15);
+        let woodTexture = WoodTexture();
 
-        let houseRoofTexture = BrickTexture(1024, 1024, 1, 8, 0.01, 0, 0.05, 0.05, 1, 0.05, false, 0.5, 0.8, [1, 1, 1,], [1, 1, 1], 2);
+        let houseRoofTexture = BrickTexture(1024, 1024, 1, 8, 0.01, 0, 0.05, 0.05, 1, 0.05, false, 0.5, 0.8, [1, 1, 1], [1, 1, 1], 2);
 
         // house length = 8
         // house width = 5
@@ -3189,14 +3143,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             door.setTextures(woodTexture);
             roof.setTextures(houseRoofTexture);
 
-            door.t.p.setValues(0, 2.2 * 0.5, -7.5 * 0.5);
-            window0.t.p.setValues(2.4, 1.8, -2);
-            window1.t.p.setValues(2.4, 1.8, 2);
-            window2.t.p.setValues(-2.4, 1.8, 1);
+            door.P.setValues(0, 2.2 * 0.5, -7.5 * 0.5);
+            window0.P.setValues(2.4, 1.8, -2);
+            window1.P.setValues(2.4, 1.8, 2);
+            window2.P.setValues(-2.4, 1.8, 1);
 
             let group = new SceneNode();
             group.a(base, roof, door, window0, window1, window2);
-            group.t.r.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2));
+            group.R.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2));
 
             if (isBlacksmith)
             {
@@ -3209,8 +3163,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 roof.material.b = 0.2;
 
                 let icon = new Mesh(anvilIconGeometry, base.material);
-                icon.t.p.setValues(0, 1.5, 3.8);
-                icon.t.s.setScalar(0.5);
+                icon.P.setValues(0, 1.5, 3.8);
+                icon.S.setScalar(0.5);
                 icon.material.metallic = 0.8;
                 group.a(icon);
             }
@@ -3218,7 +3172,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             return group;
         }
 
-        let windmillRoofTexture = PlasticTexture(1024, 1024, 10, 0.8, 1, [1, 1, 1], 5);
+        let windmillRoofTexture = PlasticTexture();
 
         let windmillHeight = 8;
         let windmillRoofHeight = 2.5;
@@ -3302,14 +3256,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             blades.setTextures(woodTexture);
             door.setTextures(woodTexture);
 
-            base.t.p.y = windmillHeight / 2;
-            roof.t.p.y = windmillHeight + windmillRoofHeight / 2;
-            door.t.p.setValues(3.85, 2.2 * 0.5, 0);
-            door.t.r.setFromAxisAngle(0, 1, 0, HalfPI).multiply(NewQuaternionFromAxisAngle(1, 0, 0, -0.13));
-            field.t.p.z = -5;
+            base.P.y = windmillHeight / 2;
+            roof.P.y = windmillHeight + windmillRoofHeight / 2;
+            door.P.setValues(3.85, 2.2 * 0.5, 0);
+            door.R.setFromAxisAngle(0, 1, 0, HalfPI).multiply(NewQuaternionFromAxisAngle(1, 0, 0, -0.13));
+            field.P.z = -5;
 
             let bladesContainer = new SceneNode();
-            bladesContainer.t.p.setValues(0, 8.5, -4);
+            bladesContainer.P.setValues(0, 8.5, -4);
 
             bladesContainer.a(blades);
             bladesContainer.a(bladesCloth);
@@ -3318,12 +3272,12 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             group.a(base, roof, bladesContainer, door, field);
 
             let timeOffset = random() * HalfPI;
-            bladesContainer.onUpdate.push(({ t: transform }) => transform.r.setFromAxisAngle(0, 0, 1, Scene.now * 0.1 + timeOffset));
+            bladesContainer.onUpdate.push(n => n.R.setFromAxisAngle(0, 0, 1, Scene.now * 0.1 + timeOffset));
 
             let pivot = new SceneNode();
             pivot.a(group);
-            group.t.p.z = 10.5;
-            pivot.t.r.setFromAxisAngle(0, 1, 0, HalfPI);
+            group.P.z = 10.5;
+            pivot.R.setFromAxisAngle(0, 1, 0, HalfPI);
             return pivot;
         }
 
@@ -3503,7 +3457,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             roofs.setTextures(windmillRoofTexture);
             door.setTextures(woodTexture);
 
-            door.t.p.z = castleWallLength / 2 + wallHalfThickness;
+            door.P.z = castleWallLength / 2 + wallHalfThickness;
 
             group.a(walls);
             group.a(roofs);
@@ -3571,10 +3525,10 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
             let group = new SceneNode();
             group.a(base, roof, towerRoof, windows);
-            group.t.p.z += 2.5;
+            group.P.z += 2.5;
             let pivot = new SceneNode();
             pivot.a(group)
-            pivot.t.r.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2) + HalfPI);
+            pivot.R.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2) + HalfPI);
             return pivot;
         }
 
@@ -3670,7 +3624,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
             while (scheduledDuration < requiredDuration)
             {
-                if (scheduledCount++ % 2 === 0)
+                if (scheduledCount++ % 2 == 0)
                 {
                     let maxNoteSequenceCount = 10;
                     noteRng = Mulberry32(rng() * maxNoteSequenceCount | 0);
@@ -3772,29 +3726,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         0.3, -0.2
     ], 0.04);
 
-    function GetVertexIndicesOfExtrudedGeometry(numPointsInPolyline: number, indexInPolyline: number)
-    {
-        let backIndex = indexInPolyline * 2;
-        let frontIndex = indexInPolyline * 2 + 1;
-
-        let aroundStartIndex = numPointsInPolyline * 2;
-
-        let prevIndexAround = (indexInPolyline + 1) % numPointsInPolyline;
-
-        let around0 = aroundStartIndex + prevIndexAround * 4;
-        let around1 = around0 + 1;
-
-        let around2 = aroundStartIndex + indexInPolyline * 4 + 2;
-        let around3 = around2 + 1;
-
-        return [backIndex, frontIndex, around0, around1, around2, around3];
-    }
-
-    // TODO: these are constants, make sure that these are calculated at compile time in the final version
-    let indicesToMove = [
-        ...GetVertexIndicesOfExtrudedGeometry(6, 0),
-        ...GetVertexIndicesOfExtrudedGeometry(6, 3)
-    ];
+    let indicesToMove = [0, 1, 16, 17, 14, 15, 6, 7, 28, 29, 26, 27];
 
     indicesToMove.forEach(idx => shieldGeometry.v[idx * 3 + 2] += 0.1); // move z coordinate
 
@@ -3872,7 +3804,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let verticalScale = 0.8 + random();
         let horizontalScale = 0.9 + random() * 0.2;
-        tree.t.s.setValues(horizontalScale, verticalScale, horizontalScale);
+        tree.S.setValues(horizontalScale, verticalScale, horizontalScale);
 
         return tree;
     }
@@ -3895,7 +3827,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
 
     let defaultMaterial: Material = { ...whiteColor, metallic: 0.6, roughness: 0.2, textureScale: NewVector3(5), textureBlendSharpness: 20 };
-    let metalTexture = MetalTexture(1024, 1024);
+    let metalTexture = MetalTexture();
 
     let headGeometry = CreateSphereGeometry(0.025);
 
@@ -3979,7 +3911,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             let offset2 = 0.6;
 
             let t = (sin(now() * walkSpeed * speed + offset * TwoPI) + 1) / 2;
-            node.t.r.setFromAxisAngle(1, 0, 0, (offset2 - (t ** 1.2)) * magnitude * multiplier);
+            node.R.setFromAxisAngle(1, 0, 0, (offset2 - (t ** 1.2)) * magnitude * multiplier);
         }
 
         function LowerLegWalk(node: SceneNode, offset: number, multiplier: number)
@@ -3989,21 +3921,20 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             offset += 0.05;
 
             let t = now() * walkSpeed / PI + offset;
-            node.t.r.setFromAxisAngle(1, 0, 0, (Pulse(t, 2, speed) * magnitude - 4 * magnitude) * multiplier);
+            node.R.setFromAxisAngle(1, 0, 0, (Pulse(t, 2, speed) * magnitude - 4 * magnitude) * multiplier);
         }
 
         function BodyMovement(node: SceneNode, multiplier: number)
         {
-            let { p: position } = node.t;
             let t = now() * walkSpeed * 4;
 
             let zOffset = 2;
             let zMagnitude = 0.05 * multiplier;
-            position.z = (((sin(t + zOffset) + 1) / 2) ** 2) * zMagnitude;
+            node.P.z = (((sin(t + zOffset) + 1) / 2) ** 2) * zMagnitude;
 
             let yOffset = 1;
             let yMagnitude = 0.04;
-            position.y = Lerp(0.02, (((sin(t + yOffset) + 1) / 2) ** 2) * yMagnitude - 0.05, multiplier);
+            node.P.y = Lerp(0.02, (((sin(t + yOffset) + 1) / 2) ** 2) * yMagnitude - 0.05, multiplier);
         }
 
 
@@ -4012,42 +3943,42 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         leftLowerLeg.onUpdate.push(node => LowerLegWalk(node, 0, walkMultiplier));
         rightLowerLeg.onUpdate.push(node => LowerLegWalk(node, 0.5, walkMultiplier));
 
-        head.t.p.y = 1.55;
-        head.t.s.setValues(3.5, 4.5, 4);
+        head.P.y = 1.55;
+        head.S.setValues(3.5, 4.5, 4);
 
-        body.t.p.y = 1.05;
-        body.t.s.setValues(0.7, 1, 0.5);
+        body.P.y = 1.05;
+        body.S.setValues(0.7, 1, 0.5);
 
-        lowerBody.t.p.y = 0.95;
-        lowerBody.t.s.setValues(0.75, 1, 0.5);
+        lowerBody.P.y = 0.95;
+        lowerBody.S.setValues(0.75, 1, 0.5);
 
-        leftUpperLeg.t.p.setValues(-0.11, 0.8, 0);
-        rightUpperLeg.t.p.setValues(0.11, 0.8, 0);
+        leftUpperLeg.P.setValues(-0.11, 0.8, 0);
+        rightUpperLeg.P.setValues(0.11, 0.8, 0);
 
-        leftLowerLeg.t.p.setValues(0, -0.4, 0);
-        leftLowerLeg.t.s.setValues(0.85, 1, 0.85);
-        rightLowerLeg.t.p.setValues(0, -0.4, 0);
-        rightLowerLeg.t.s.setValues(0.85, 1, 0.85);
+        leftLowerLeg.P.setValues(0, -0.4, 0);
+        leftLowerLeg.S.setValues(0.85, 1, 0.85);
+        rightLowerLeg.P.setValues(0, -0.4, 0);
+        rightLowerLeg.S.setValues(0.85, 1, 0.85);
 
         leftUpperLeg.a(leftLowerLeg);
         rightUpperLeg.a(rightLowerLeg);
 
-        leftFoot.t.p.y = -0.4;
-        rightFoot.t.p.y = -0.4;
+        leftFoot.P.y = -0.4;
+        rightFoot.P.y = -0.4;
         leftLowerLeg.a(leftFoot);
         rightLowerLeg.a(rightFoot);
 
-        leftUpperArm.t.p.setValues(-0.15, 1.32, 0);
+        leftUpperArm.P.setValues(-0.15, 1.32, 0);
         leftUpperArm.a(leftLowerArm);
 
-        leftLowerArm.t.p.setValues(0, -0.3, 0);
+        leftLowerArm.P.setValues(0, -0.3, 0);
 
-        rightUpperArm.t.p.setValues(0.15, 1.32, 0);
+        rightUpperArm.P.setValues(0.15, 1.32, 0);
         rightUpperArm.a(rightLowerArm);
 
-        let setRightUpperArmDefaultRotation = () => rightUpperArm.t.r.setFromAxisAngle(0, 0, 1, 0.5).premultiplyAxisAngle(1, 0, 0, 0.5);
+        let setRightUpperArmDefaultRotation = () => rightUpperArm.R.setFromAxisAngle(0, 0, 1, 0.5).premultiplyAxisAngle(1, 0, 0, 0.5);
 
-        rightLowerArm.t.p.setValues(0, -0.3, 0);
+        rightLowerArm.P.setValues(0, -0.3, 0);
 
         let node = new SceneNode();
         let bodyContainer = new SceneNode();
@@ -4065,21 +3996,21 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let bow: SceneNode | null = null;
         if (isArcher)
         {
-            leftUpperArm.t.r.setFromAxisAngle(1, 0, 0, 1).premultiplyAxisAngle(0, 1, 0, 0.4);
-            leftLowerArm.t.r.setFromAxisAngle(0, 0, 1, 1).premultiplyAxisAngle(1, 0, 0, 1);
-            rightUpperArm.t.r.setFromAxisAngle(0, 1, 0, 0.5).premultiplyAxisAngle(1, 0, 0, 1.3)
-            rightLowerArm.t.r.setFromAxisAngle(1, 0, 0, 0.4);
+            leftUpperArm.R.setFromAxisAngle(1, 0, 0, 1).premultiplyAxisAngle(0, 1, 0, 0.4);
+            leftLowerArm.R.setFromAxisAngle(0, 0, 1, 1).premultiplyAxisAngle(1, 0, 0, 1);
+            rightUpperArm.R.setFromAxisAngle(0, 1, 0, 0.5).premultiplyAxisAngle(1, 0, 0, 1.3)
+            rightLowerArm.R.setFromAxisAngle(1, 0, 0, 0.4);
 
             bow = BowObject();
-            bow.t.p.y = -0.4;
-            bow.t.r.setFromAxisAngle(0, 1, 0, -0.2).premultiplyAxisAngle(1, 0, 0, -HalfPI);
+            bow.P.y = -0.4;
+            bow.R.setFromAxisAngle(0, 1, 0, -0.2).premultiplyAxisAngle(1, 0, 0, -HalfPI);
             rightLowerArm.a(bow);
         }
         else
         {
-            leftUpperArm.t.r.setFromAxisAngle(1, 0, 0, 1).premultiplyAxisAngle(0, 1, 0, 0.4);
-            leftLowerArm.t.r.setFromAxisAngle(0, 0, 1, 1.8);
-            rightLowerArm.t.r.setFromAxisAngle(1, 0, 0, 1.2);
+            leftUpperArm.R.setFromAxisAngle(1, 0, 0, 1).premultiplyAxisAngle(0, 1, 0, 0.4);
+            leftLowerArm.R.setFromAxisAngle(0, 0, 1, 1.8);
+            rightLowerArm.R.setFromAxisAngle(1, 0, 0, 1.2);
             setRightUpperArmDefaultRotation();
 
             let shield = ShieldObject();
@@ -4091,13 +4022,13 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             }
 
             leftLowerArm.a(shield);
-            shield.t.p.y = -0.15;
-            shield.t.r.setFromAxisAngle(0, 0, 1, HalfPI).premultiplyAxisAngle(0, 1, 0, -2.2);
+            shield.P.y = -0.15;
+            shield.R.setFromAxisAngle(0, 0, 1, HalfPI).premultiplyAxisAngle(0, 1, 0, -2.2);
 
             let sword = SwordObject();
             rightLowerArm.a(sword);
-            sword.t.p.setValues(0, -0.35, -0.06);
-            sword.t.r.setFromAxisAngle(1, 0, 0, NegHalfPI).premultiplyAxisAngle(0, 0, 1, HalfPI);
+            sword.P.setValues(0, -0.35, -0.06);
+            sword.R.setFromAxisAngle(1, 0, 0, NegHalfPI).premultiplyAxisAngle(0, 0, 1, HalfPI);
         }
 
         let walkChangeRequest = 0;
@@ -4115,7 +4046,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 node.onUpdate.push(_ =>
                 {
                     walkMultiplier = min(walkMultiplier + Scene.deltaTime * walkChangeSpeed, 1);
-                    return walkChangeRequest === req && walkMultiplier < 1;
+                    return walkChangeRequest == req && walkMultiplier < 1;
                 })
             },
             stopWalking()
@@ -4124,7 +4055,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 node.onUpdate.push(_ =>
                 {
                     walkMultiplier = max(walkMultiplier - Scene.deltaTime * walkChangeSpeed, 0);
-                    return walkChangeRequest === req && walkMultiplier > 0;
+                    return walkChangeRequest == req && walkMultiplier > 0;
                 })
             },
             playAttackAnimation()
@@ -4194,7 +4125,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 current.x - tmpResult.x, 0, current.y - tmpResult.y
             );
 
-            if (i !== polyline.length - 4)
+            if (i != polyline.length - 4)
             {
                 triangles.push(
                     i - 2, i - 1, i,
@@ -4234,7 +4165,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     function RemoveItemFromArray<T>(arr: T[], item: T)
     {
         let idx = arr.indexOf(item);
-        if (idx !== -1)
+        if (idx > -1)
         {
             arr.splice(idx, 1);
         }
@@ -4272,21 +4203,21 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     requestAnimationFrame(Resize);
     window.addEventListener("resize", Resize);
 
-    let buildingInfoContainer = getElementById("building-info")!;
+    let buildingInfoContainer = getElementById("bi")!;
     let selectedBuildingData: BuildingData | null = null;
 
     globalCanvas.addEventListener("mousedown", ev =>
     {
-        if (ev.button === panButton)
+        if (ev.button == panButton)
         {
             cameraPanning = true;
         }
-        if (ev.button === rotateButton)
+        if (ev.button == rotateButton)
         {
             cameraRotating = true;
         }
 
-        if (ev.button === 0)
+        if (ev.button == 0)
         {
             // click on a building
             let closestHitBuilding = GetHoveredBuilding(ev);
@@ -4325,9 +4256,9 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         for (let data of buildingDatas)
         {
             let hitDistance = IntersectRayBoundingBox(ray, data.bboxMin, data.bboxMax);
-            if (hitDistance !== null)
+            if (hitDistance != null)
             {
-                if (closestHitDistance === null || hitDistance < closestHitDistance)
+                if (closestHitDistance == null || hitDistance < closestHitDistance)
                 {
                     closestHitDistance = hitDistance;
                     closestHitBuilding = data;
@@ -4340,7 +4271,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     function UpdateHoveredBuilding(ev: MouseEvent)
     {
-        let hover = GetHoveredBuilding(ev) !== null;
+        let hover = GetHoveredBuilding(ev);
         globalCanvas.style.cursor = hover ? "pointer" : "";
     }
 
@@ -4348,11 +4279,11 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     window.addEventListener("mouseup", ev =>
     {
-        if (ev.button === panButton)
+        if (ev.button == panButton)
         {
             cameraPanning = false;
         }
-        if (ev.button === rotateButton)
+        if (ev.button == rotateButton)
         {
             cameraRotating = false;
         }
@@ -4382,7 +4313,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     window.addEventListener("keydown", ev =>
     {
-        if (ev.key === "Escape")
+        if (ev.key == "Escape")
         {
             cancelBuilding();
         }
@@ -4408,17 +4339,17 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     requestAnimationFrame(Render);
 
     scene.clearColor.setValues(0.4, 0.45, 0.5);
-    scene.light.t.p.setValues(-1, 3, 2);
+    scene.light.P.setValues(-1, 3, 2);
 
     let roadTexture = BrickTexture(2048, 2048, 90, 90, 0.02, 0.5, 0.03, 0.4, 4, 0.2, true, 0.7, 1, [0.85, 0.85, 0.8], [0.5, 0.5, 0.5], 3);
     let roadMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.03) };
 
-    let groundTexture = DirtTexture(1024, 1024, 50, 0.7, 1, [0.7, 0.9, 0.4], 1);
+    let groundTexture = DirtTexture();
     let groundMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.2) };
 
     let groundMesh = new Mesh(CreateBoxGeometry(500, 1, 500), groundMaterial);
     groundMesh.setTextures(groundTexture);
-    groundMesh.t.p.y = -0.5;
+    groundMesh.P.y = -0.5;
     groundMesh.renderOrder = 100;
     scene.a(groundMesh);
 
@@ -4431,7 +4362,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     let roadGeometry = CreateRoadGeometry(roadSamplePoints, 3);
     let road = new Mesh(roadGeometry, roadMaterial);
-    road.t.p.y = 0.02;
+    road.P.y = 0.02;
     road.setTextures(roadTexture);
     scene.a(road);
 
@@ -4445,7 +4376,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let tmpWorldForScreenPos = NewVector3();
     function UpdateElementScreenPositionFromWorldPosition(target: SceneNode, yOffset: number, element: HTMLElement, display = "")
     {
-        tmpWorldForScreenPos.copyFrom(target.t.p).y += yOffset;
+        tmpWorldForScreenPos.copyFrom(target.P).y += yOffset;
         camera.getScreenPosition(tmpWorldForScreenPos, tmpScreenPos);
         element.style.display = tmpScreenPos.z > 1 ? "none" : display; // only show if not behind the camera
         element.style.left = round((tmpScreenPos.x + 1) / 2 * window.innerWidth) + "px";
@@ -4455,7 +4386,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     function CreateHealthBar(target: SceneNode, yOffset: number)
     {
         let healthBarContainer = createElement("div");
-        healthBarContainer.className = "worldspace-element health-bar";
+        healthBarContainer.className = "we hb";
         document.body.appendChild(healthBarContainer);
 
         let healthBar = createElement("div");
@@ -4496,7 +4427,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let tmpCollisionCheckVec3 = NewVector3();
     function HumanBehavior(human: ReturnType<typeof CreateHuman>)
     {
-        let { isEnemy, node, node: { t: transform }, startWalking, stopWalking } = human;
+        let { isEnemy, node, node: { P, R, S }, startWalking, stopWalking } = human;
 
         if (isEnemy)
         {
@@ -4529,8 +4460,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let targetWaypointIndex = isEnemy ? enemySpawnWaypointIndex : castleWaypointIndex;
         let spawnPosition2d = roadColliderPoints[targetWaypointIndex];
-        transform.p.setValues(spawnPosition2d.x, 0, spawnPosition2d.y);
-        transform.r.setFromAxisAngle(0, 1, 0, isEnemy ? HalfPI : PI - 0.1);
+        P.setValues(spawnPosition2d.x, 0, spawnPosition2d.y);
+        R.setFromAxisAngle(0, 1, 0, isEnemy ? HalfPI : PI - 0.1);
 
         let offsetRadius = 2;
         let offset = Math.random() * offsetRadius * 2 - offsetRadius;
@@ -4550,7 +4481,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             }
             else
             {
-                let finalWaypointIndex = currentLevel === 0 ? 15 : (currentLevel === 1 ? 13 : 9);
+                let finalWaypointIndex = currentLevel == 0 ? 15 : (currentLevel == 1 ? 13 : 9);
                 if (targetWaypointIndex < finalWaypointIndex)
                 {
                     return false;
@@ -4604,7 +4535,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
                 let animationStartTime = Scene.now;
                 let animationDuration = 1;
-                let rotationSnapshot = transform.r.c();
+                let rotationSnapshot = R.c();
                 node.onUpdate.push(_ =>
                 {
                     // death animation
@@ -4613,11 +4544,11 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                     if (t < 1)
                     {
                         let t2 = t * t * t * t * t;
-                        transform.r.copyFrom(rotationSnapshot).multiply(NewQuaternionFromAxisAngle(1, 0, 0, HalfPI * t2));
+                        R.copyFrom(rotationSnapshot).multiply(NewQuaternionFromAxisAngle(1, 0, 0, HalfPI * t2));
                     }
                     else if (t < 4)
                     {
-                        transform.p.y = -max(t - 3, 0) * 0.4;
+                        P.y = -max(t - 3, 0) * 0.4;
                     }
                     else
                     {
@@ -4639,14 +4570,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
             if (!isEnemy || judgmentRemainingDuration <= 0)
             {
-                let isWalkingTowardsEnemy = state === HumanBehaviorState.WalkingTowardsEnemy;
-                let isWalking = state === HumanBehaviorState.WalkingTowardsWaypoint || isWalkingTowardsEnemy;
+                let isWalkingTowardsEnemy = state == HumanBehaviorState.WalkingTowardsEnemy;
+                let isWalking = state == HumanBehaviorState.WalkingTowardsWaypoint || isWalkingTowardsEnemy;
 
-                let targetPosition = targetEnemy?.node.t.p ?? waypoint;
+                let targetPosition = targetEnemy?.node.P ?? waypoint;
 
                 if (isWalking)
                 {
-                    if (transform.p.distanceSqr(targetPosition) < distanceThresholdSqr)
+                    if (P.distanceSqr(targetPosition) < distanceThresholdSqr)
                     {
                         if (isWalkingTowardsEnemy)
                         {
@@ -4664,18 +4595,18 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 }
 
                 smoothedWalkDir.r().lerp(rawWalkDir.r(), turnFactor).r();
-                rawWalkDir.copyFrom(targetPosition).s(transform.p).r();
+                rawWalkDir.copyFrom(targetPosition).s(P).r();
 
                 // always rotate towards the target, even when not walking
-                transform.r.setFromAxisAngle(0, 1, 0, atan2(-smoothedWalkDir.x, -smoothedWalkDir.z));
+                R.setFromAxisAngle(0, 1, 0, atan2(-smoothedWalkDir.x, -smoothedWalkDir.z));
 
                 if (isWalking)
                 {
                     // update position
-                    transform.p.a(smoothedWalkDir.mulScalar(fixedDeltaTime * walkSpeed));
+                    P.a(smoothedWalkDir.mulScalar(fixedDeltaTime * walkSpeed));
                 }
 
-                if (state === HumanBehaviorState.WalkingTowardsWaypoint || state === HumanBehaviorState.Stopped)
+                if (state == HumanBehaviorState.WalkingTowardsWaypoint || state == HumanBehaviorState.Stopped)
                 {
                     // look for enemies
                     let searchRadius = 5;
@@ -4685,9 +4616,9 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                     for (let { human: otherHuman } of allHumans)
                     {
                         // skip friendly units
-                        if (otherHuman.isEnemy !== isEnemy)
+                        if (otherHuman.isEnemy != isEnemy)
                         {
-                            let dist = otherHuman.node.t.p.distanceSqr(transform.p)
+                            let dist = otherHuman.node.P.distanceSqr(P)
                             if (dist < closestEnemyDistance)
                             {
                                 closestEnemyDistance = dist;
@@ -4729,7 +4660,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 };
 
                 remainingAttackTimer -= fixedDeltaTime;
-                if (state === HumanBehaviorState.AttackingEnemy)
+                if (state == HumanBehaviorState.AttackingEnemy)
                 {
                     if (tryAttack())
                     {
@@ -4747,7 +4678,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                         SwordImpactSound(audioNode);
                     }
                 }
-                else if (isEnemy && state === HumanBehaviorState.Stopped)
+                else if (isEnemy && state == HumanBehaviorState.Stopped)
                 {
                     // enemy has reached the last waypoint, attack the castle
                     if (castleHealth > 0 && tryAttack())
@@ -4769,8 +4700,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             let doubleCollisionRadius = 0.8;
             for (let { human: otherHuman } of allHumans)
             {
-                let { p: position } = otherHuman.node.t;
-                let dir = tmpCollisionCheckVec3.copyFrom(transform.p).s(position);
+                let position = otherHuman.node.P;
+                let dir = tmpCollisionCheckVec3.copyFrom(P).s(position);
                 let collisionResolveDistance = doubleCollisionRadius - dir.len;
                 if (collisionResolveDistance > 0)
                 {
@@ -4789,7 +4720,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 if (isEnemy)
                 {
                     UpdateGold(10);
-                    if (--requiredNumberOfEnemiesToKill === 0)
+                    if (--requiredNumberOfEnemiesToKill == 0)
                     {
                         nextLevelLoading = true;
                         FadeOutMusic();
@@ -4901,21 +4832,21 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     function CreateAbilityContainer(buttonText: string, description: string, onClick: () => void, cooldown?: number, cost?: number,
         customReadyText?: string, customCooldownText?: (cooldown: string) => string)
     {
-        let container = createElement("div");
-        let button = createElement("button");
-        let descriptionDiv = createElement("div");
+        let c = createElement("div");
+        let b = createElement("button");
+        let d = createElement("div");
 
-        container.className = "ability-container";
-        button.textContent = buttonText;
-        descriptionDiv.textContent = description;
+        c.className = "ability-container";
+        b.textContent = buttonText;
+        d.textContent = description;
 
-        container.appendChild(button);
-        container.appendChild(descriptionDiv);
+        c.appendChild(b);
+        c.appendChild(d);
         let onCooldown = false;
 
         let updateButtonDisabledState = () =>
         {
-            button.disabled = onCooldown || totalGold < (cost ?? 0);
+            b.disabled = onCooldown || totalGold < (cost ?? 0);
         };
 
         if (cooldown)
@@ -4924,8 +4855,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             let setReadyText = () => cooldownTextElement.textContent = customReadyText ?? `Can be used every ${cooldown} seconds.`;
             setReadyText();
 
-            container.appendChild(cooldownTextElement);
-            button.onclick = _ =>
+            c.appendChild(cooldownTextElement);
+            b.onclick = _ =>
             {
                 onCooldown = true;
                 updateButtonDisabledState();
@@ -4952,7 +4883,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         }
         else
         {
-            button.onclick = onClick;
+            b.onclick = onClick;
         }
 
         if (cost)
@@ -4960,7 +4891,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             onGoldChanged.push(updateButtonDisabledState);
         }
 
-        return { container, descriptionDiv, button };
+        return { container: c, descriptionDiv: d, button: b };
     }
 
     // abilities/upgrades
@@ -5037,7 +4968,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         foodText.textContent = (totalFood += delta).toString();
 
-        if (totalFood === 0)
+        if (totalFood == 0)
         {
             foodText.classList.add("danger");
         }
@@ -5067,7 +4998,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let upgrade = CreateAbilityContainer("Upgrade (30 gold)", "", () =>
         {
-            if (++upgradeLevel === 3)
+            if (++upgradeLevel == 3)
             {
                 upgrade.button.remove();
             }
@@ -5156,7 +5087,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let upgrade = CreateAbilityContainer("Upgrade (20 gold)", "", () =>
         {
-            if (++upgradeLevel === 3)
+            if (++upgradeLevel == 3)
             {
                 upgrade.button.remove();
             }
@@ -5195,30 +5126,17 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             let armorPercent = round(getUpgradeValue(armorUpgradeLevel) * 100);
             let damagePercent = round(getUpgradeValue(damageUpgradeLevel) * 100);
 
-            if (armorUpgradeLevel === 3)
-            {
-                armorUpgrade.descriptionDiv.textContent = `Friendly soldiers take ${armorPercent}% less damage. (3/3)`;
-            }
-            else
-            {
-                armorUpgrade.button.disabled = totalGold < 20;
-                armorUpgrade.descriptionDiv.textContent = `Reduces damage taken by friendly soldiers, by ${armorPercent}%. (${armorUpgradeLevel}/3)`;
-            }
+            armorUpgrade.button.disabled = totalGold < 20;
+            armorUpgrade.descriptionDiv.textContent = `Reduces damage taken by friendly soldiers, by ${armorPercent}%. (${armorUpgradeLevel}/3)`;
 
-            if (damageUpgradeLevel === 3)
-            {
-                damageUpgrade.descriptionDiv.textContent = `Friendly soldiers deal ${damagePercent}% more damage. (3/3)`;
-            }
-            else
-            {
-                damageUpgrade.button.disabled = totalGold < 20;
-                damageUpgrade.descriptionDiv.textContent = `Increases damage dealt by friendly soldiers, by ${damagePercent}%. (${damageUpgradeLevel}/3)`;
-            }
+            damageUpgrade.button.disabled = totalGold < 20;
+            damageUpgrade.descriptionDiv.textContent = `Increases damage dealt by friendly soldiers, by ${damagePercent}%. (${damageUpgradeLevel}/3)`;
+
         }
 
         let armorUpgrade = CreateAbilityContainer("Armor reinforcement (20 gold)", "", () =>
         {
-            if (++armorUpgradeLevel === 3)
+            if (++armorUpgradeLevel == 3)
             {
                 armorUpgrade.button.remove();
             }
@@ -5229,7 +5147,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let damageUpgrade = CreateAbilityContainer("Sharpened swords (20 gold)", "", () =>
         {
-            if (++damageUpgradeLevel === 3)
+            if (++damageUpgradeLevel == 3)
             {
                 damageUpgrade.button.remove();
             }
@@ -5267,7 +5185,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let upgrade = CreateAbilityContainer("Upgrade food production (20 gold)", "", () =>
         {
-            if (++upgradeLevel === 3)
+            if (++upgradeLevel == 3)
             {
                 upgrade.button.remove();
             }
@@ -5314,7 +5232,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             rangeUpgrade.button.disabled = totalGold < 20;
             rangeRadius = 12 + rangeUpgradeLevel * 4;
             rangeUpgrade.descriptionDiv.textContent = `Attack enemies in a ${rangeRadius} meter radius. (${rangeUpgradeLevel + 1}/3)`;
-            rangeIndicator.t.s.setValues(rangeRadius, 1, rangeRadius);
+            rangeIndicator.S.setValues(rangeRadius, 1, rangeRadius);
 
             damageUpgrade.button.disabled = totalGold < 10;
             damageMultiplier = (1.05 ** damageUpgradeLevel);
@@ -5324,7 +5242,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let rangeUpgrade = CreateAbilityContainer("Increase range by 3 meters (20 gold)", "", () =>
         {
-            if (++rangeUpgradeLevel === 2)
+            if (++rangeUpgradeLevel == 2)
             {
                 rangeUpgrade.button.remove();
             }
@@ -5334,7 +5252,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let damageUpgrade = CreateAbilityContainer("Increase damage done by 5% (10 gold)", "", () =>
         {
-            if (++damageUpgradeLevel === 3)
+            if (++damageUpgradeLevel == 3)
             {
                 damageUpgrade.button.remove();
             }
@@ -5349,7 +5267,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         onGoldChanged.push(UpdateValues);
 
         let archer = CreateHuman(false, true);
-        archer.node.t.p.y = 9;
+        archer.node.P.y = 9;
         node.a(archer.node);
         let audioNode = AttachAudioSource(archer.node);
 
@@ -5375,7 +5293,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             {
                 if (human.isEnemy)
                 {
-                    let distSqr = node.t.p.distanceSqr(human.node.t.p);
+                    let distSqr = node.P.distanceSqr(human.node.P);
                     if (distSqr < closestDistanceSqr)
                     {
                         closestDistanceSqr = distSqr;
@@ -5387,9 +5305,9 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             if (closestEnemy)
             {
                 // always turn towards the closest enemy, even if out of range (but only attack if it's close enough)
-                tmpDir.copyFrom(closestEnemy.node.t.p).s(node.t.p).r();
+                tmpDir.copyFrom(closestEnemy.node.P).s(node.P).r();
                 smoothedDir.lerp(tmpDir, 0.05).r();
-                archer.node.t.r.setFromAxisAngle(0, 1, 0, atan2(-smoothedDir.x, -smoothedDir.z));
+                archer.node.R.setFromAxisAngle(0, 1, 0, atan2(-smoothedDir.x, -smoothedDir.z));
 
                 if (attackTimer <= 0 && closestDistanceSqr < rangeRadius * rangeRadius)
                 {
@@ -5398,12 +5316,12 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                     BowShotSound(audioNode);
 
                     let srcPosition = archer.bow!.worldPosition;
-                    let targetPosition = closestEnemy.node.t.p.c();
+                    let targetPosition = closestEnemy.node.P.c();
                     targetPosition.y += 1.5;
                     let dir = targetPosition.c().s(srcPosition).r();
 
                     let projectile = new Mesh(arrowProjectileGeometry, { ...woodColor });
-                    projectile.t.r.setFromUnitVectors(NewVector3(0, 1, 0), dir);
+                    projectile.R.setFromUnitVectors(NewVector3(0, 1, 0), dir);
                     scene.a(projectile);
                     let duration = 0.1;
                     let elapsed = 0;
@@ -5413,7 +5331,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                         elapsed += fixedDeltaTime;
                         let t = elapsed / duration;
 
-                        projectile.t.p.lerpVectors(srcPosition, targetPosition, t);
+                        projectile.P.lerpVectors(srcPosition, targetPosition, t);
 
                         if (elapsed > duration)
                         {
@@ -5528,12 +5446,12 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             overlayTextDiv.textContent = "The enemy destroyed your castle...";
             startButton.textContent = "Try again";
         }
-        else if (level === 0)
+        else if (level == 0)
         {
             overlayTextDiv.textContent = "The enemy is attacking the city, you need to defend it!\nAre you ready?";
             startButton.textContent = "Let's go!";
         }
-        else if (level === 1)
+        else if (level == 1)
         {
             overlayTextDiv.textContent = "You won the battle, but the war is still far from over.\nThe enemy will be back very soon. You must prepare.";
             startButton.textContent = "I'm ready!";
@@ -5541,7 +5459,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             musicDurationSetterFn(5.5);
             setTimeout(() => musicDurationSetterFn(5), 10000);
         }
-        else if (level === 2)
+        else if (level == 2)
         {
             overlayTextDiv.textContent = "This is the final attack. The enemy is stronger than ever.\nCan you defend the city one last time?";
             startButton.textContent = "Let's do it!";
@@ -5598,10 +5516,10 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             let x = cos(t * TwoPI + wallRotation) * cityRadius;
             let y = sin(t * TwoPI + wallRotation) * cityRadius;
             let tower = Tower();
-            tower.t.p.setValues(-x, 0, -y);
+            tower.P.setValues(-x, 0, -y);
             AddLevelObject(tower);
 
-            if (i !== steps - 1)
+            if (i != steps - 1)
             {
                 let wall = Wall();
                 AddLevelObject(wall);
@@ -5609,8 +5527,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 let t = (i + 0.5) * castleWallLength / cityCircumference;
                 let x2 = cos(t * TwoPI + wallRotation) * wallPlacementRadius;
                 let y2 = sin(t * TwoPI + wallRotation) * wallPlacementRadius;
-                wall.t.p.setValues(-x2, 0, -y2);
-                wall.t.r.setFromAxisAngle(0, 1, 0, -atan2(y2, x2) - HalfPI);
+                wall.P.setValues(-x2, 0, -y2);
+                wall.R.setFromAxisAngle(0, 1, 0, -atan2(y2, x2) - HalfPI);
             }
         }
 
@@ -5618,8 +5536,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let castle = Castle();
         let castleX = 10;
         let castleY = -30;
-        castle.t.p.setValues(castleX, 0, castleY);
-        castle.t.r.setFromAxisAngle(0, 1, 0, -0.1);
+        castle.P.setValues(castleX, 0, castleY);
+        castle.R.setFromAxisAngle(0, 1, 0, -0.1);
         AddLevelObject(castle);
         let { setHealthPercent, healthBar, healthBarContainer } = CreateHealthBar(castle, 25);
         healthBar.style.backgroundColor = "#00ff00";
@@ -5647,7 +5565,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             if (isCastleDestroyed)
             {
                 let t = min((Scene.now - castleDestroyTime) / animationDuration, 1);
-                castle.t.p.y = -t * t * t * 25;
+                castle.P.y = -t * t * t * 25;
                 return t < 1;
             }
             else if (castleHealth <= 0)
@@ -5713,7 +5631,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             }
 
             let tree = TreeObject();
-            tree.t.p.setValues(x, 0, y);
+            tree.P.setValues(x, 0, y);
             AddLevelObject(tree);
         }
     }
@@ -5725,7 +5643,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         buildingInfoContainer.style.display = "none";
 
         let { bboxSize, cost } = buildingTemplates[buildingType];
-        buildingPlaceholder.t.s.copyFrom(bboxSize);
+        buildingPlaceholder.S.copyFrom(bboxSize);
         let buildingHalfSize2D = NewVector2(bboxSize.x, bboxSize.z).mulScalar(0.5);
 
         let groundPosition2D = NewVector2();
@@ -5774,7 +5692,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 }
             })();
 
-            ray.getPoint(hitDistance, building.t.p);
+            ray.getPoint(hitDistance, building.P);
             AddLevelObject(building);
 
             let buildStartTime = Scene.now;
@@ -5788,7 +5706,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 let p = 8;
                 let q = 1.3;
                 let x = max(1e-3, (p * t) ** q);
-                building.t.s.y = 1 - sin(x) / x * Smoothstep(1, 0, t);
+                building.S.y = 1 - sin(x) / x * Smoothstep(1, 0, t);
                 return originalT < 1;
             };
 
@@ -5851,21 +5769,21 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         {
             let ray = camera.getWorldRayFromMouseEvent(ev);
             let hitDistance = GroundPlaneLineIntersectionDistance(ray);
-            ray.getPoint(hitDistance, buildingPlaceholder.t.p);
+            ray.getPoint(hitDistance, buildingPlaceholder.P);
 
             let cityPadding = 8; // minimum build distance from the edge
 
             // ensure that the placeholder is inside the city
-            if (buildingPlaceholder.t.p.len > (currentLevelData.cityRadius - cityPadding))
+            if (buildingPlaceholder.P.len > (currentLevelData.cityRadius - cityPadding))
             {
-                buildingPlaceholder.t.p.r().mulScalar(currentLevelData.cityRadius - cityPadding);
+                buildingPlaceholder.P.r().mulScalar(currentLevelData.cityRadius - cityPadding);
             }
 
-            buildingPlaceholder.t.p.y -= 0.01; // to prevent z-fight
+            buildingPlaceholder.P.y -= 0.01; // to prevent z-fight
 
             scene.a(buildingPlaceholder); // only add to scene on mouse move, so that the position is correct
 
-            let { x, z } = buildingPlaceholder.t.p;
+            let { x, z } = buildingPlaceholder.P;
             groundPosition2D.setValues(x, z);
 
             currentBBoxMin.copyFrom(groundPosition2D).s(buildingHalfSize2D);
@@ -5969,7 +5887,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         globalFilterNode.frequency.linearRampToValueAtTime(200, actx.currentTime + 4);
     }
 
-    getElementById("loading")!.style.display = "none";
+    getElementById("lo")!.style.display = "none";
     LoadLevel(0, false);
 }
 
