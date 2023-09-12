@@ -1672,71 +1672,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
 
 
-    // scenegraph/audio.ts
-
-
-    // need to use setPosition/setPosition because firefox doesn't support the other method
-
-    // function UpdateAudioVector(x: AudioParam, y: AudioParam, z: AudioParam, v: Vector3)
-    // {
-    //     // need to update the audio params with a delay and with a transition, otherwise the audio will crackle
-    //     // a very small delay is not noticeable anyways
-    //     const delay = 0.02;
-    //     const now = actx.currentTime;
-    //     x.linearRampToValueAtTime(v.x, now + delay);
-    //     y.linearRampToValueAtTime(v.y, now + delay);
-    //     z.linearRampToValueAtTime(v.z, now + delay);
-    // }
-
-    let AttachAudioListener = (node: SceneNode) =>
-    {
-        let { listener } = actx;
-
-        node.onAfterRender.push(() =>
-        {
-            let worldPos = node.worldPosition;
-            let { u: up, f: forward } = node.dirs;
-
-            listener.setPosition(worldPos.x, worldPos.y, worldPos.z);
-            listener.setOrientation(forward.x, forward.y, forward.z, up.x, up.y, up.z);
-
-            // UpdateAudioVector(listener.positionX, listener.positionY, listener.positionZ, node.worldPosition);
-            // UpdateAudioVector(listener.forwardX, listener.forwardY, listener.forwardZ, forward);
-            // UpdateAudioVector(listener.upX, listener.upY, listener.upZ, up);
-        });
-    }
-
-    let AttachAudioSource = (node: SceneNode) =>
-    {
-        let panner = actx.createPanner();
-        let gain = actx.createGain();
-        gain.gain.value = 0.2;
-        panner.connect(gain).connect(globalTargetNode);
-        panner.refDistance = 10;
-
-        node.onAfterRender.push(() =>
-        {
-            let worldPos = node.worldPosition;
-            let forward = node.dirs.f;
-
-            panner.setPosition(worldPos.x, worldPos.y, worldPos.z);
-            panner.setOrientation(forward.x, forward.y, forward.z);
-            // UpdateAudioVector(panner.positionX, panner.positionY, panner.positionZ, node.worldPosition);
-            // UpdateAudioVector(panner.orientationX, panner.orientationY, panner.orientationZ, node.dirs.forward);
-        });
-
-        return panner;
-    }
-
-
-
-
-
-
-
-
-
-
 
     // scenegraph/scene.ts
 
@@ -2631,8 +2566,7 @@ vec2 gn(vec2 c){c*=float(${noiseFrequency});return vec2(fbm(c,5,10.,2.),fbm(c+ve
 float gv(vec2 c){return vD(c*${rowCount}.);}
 ${edgeBlend("gn", 0.2, "vec2", "gsn")}
 ${edgeBlend("gv", 0.01, "float", "gsv")}
-vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
-    ${voronoiPattern
+vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
                 ? `float d=smoothstep(float(${mortarSize}),float(${mortarSize + edgeThickness}),gsv(c));`
                 : `float rh=float(${rowHeight}),cw=float(${colWidth}),y=c.y/rh,x=c.x/cw,ox=floor(y)*float(${rowOffset}),iy=.5-float(${mortarSize})-n.x*float(${noiseScale1}),ay=iy-float(${edgeThickness}),ix=.5-(float(${mortarSize})-n.y*float(${noiseScale1}))*float(${invAspect}),ax=ix-float(${edgeThickness})*float(${invAspect}),d=min(smoothstep(ix,ax,abs(.5-fract(x+ox))),smoothstep(iy,ay,abs(.5-fract(y))));`
             }${isAlbedo
@@ -3107,35 +3041,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
 
     // game-2023/audio.ts
-
-
-    let SwordImpactSound = (target: AudioNode) =>
-    {
-        let when = actx.currentTime + 0.05;
-
-        let PlaySound = (freq: number, fadeOutDuration: number, volume: number) =>
-        {
-            let sourceNode = actx.createOscillator();
-            let startFreq = freq;
-            sourceNode.frequency.value = startFreq;
-
-            Drum(volume, when, sourceNode, false, 0, 0, 0.001, fadeOutDuration, 0.001, undefined, target);
-        }
-
-        PlaySound(6000, 0.1, 0.5);
-        PlaySound(5000, 0.9, 0.3);
-        PlaySound(4500, 0.3, 0.3);
-        PlaySound(3500, 0.4, 1);
-        PlaySound(1500, 1, 0.4);
-        HiHat(when, 3500, 0.13, target);
-    }
-
-    let BowShotSound = (target: AudioNode) =>
-    {
-        let when = actx.currentTime + 0.05;
-        Snare(when, 0.05, target);
-        Drum(0.3, when + 0.01, CreateNoiseNode(), false, 0, 0, 0.05, 0.5, 0.001, undefined, target);
-    }
 
     let StartMusic = () =>
     {
@@ -3682,8 +3587,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     cameraControl.updateTransform();
     scene.a(cameraControl);
 
-    AttachAudioListener(camera);
-
     let panButton = 1;
     let rotateButton = 2;
     let cameraPanning = false;
@@ -3839,7 +3742,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let roadTexture = BrickTexture(2048, 2048, 90, 90, 0.02, 0.5, 0.03, 0.4, 4, 0.2, true, 0.7, 1, [0.85, 0.85, 0.8], [0.5, 0.5, 0.5], 3);
     let roadMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.03) };
 
-    let groundMaterial: Material = { r: 0.3, g: 0.5, b: 0.3, a: 1, textureScale: NewVector3(0.2), roughness: 1, metallic: 0 };
+    let groundMaterial: Material = { r: 0.2, g: 0.5, b: 0.2, a: 1, textureScale: NewVector3(0.2), roughness: 1, metallic: 0 };
 
     let groundMesh = new Mesh(CreateBoxGeometry(500, 1, 500), groundMaterial);
     groundMesh.P.y = -0.5;
@@ -3942,9 +3845,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 human.health -= 10;
             };
         });
-
-        // audio
-        let audioNode = AttachAudioSource(node);
 
         // waypoints
         let castleWaypointIndex = 42;
@@ -4166,7 +4066,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                         : (1.05 ** totalDamageUpgrade);
 
                     targetEnemy!.health -= damagePerAttack * damageMultiplier;
-                    SwordImpactSound(audioNode);
                 }
             }
             else if (isEnemy && state == HumanBehaviorState.Stopped)
@@ -4175,7 +4074,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 if (castleHealth > 0 && tryAttack())
                 {
                     castleHealth -= damagePerAttack;
-                    SwordImpactSound(audioNode);
                 }
             }
             else
@@ -4692,7 +4590,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let archer = CreateHuman(false, true);
         archer.node.P.y = 9;
         node.a(archer.node);
-        let audioNode = AttachAudioSource(archer.node);
 
         let attackInterval = 2;
         let attackTimer = attackInterval;
@@ -4736,7 +4633,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 {
                     closestEnemy.health -= baseDamage * damageMultiplier;
                     attackTimer = attackInterval;
-                    BowShotSound(audioNode);
 
                     let srcPosition = archer.bow!.worldPosition;
                     let targetPosition = closestEnemy.node.P.c();
