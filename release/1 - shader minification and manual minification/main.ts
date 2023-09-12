@@ -2253,27 +2253,15 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
     let mouseToScreenPercent = (speed: number, mouseDelta: number) => mouseDelta * speed / window.innerHeight;
 
+    let minCameraControlTargetPosition = NewVector3(-120, 0, -120);
+    let maxCameraControlTargetPosition = NewVector3(120, 0, 120);
     class CameraControl extends SceneNode
     {
         camera: Camera;
 
-        panSpeed = 1;
-        rotateSpeed = 2;
-        zoomSpeed = 0.05;
-
-        // in radians
-        minPitch = -1.5707;
-        maxPitch = 1.5707;
-
-        minZoom = 1e-3;
-        maxZoom = 1e3;
-
-        minTargetPosition = NewVector3(-Infinity);
-        maxTargetPosition = NewVector3(Infinity);
-
         yaw = 0;
-        pitch = 0;
-        distanceFromTarget = 2;
+        pitch = 0.8;
+        distanceFromTarget = 50;
 
         constructor(camera: Camera)
         {
@@ -2286,7 +2274,8 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
         rotate(mouseDeltaX: number, mouseDeltaY: number)
         {
-            let speed = this.rotateSpeed * window.innerHeight / 1000;
+            let rotateSpeed = 2;
+            let speed = rotateSpeed * window.innerHeight / 1000;
             this.yaw += mouseToScreenPercent(speed, mouseDeltaX);
             this.pitch += mouseToScreenPercent(speed, mouseDeltaY);
             this.updateTransform();
@@ -2294,27 +2283,33 @@ precision highp float;uniform sampler2D a,D,K;uniform mat3 d;uniform bool p,I,H;
 
         pan(mouseDeltaX: number, mouseDeltaY: number)
         {
-            let { r: right, u: up } = this.camera.dirs;
+            let { r, u } = this.camera.dirs;
+            let panSpeed = 1.5;
 
-            let speed = this.panSpeed * window.innerHeight / 1000;
+            let speed = panSpeed * window.innerHeight / 1000;
             let currentX = mouseToScreenPercent(this.distanceFromTarget * speed, mouseDeltaX);
             let currentY = mouseToScreenPercent(this.distanceFromTarget * speed, mouseDeltaY);
 
-            let offset = right.mulScalar(currentX).s(up.mulScalar(currentY));
+            let offset = r.mulScalar(currentX).s(u.mulScalar(currentY));
             this.P.s(offset);
-            this.P.clamp(this.minTargetPosition, this.maxTargetPosition);
+            this.P.clamp(minCameraControlTargetPosition, maxCameraControlTargetPosition);
         }
 
         zoom(mouseWheelDelta: number)
         {
-            let newScale = this.distanceFromTarget * (1 + sign(mouseWheelDelta) * this.zoomSpeed);
-            this.distanceFromTarget = Clamp(newScale, this.minZoom, this.maxZoom);
+            let minZoom = 10;
+            let maxZoom = 200;
+            let zoomSpeed = 0.07;
+            let newScale = this.distanceFromTarget * (1 + sign(mouseWheelDelta) * zoomSpeed);
+            this.distanceFromTarget = Clamp(newScale, minZoom, maxZoom);
             this.updateTransform();
         }
 
         updateTransform()
         {
-            this.pitch = Clamp(this.pitch, this.minPitch, this.maxPitch);
+            let minPitch = 0.3;
+            let maxPitch = HalfPI;
+            this.pitch = Clamp(this.pitch, minPitch, maxPitch);
             let horizontalRotation = NewQuaternionFromAxisAngle(0, 1, 0, -this.yaw);
             let verticalRotation = NewQuaternionFromAxisAngle(1, 0, 0, -this.pitch);
             let rotation = horizontalRotation.multiply(verticalRotation);
@@ -3437,15 +3432,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});${voronoiPattern
 
     let camera = new Camera();
     let cameraControl = new CameraControl(camera);
-    cameraControl.minPitch = 0.3;
-    cameraControl.zoomSpeed = 0.07;
-    cameraControl.panSpeed = 1.5;
-    cameraControl.pitch = 0.8;
-    cameraControl.minTargetPosition.setValues(-120, 0, -120);
-    cameraControl.maxTargetPosition.setValues(120, 0, 120);
-    cameraControl.minZoom = 10;
-    cameraControl.maxZoom = 200;
-    cameraControl.distanceFromTarget = 50;
     cameraControl.updateTransform();
     scene.a(cameraControl);
 
