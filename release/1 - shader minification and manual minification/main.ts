@@ -76,9 +76,17 @@ let LoadEverything = () =>
         };
 
 
-
     let f32a = Float32Array;
     let u32a = Uint32Array;
+
+    let RemoveItemFromArray = <T>(arr: T[], item: T) =>
+    {
+        let idx = arr.indexOf(item);
+        if (idx > -1)
+        {
+            arr.splice(idx, 1);
+        }
+    }
 
 
     /** @noinline */
@@ -1104,7 +1112,7 @@ let LoadEverything = () =>
 
     const webglDebugMode = false; // using a const bool so relevant parts can be easily removed by the minifier
 
-    function CreateShader(shaderType: number, shaderSource: string)
+    let CreateShader = (shaderType: number, shaderSource: string) =>
     {
         let shaderObj = gl.createShader(shaderType)!;
 
@@ -1138,7 +1146,7 @@ let LoadEverything = () =>
         return shaderObj;
     }
 
-    function CreateAndLinkProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader)
+    let CreateAndLinkProgram = (vertexShader: WebGLShader, fragmentShader: WebGLShader) =>
     {
         let program = gl.createProgram()!;
 
@@ -1168,7 +1176,7 @@ let LoadEverything = () =>
         return program;
     }
 
-    function CreateWebglProgram(vertexShaderSource: string, fragmentShaderSource: string, ...uniforms: string[])
+    let CreateWebglProgram = (vertexShaderSource: string, fragmentShaderSource: string, ...uniforms: string[]) =>
     {
         let vertShaderObj = CreateShader(gl_VERTEX_SHADER, vertexShaderSource);
         let fragShaderObj = CreateShader(gl_FRAGMENT_SHADER, fragmentShaderSource);
@@ -1209,7 +1217,7 @@ let LoadEverything = () =>
     }
 
 
-    function CreateWebglCanvas()
+    let CreateWebglCanvas = () =>
     {
         let vertexShader = `#version 300 es
 in vec2 p;uniform float a;out vec2 pc;void main(){pc=(p+vec2(1))*.5;gl_Position=vec4(p,0,1);}`;
@@ -1223,8 +1231,8 @@ in vec2 p;uniform float a;out vec2 pc;void main(){pc=(p+vec2(1))*.5;gl_Position=
 
         let framebuffer = gl.createFramebuffer()!;
 
-        function DrawWithShader(shaderFunctions: string[], shaderMainImage: string, width: number, height: number,
-            inputTextures: WebGLTexture[], resultTexture: WebGLTexture)
+        let DrawWithShader = (shaderFunctions: string[], shaderMainImage: string, width: number, height: number,
+            inputTextures: WebGLTexture[], resultTexture: WebGLTexture) =>
         {
             // size setup
             globalCanvas.width = width;
@@ -1276,7 +1284,7 @@ void main(){${shaderMainImage}}`;
             gl_bindTexture(gl_TEXTURE_2D, null);
         }
 
-        function CreateTexture(width: number, height: number)
+        let CreateTexture = (width: number, height: number) =>
         {
             let tex = gl.createTexture()!;
             gl_bindTexture(gl_TEXTURE_2D, tex);
@@ -1400,7 +1408,7 @@ ${returnType} ${edgeBlendFnName}(vec2 u){vec2 w=vec2(${blend}),s=1.-w,o=u*s,b=cl
 
 
     let standardMaterialProgram: ReturnType<typeof CreateWebglProgram> | null = null;
-    function GetOrCreateStandardMaterial()
+    let GetOrCreateStandardMaterial = () =>
     {
         if (!standardMaterialProgram)
         {
@@ -1437,7 +1445,7 @@ precision highp float;precision highp sampler2DShadow;uniform sampler2D d,a,w;un
 
 
     let shadowProgram: ReturnType<typeof CreateWebglProgram> | null = null;
-    function GetOrCreateShadowProgram()
+    let GetOrCreateShadowProgram = () =>
     {
         if (!shadowProgram)
         {
@@ -1475,7 +1483,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         n: Float32Array; // normals
     }
 
-    function JoinGeometries(...geometries: Geometry[]): Geometry
+    let JoinGeometries = (...geometries: Geometry[]): Geometry =>
     {
         let vertices: number[] = [];
         let triangles: number[] = [];
@@ -1492,7 +1500,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         return { v: new f32a(vertices), t: new u32a(triangles), n: new f32a(normals) };
     }
 
-    function TransformGeometry(geometry: Geometry, transform: Matrix4x4)
+    let TransformGeometry = (geometry: Geometry, transform: Matrix4x4) =>
     {
         let { v: vertices, n: normals } = geometry;
         let normalTransform = transform.topLeft3x3().invert().transpose();
@@ -1525,12 +1533,9 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
     // @ts-ignore
     let structuredClone_ = structuredClone;
-    function CloneGeometry(geometry: Geometry): Geometry
-    {
-        return structuredClone_(geometry)
-    }
+    let CloneGeometry = (geometry: Geometry): Geometry => structuredClone_(geometry)
 
-    function CreateBoxGeometry(width = 1, height = 1, depth = 1): Geometry
+    let CreateBoxGeometry = (width = 1, height = 1, depth = 1): Geometry =>
     {
         let halfWidth = width / 2;
         let halfHeight = height / 2;
@@ -1581,7 +1586,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         return { v: vertices, t: triangles, n: normals };
     }
 
-    function CreateSphereGeometry(radius = 1): Geometry
+    let CreateSphereGeometry = (radius = 1): Geometry =>
     {
         let horizontalSubdivisions = 16, verticalSubdivisions = 24;
 
@@ -1635,7 +1640,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         CreateCylinderGeometry(height, radius, radius)
     );
 
-    function CreateCylinderGeometry(height: number, bottomRadius: number, topRadius: number, subdivisions = 16): Geometry
+    let CreateCylinderGeometry = (height: number, bottomRadius: number, topRadius: number, subdivisions = 16): Geometry =>
     {
         let halfHeight = height / 2;
 
@@ -1697,7 +1702,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         return { v: new f32a(vertices), n: new f32a(normals), t: new u32a(triangles) };
     }
 
-    function CreateExtrudedGeometryConvex(polyline: number[], extrudeThickness: number): Geometry
+    let CreateExtrudedGeometryConvex = (polyline: number[], extrudeThickness: number): Geometry =>
     {
         // triangulated from the first point in the polygon, so it's only guaranteed to work for convex polygons
         // polyline is in the xy plane, extruded in the z direction
@@ -1763,7 +1768,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         return { v: new f32a(vertices), t: new u32a(triangles), n: new f32a(normals) };
     }
 
-    function FlatShade(geometry: Geometry)
+    let FlatShade = (geometry: Geometry) =>
     {
         // separates all triangles, and calculates flat normals
 
@@ -1828,7 +1833,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     //     z.linearRampToValueAtTime(v.z, now + delay);
     // }
 
-    function AttachAudioListener(node: SceneNode)
+    let AttachAudioListener = (node: SceneNode) =>
     {
         let { listener } = actx;
 
@@ -1846,7 +1851,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         });
     }
 
-    function AttachAudioSource(node: SceneNode)
+    let AttachAudioSource = (node: SceneNode) =>
     {
         let panner = actx.createPanner();
         let gain = actx.createGain();
@@ -1898,7 +1903,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     }
 
     type OnUpdateCallback = (node: SceneNode) => (unknown | false); // the callback can return false to remove itself
-    const fixedDeltaTime = 1 / 60.001;
+    let fixedDeltaTime = 1 / 60.001;
     let accumulatedFixedDeltaTime = fixedDeltaTime / 2;
 
     class SceneNode
@@ -1941,6 +1946,8 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
                 this.c.add(n);
                 n.p = this;
             });
+
+            return this;
         }
 
         r(node: SceneNode) // remove
@@ -2519,6 +2526,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
             this.setTexture(MeshTextureSlot.Albedo, textures.albedo);
             this.setTexture(MeshTextureSlot.Normal, textures.normalMap);
             this.setTexture(MeshTextureSlot.Roughness, textures.roughness);
+            return this;
         }
 
         render(mode: RenderMode, viewMatrices: ViewMatrices, worldMatrix: Matrix4x4, light: DirectionalLight)
@@ -2700,11 +2708,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
     // texture-generator/normal-map.ts
 
-    function NormalMapShader(intensity: number, invert = false)
-    {
-        intensity = invert ? -intensity : intensity;
-        return `vec3 o=vec3(-1,1,0);oc=vec4(normalize(vec3(float(${intensity})*(texture(t0,pc+ps*o.xz).x-texture(t0,pc+ps*o.yz).x),float(${intensity})*(texture(t0,pc+ps*o.zx).x-texture(t0,pc+ps*o.zy).x),ps.y*100.))*.5+.5,1);`;
-    }
+    let NormalMapShader = (intensity: number) => `vec3 o=vec3(-1,1,0);oc=vec4(normalize(vec3(float(${intensity})*(texture(t0,pc+ps*o.xz).x-texture(t0,pc+ps*o.yz).x),float(${intensity})*(texture(t0,pc+ps*o.zx).x-texture(t0,pc+ps*o.zy).x),ps.y*100.))*.5+.5,1);`;
 
 
 
@@ -2717,10 +2721,6 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
     // texture-generator/noise/voronoi.ts
 
     // https://iquilezles.org/www/articles/smoothvoronoi/smoothvoronoi.htm
-
-    // yzw - cell color, x - distance to cell
-    /** @noinline */
-    let Voronoi = `vec4 voro(vec2 i,float s){vec2 v=floor(i),f=fract(i);vec4 d=vec4(8,0,0,0);for(int w=-2;w<=2;++w)for(int x=-2;x<=2;++x){vec2 h=vec2(x,w),P=h2(v+h);float O=length(h-f+P);vec3 m=.5+.5*sin(h1(dot(v+h,vec2(7,113)))*2.5+3.5+vec3(2,3,0));m*=m;float M=smoothstep(0.,1.,.5+.5*(d.x-O)/s);d.x=mix(d.x,O,M)-M*(1.-M)*s/(1.+3.*s);d.yzw=mix(d.yzw,m,M)-M*(1.-M)*s/(1.+3.*s);}return d;}`;
 
     // x - cell color, y - distance to cell
     /** @noinline */
@@ -2742,7 +2742,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
 
     // texture-generator/impl/brick.ts
 
-    function BrickTexture(w: number, h: number,
+    let BrickTexture = (w: number, h: number,
         rowCount = 4, // or voronoi scale for voronoi mode
         colCount = 2,
         mortarSize = 0.03,
@@ -2755,7 +2755,7 @@ precision highp float;uniform sampler2D t;in vec2 v;void main(){if(texture(t,v).
         minRoughness = 0.5, maxRoughness = 1.0,
         baseColor: [number, number, number] = [0.3, 0.22, 0.07],
         mortarColor: [number, number, number] = [0.8, 0.75, 0.7],
-        normalIntensity = 0.5): TextureCollection
+        normalIntensity = 0.5): TextureCollection =>
     {
         let rowHeight = 1 / rowCount;
         let colWidth = 1 / colCount;
@@ -2812,87 +2812,11 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
 
 
-    // texture-generator/impl/dirt.ts
-
-    function DirtTexture(): TextureCollection
-    {
-        let w = 1024, h = 1024, normalIntensity = 1;
-
-        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*50.;float q=rp(0.,1.,.3,1.,fbm(c*1.5,3,1.,2.)),h=se(1.-se(1.-vD(vec2(1)-vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*4.)*40.)*sr(.45,.52,fbm(c*2.,3,1.,2.)))*q;${isAlbedo
-            ? `return cr(vec4(0,0,0,1),.08,vec4(.7,.9,.4,1),.67,q)*vec4(h,h,h,1);`
-            : `return vec4(vec3(rp(0.,1.,.7,1.,h)),1);`
-            }}`;
-
-        let mainImage = `oc=eb(pc);`;
-
-        let albedo = ca.CreateTexture(w, h);
-        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiDistance, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
-
-        let heightMap = ca.CreateTexture(w, h);
-        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiDistance, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
-
-        let normalMap = ca.CreateTexture(w, h);
-        ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
-
-        return {
-            albedo,
-            roughness: heightMap,
-            normalMap
-        };
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // texture-generator/impl/metal.ts
-
-    function MetalTexture(): TextureCollection
-    {
-        let w = 1024, h = 1024, normalIntensity = 0.2;
-
-        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){vec2 c=u*5.,n=vec2(fbm(c,5,1.,2.),fbm(c+vec2(1.23,4.56),5,1.,2.))*5.;float v=sqrt(voro(c*5.+n,.01).y)*1.5-n.x;${isAlbedo
-            ? `return vec4(1);`
-            : `return vec4(vec3(rp(0.,1.,.5,1.,rp(0.,1.,.9,1.,v))),1);`
-            }}`;
-
-        let mainImage = `oc=eb(pc);`;
-
-        let albedo = ca.CreateTexture(w, h);
-        ca.DrawWithShader([ShaderUtilsWithFBM, Voronoi, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
-
-        let heightMap = ca.CreateTexture(w, h);
-        ca.DrawWithShader([ShaderUtilsWithFBM, Voronoi, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
-
-        let normalMap = ca.CreateTexture(w, h);
-        ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
-
-        return {
-            albedo,
-            roughness: heightMap,
-            normalMap
-        };
-    }
-
-
-
-
-
-
-
-
-
 
 
     // texture-generator/impl/plastic.ts
 
-    function PlasticTexture(): TextureCollection
+    let PlasticTexture = (): TextureCollection =>
     {
         let w = 1024, h = 1024, normalIntensity = 5;
 
@@ -2929,44 +2853,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
 
 
-    // texture-generator/impl/wood.ts
-
-    function WoodTexture(): TextureCollection
-    {
-        let w = 2048, h = 2048, normalIntensity = 0.5;
-
-        let shader = (isAlbedo: boolean) => `vec4 gc(vec2 u){u.y*=.1;float n=rp(.1,.6,0.,1.,fbm(voro(u*15.,1.5)*vec2(10,3),4,10.,3.));${isAlbedo
-            ? `return vec4(n<.65?cr3(vec3(0),.35,vec3(.55,.35,.2),.65,n):n<.85?cr3(vec3(.55,.35,.2),.65,vec3(.75,.55,.45),.85,n):cr3(vec3(.75,.55,.45),.85,vec3(.75,.6,.5),.9,n),1);`
-            : `return vec4(vec3(mix(.5,1.,smoothstep(.4,.8,n))),1);`
-            }}`;
-
-        let mainImage = `oc=eb(pc);`;
-
-        let albedo = ca.CreateTexture(w, h);
-        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiGrayscale, shader(true), edgeBlend("gc")], mainImage, w, h, [], albedo);
-
-        let heightMap = ca.CreateTexture(w, h);
-        ca.DrawWithShader([ShaderUtilsWithFBM, VoronoiGrayscale, shader(false), edgeBlend("gc")], mainImage, w, h, [], heightMap);
-
-        let normalMap = ca.CreateTexture(w, h);
-        ca.DrawWithShader([], NormalMapShader(normalIntensity), w, h, [heightMap], normalMap);
-
-        return {
-            albedo,
-            roughness: heightMap,
-            normalMap
-        };
-    }
-
-
-
-
-
-
-
-
-
-
     let woodColor = { r: 0.3, g: 0.23, b: 0.05, a: 1 };
     let whiteColor = { r: 1, g: 1, b: 1, a: 1 };
 
@@ -2975,7 +2861,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     // game-2023/buildings.ts
 
 
-    function InitializeBuildingData()
+    let InitializeBuildingData = () =>
     {
         let defaultMaterial: Material = {
             ...whiteColor,
@@ -2988,8 +2874,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             [1, 1, 1],
             undefined,
             3);
-
-        let woodTexture = WoodTexture();
 
         let houseRoofTexture = BrickTexture(1024, 1024, 1, 8, 0.01, 0, 0.05, 0.05, 1, 0.05, false, 0.5, 0.8, [1, 1, 1], [1, 1, 1], 2);
 
@@ -3014,9 +2898,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         ], 7.5);
 
         let houseDoorGeometry = CreateBoxGeometry(1.2, 2.2, 0.1);
-        let houseWindowGeometry = CreateBoxGeometry(0.1, 1, 0.8);
 
-        function House(isBlacksmith: boolean)
+        let House = (isBlacksmith: boolean) =>
         {
             /** @noinline */
             let randAround0 = (size: number) => (random() - 0.5) * size;
@@ -3032,38 +2915,23 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 textureOffset: NewVector3(0.5, 0.5, 0),
                 textureBlendSharpness: 10
             });
-            let door = new Mesh(houseDoorGeometry, { ...defaultMaterial, textureScale: NewVector3(0.5) });
-
-            let windowMaterial: Material = { ...defaultMaterial, r: 0.2, g: 0.2, b: 0.2, a: 1, roughness: 0.2 };
-            let window0 = new Mesh(houseWindowGeometry, windowMaterial);
-            let window1 = new Mesh(houseWindowGeometry, windowMaterial);
-            let window2 = new Mesh(houseWindowGeometry, windowMaterial);
+            let door = new Mesh(houseDoorGeometry, { r: 0.55, g: .35, b: 0.2, a: 1, textureScale: NewVector3(0.5) });
 
             base.setTextures(greyBrickTexture);
-            door.setTextures(woodTexture);
             roof.setTextures(houseRoofTexture);
 
             door.P.setValues(0, 2.2 * 0.5, -7.5 * 0.5);
-            window0.P.setValues(2.4, 1.8, -2);
-            window1.P.setValues(2.4, 1.8, 2);
-            window2.P.setValues(-2.4, 1.8, 1);
 
             let group = new SceneNode();
-            group.a(base, roof, door, window0, window1, window2);
             group.R.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2));
 
             if (isBlacksmith)
             {
-                base.material.r = 0.6;
-                base.material.g = 0.6;
-                base.material.b = 0.6;
-
-                roof.material.r = 0.2;
-                roof.material.g = 0.2;
-                roof.material.b = 0.2;
+                base.material.r = base.material.g = base.material.b = 0.6;
+                roof.material.r = roof.material.g = roof.material.b = 0.2;
             }
 
-            return group;
+            return group.a(base, roof, door);
         }
 
         let windmillRoofTexture = PlasticTexture();
@@ -3072,13 +2940,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let windmillRoofHeight = 2.5;
         let windmillBaseGeometry = CreateCylinderGeometry(windmillHeight, 4, 3, 32);
         let windmillRoofGeometry = CreateCylinderGeometry(windmillRoofHeight, 3.2, 0, 32);
-        let windmillBladeGeometry = (() =>
-        {
-            let cylinder = CreateCylinderGeometry(5, 0.2, 0.2);
-            TransformGeometry(cylinder, NewMatrix4x4Compose(NewVector3(0, 0, 2), NewQuaternionFromAxisAngle(1, 0, 0, HalfPI), NewVector3(1)));
-
-            return JoinGeometries(cylinder, CreateBoxGeometry(0.3, 12, 0.3), CreateBoxGeometry(12, 0.3, 0.3));
-        })();
+        let windmillBladeGeometry = JoinGeometries(
+            TransformGeometry(
+                CreateCylinderGeometry(5, 0.2, 0.2),
+                NewMatrix4x4Compose(NewVector3(0, 0, 2), NewQuaternionFromAxisAngle(1, 0, 0, HalfPI), NewVector3(1))
+            ),
+            CreateBoxGeometry(0.3, 12, 0.3),
+            CreateBoxGeometry(12, 0.3, 0.3)
+        );
 
         let windmillFieldGeometry = (() =>
         {
@@ -3136,50 +3005,43 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             return JoinGeometries(cloth0, cloth1, cloth2, cloth3);
         })();
 
-        function Windmill()
+        let Windmill = () =>
         {
             let base = new Mesh(windmillBaseGeometry, { ...defaultMaterial, textureScale: NewVector3(0.75), textureBlendSharpness: 100 });
             let roof = new Mesh(windmillRoofGeometry, { r: 0.4, g: 0.4, b: 0.4, a: 1, textureBlendSharpness: 100 });
-            let blades = new Mesh(windmillBladeGeometry, defaultMaterial);
+            let blades = new Mesh(windmillBladeGeometry, { r: 0.5, g: 0.3, b: 0.2, a: 1 });
             let bladesCloth = new Mesh(windmillBladeClothGeometry, defaultMaterial);
-            let door = new Mesh(houseDoorGeometry, { ...defaultMaterial, textureScale: NewVector3(0.5) });
             let field = new Mesh(windmillFieldGeometry, { r: 1, g: 0.9, b: 0, a: 1, metallic: 0, roughness: 0.9 });
 
             base.setTextures(greyBrickTexture);
             roof.setTextures(windmillRoofTexture);
-            blades.setTextures(woodTexture);
-            door.setTextures(woodTexture);
 
             base.P.y = windmillHeight / 2;
             roof.P.y = windmillHeight + windmillRoofHeight / 2;
-            door.P.setValues(3.85, 2.2 * 0.5, 0);
-            door.R.setFromAxisAngle(0, 1, 0, HalfPI).multiply(NewQuaternionFromAxisAngle(1, 0, 0, -0.13));
             field.P.z = -5;
 
             let bladesContainer = new SceneNode();
             bladesContainer.P.setValues(0, 8.5, -4);
 
-            bladesContainer.a(blades);
-            bladesContainer.a(bladesCloth);
+            bladesContainer.a(blades, bladesCloth);
 
             let group = new SceneNode();
-            group.a(base, roof, bladesContainer, door, field);
+            group.a(base, roof, bladesContainer, field);
 
             let timeOffset = random() * HalfPI;
             bladesContainer.onUpdate.push(n => n.R.setFromAxisAngle(0, 0, 1, Scene.now * 0.1 + timeOffset));
 
             let pivot = new SceneNode();
-            pivot.a(group);
             group.P.z = 10.5;
             pivot.R.setFromAxisAngle(0, 1, 0, HalfPI);
-            return pivot;
+            return pivot.a(group);
         }
 
         let towerBaseHeight = 8;
         let towerTopHeight = 1;
         let towerTopRadius = 2.4;
 
-        function CreateTowerTopSide(angle: number)
+        let CreateTowerTopSide = (angle: number) =>
         {
             let thickness = 0.4;
             let length = 1.4;
@@ -3203,7 +3065,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             ...[1, 3, 5, 7, 9, 11].map(a => CreateTowerTopSide(PI / 12 + PI / 6 * a))
         );
 
-        function Tower()
+        let Tower = () =>
         {
             let tower = new Mesh(towerGeometry, { r: 0.8, g: 0.8, b: 0.8, a: 1, textureScale: NewVector3(0.75), textureBlendSharpness: 100 });
             tower.setTextures(greyBrickTexture);
@@ -3221,32 +3083,25 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 CreateBoxGeometry(1.8, 0.8, 0.4), (idx - (count - 1) / 2) * wallTopSpacing, wallHeight + 0.8 / 2, 1.4 - 0.4 / 2
             ));
 
-        function WallBaseGeometry(length: number)
-        {
-            return RotateGeometryWithAxisAngle(
-                CreateExtrudedGeometryConvex([
-                    -wallHalfThickness, wallHeight,
-                    wallHalfThickness + wallTopExtraThickness, wallHeight,
-                    wallHalfThickness + wallTopExtraThickness, wallHeight - 1,
-                    wallHalfThickness, wallHeight - 2,
-                    wallHalfThickness, 0,
-                    -wallHalfThickness, 0
-                ], length),
-                0, 1, 0, NegHalfPI
-            );
-        }
+        let WallBaseGeometry = (length: number) => RotateGeometryWithAxisAngle(
+            CreateExtrudedGeometryConvex([
+                -wallHalfThickness, wallHeight,
+                wallHalfThickness + wallTopExtraThickness, wallHeight,
+                wallHalfThickness + wallTopExtraThickness, wallHeight - 1,
+                wallHalfThickness, wallHeight - 2,
+                wallHalfThickness, 0,
+                -wallHalfThickness, 0
+            ], length),
+            0, 1, 0, NegHalfPI
+        );
 
         let wallGeometry = JoinGeometries(
             WallBaseGeometry(wallLength),
             ...GenerateWallTop(17)
         );
 
-        function Wall()
-        {
-            let wall = new Mesh(wallGeometry, { r: 0.8, g: 0.8, b: 0.8, a: 1, textureScale: NewVector3(0.75), textureBlendSharpness: 100 });
-            wall.setTextures(greyBrickTexture);
-            return wall;
-        }
+        let Wall = () => new Mesh(wallGeometry, { r: 0.8, g: 0.8, b: 0.8, a: 1, textureScale: NewVector3(0.75), textureBlendSharpness: 100 })
+            .setTextures(greyBrickTexture);
 
         let castleWallLength = 14;
         let halfCastleWallLength = castleWallLength / 2;
@@ -3332,7 +3187,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             1.5, 4
         ], 0.2);
 
-        function Castle()
+        let Castle = () =>
         {
             let group = new SceneNode();
             let walls = new Mesh(allCastleWallsAndTowers, { r: 0.6, g: 0.6, b: 0.6, a: 1, textureScale: NewVector3(0.75), textureBlendSharpness: 100 });
@@ -3345,19 +3200,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
                 textureBlendSharpness: 1
             });
 
-            let door = new Mesh(castleDoorGeometry, { r: 0.7, g: 0.7, b: 0.7, a: 1, textureScale: NewVector3(0.5) });
+            let door = new Mesh(castleDoorGeometry, { r: 0.7 * 0.55, g: 0.7 * 0.35, b: 0.7 * 0.2, a: 1, textureScale: NewVector3(0.5) });
 
             walls.setTextures(greyBrickTexture);
             roofs.setTextures(windmillRoofTexture);
-            door.setTextures(woodTexture);
 
             door.P.z = castleWallLength / 2 + wallHalfThickness;
 
-            group.a(walls);
-            group.a(roofs);
-            group.a(door);
-
-            return group;
+            return group.a(walls, roofs, door);
         }
 
         let churchTowerBaseHeight = 12;
@@ -3397,7 +3247,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             TranslateGeometry(CloneGeometry(churchWindowGeometry), -2.5, 8, -10),
         );
 
-        function Church()
+        let Church = () =>
         {
             let base = new Mesh(churchBaseGeometry, defaultMaterial);
             let roofMaterial: Material = {
@@ -3421,9 +3271,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             group.a(base, roof, towerRoof, windows);
             group.P.z += 2.5;
             let pivot = new SceneNode();
-            pivot.a(group)
             pivot.R.setFromAxisAngle(0, 1, 0, PI / (random() < 0.5 ? -2 : 2) + HalfPI);
-            return pivot;
+            return pivot.a(group);
         }
 
         return {
@@ -3465,11 +3314,11 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     // game-2023/audio.ts
 
 
-    function SwordImpactSound(target: AudioNode)
+    let SwordImpactSound = (target: AudioNode) =>
     {
         let when = actx.currentTime + 0.05;
 
-        function PlaySound(freq: number, fadeOutDuration: number, volume: number)
+        let PlaySound = (freq: number, fadeOutDuration: number, volume: number) =>
         {
             let sourceNode = actx.createOscillator();
             let startFreq = freq;
@@ -3486,14 +3335,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         HiHat(when, 3500, 0.13, target);
     }
 
-    function BowShotSound(target: AudioNode)
+    let BowShotSound = (target: AudioNode) =>
     {
         let when = actx.currentTime + 0.05;
         Snare(when, 0.05, target);
         Drum(0.3, when + 0.01, CreateNoiseNode(), false, 0, 0, 0.05, 0.5, 0.001, undefined, target);
     }
 
-    function StartMusic()
+    let StartMusic = () =>
     {
         let scheduledDuration = actx.currentTime + 0.1;
         let scheduledCount = 0;
@@ -3644,16 +3493,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         TranslateGeometry(CreateCylinderGeometry(0.14, 0.015, 0.015), 0, -0.07, 0)
     );
 
-    function SwordObject()
+    let SwordObject = () =>
     {
         let group = new SceneNode();
 
         let blade = new Mesh(swordBladeGeometry, { r: 4, g: 4, b: 4, a: 1, metallic: 0.8, roughness: 0.4 });
         let handle = new Mesh(swordHandleGeometry, { ...woodColor, metallic: 0, roughness: 0.8 });
 
-        group.a(blade);
-        group.a(handle);
-        return group;
+        return group.a(blade, handle);
     }
 
 
@@ -3667,16 +3514,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     let bowStringGeometry = TranslateGeometry(CreateCylinderGeometry(0.75, 0.005, 0.005), 0, 0, 0.14);
 
-    function BowObject()
+    let BowObject = () =>
     {
         let group = new SceneNode();
 
         let bow = new Mesh(bowGeometry, { ...woodColor });
         let bowString = new Mesh(bowStringGeometry, { ...whiteColor });
 
-        group.a(bow);
-        group.a(bowString);
-        return group;
+        return group.a(bow, bowString);
     }
 
 
@@ -3691,7 +3536,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         TranslateGeometry(CreateCylinderGeometry(0.8, 0.8 * 0.8, 0.02), 0, 4.3, 0),
     );
 
-    function TreeObject()
+    let TreeObject = () =>
     {
         // no trunk, just floating leaves, to save draw calls
         let tree = new Mesh(treeLeavesGeometry, { r: 0, g: 0.4 + random() * 0.4, b: 0.2 * random(), a: 1 });
@@ -3721,37 +3566,32 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
 
     let defaultMaterial: Material = { ...whiteColor, metallic: 0.6, roughness: 0.2, textureScale: NewVector3(5), textureBlendSharpness: 20 };
-    let metalTexture = MetalTexture();
 
     let headGeometry = CreateSphereGeometry(0.025);
 
     let bodyGeometry = CreateCapsuleGeometry(0.3, 0.2);
     let lowerBodyGeometry = CreateCylinderGeometry(0.5, 0.3, 0.25);
 
-    let upperLegGeometry = CreateCylinderGeometry(0.4, 0.08, 0.1);
-    let lowerLegGeometry = CreateCylinderGeometry(0.4, 0.07, 0.1);
+    let upperLegGeometry = TranslateGeometry(CreateCylinderGeometry(0.4, 0.08, 0.1), 0, -0.2, 0);
+    let lowerLegGeometry = TranslateGeometry(CreateCylinderGeometry(0.4, 0.07, 0.1), 0, -0.2, 0);
 
-    TranslateGeometry(upperLegGeometry, 0, -0.2, 0);
-    TranslateGeometry(lowerLegGeometry, 0, -0.2, 0);
+    let footGeometry = RotateGeometryWithAxisAngle(
+        CreateExtrudedGeometryConvex([
+            0.08, 0,
+            -0.22, 0,
+            -0.22, 0.035,
+            -0.20, 0.05,
+            -0.03, 0.1,
+            0.05, 0.1,
+            0.08, 0.03
+        ], 0.14),
+        0, 1, 0, NegHalfPI
+    );
 
-    let footGeometry = CreateExtrudedGeometryConvex([
-        0.08, 0,
-        -0.22, 0,
-        -0.22, 0.035,
-        -0.20, 0.05,
-        -0.03, 0.1,
-        0.05, 0.1,
-        0.08, 0.03
-    ], 0.14);
-    RotateGeometryWithAxisAngle(footGeometry, 0, 1, 0, NegHalfPI);
+    let upperArmGeometry = TranslateGeometry(CreateCylinderGeometry(0.3, 0.05, 0.08), 0, -0.15, 0);
+    let lowerArmGeometry = TranslateGeometry(CreateCylinderGeometry(0.4, 0.03, 0.05), 0, -0.2, 0);
 
-    let upperArmGeometry = CreateCylinderGeometry(0.3, 0.05, 0.08);
-    let lowerArmGeometry = CreateCylinderGeometry(0.4, 0.03, 0.05);
-
-    TranslateGeometry(upperArmGeometry, 0, -0.15, 0);
-    TranslateGeometry(lowerArmGeometry, 0, -0.2, 0);
-
-    function Pulse(t: number, base: number, radius: number)
+    let Pulse = (t: number, base: number, radius: number) =>
     {
         // get fractional part from t, and remap to [-1, 1]
         t = (t % 1) * 2 - 1;
@@ -3762,35 +3602,23 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         return sgn * sin(x) * (base ** x);
     }
 
-    function CreateHuman(isEnemy: boolean, isArcher: boolean)
+    let CreateHuman = (isEnemy: boolean, isArcher: boolean) =>
     {
-        let head = new Mesh(headGeometry, { ...defaultMaterial, textureScale: NewVector3(30) });
-        let body = new Mesh(bodyGeometry, defaultMaterial);
-        let lowerBody = new Mesh(lowerBodyGeometry, defaultMaterial);
-        let leftUpperLeg = new Mesh(upperLegGeometry, defaultMaterial);
-        let leftLowerLeg = new Mesh(lowerLegGeometry, defaultMaterial);
-        let leftFoot = new Mesh(footGeometry, defaultMaterial);
-        let rightUpperLeg = new Mesh(upperLegGeometry, defaultMaterial);
-        let rightLowerLeg = new Mesh(lowerLegGeometry, defaultMaterial);
-        let rightFoot = new Mesh(footGeometry, defaultMaterial);
-        let leftUpperArm = new Mesh(upperArmGeometry, defaultMaterial);
-        let leftLowerArm = new Mesh(lowerArmGeometry, defaultMaterial);
-        let rightUpperArm = new Mesh(upperArmGeometry, defaultMaterial);
-        let rightLowerArm = new Mesh(lowerArmGeometry, defaultMaterial);
-
-        head.setTextures(metalTexture);
-        body.setTextures(metalTexture);
-        lowerBody.setTextures(metalTexture);
-        leftUpperLeg.setTextures(metalTexture);
-        leftLowerLeg.setTextures(metalTexture);
-        leftFoot.setTextures(metalTexture);
-        rightUpperLeg.setTextures(metalTexture);
-        rightLowerLeg.setTextures(metalTexture);
-        rightFoot.setTextures(metalTexture);
-        leftUpperArm.setTextures(metalTexture);
-        leftLowerArm.setTextures(metalTexture);
-        rightUpperArm.setTextures(metalTexture);
-        rightLowerArm.setTextures(metalTexture);
+        /** @noinline */
+        let meshFactory = (geometry: Geometry) => new Mesh(geometry, defaultMaterial);
+        let head = meshFactory(headGeometry);
+        let body = meshFactory(bodyGeometry);
+        let lowerBody = meshFactory(lowerBodyGeometry);
+        let leftUpperLeg = meshFactory(upperLegGeometry);
+        let leftLowerLeg = meshFactory(lowerLegGeometry);
+        let leftFoot = meshFactory(footGeometry);
+        let rightUpperLeg = meshFactory(upperLegGeometry);
+        let rightLowerLeg = meshFactory(lowerLegGeometry);
+        let rightFoot = meshFactory(footGeometry);
+        let leftUpperArm = meshFactory(upperArmGeometry);
+        let leftLowerArm = meshFactory(lowerArmGeometry);
+        let rightUpperArm = meshFactory(upperArmGeometry);
+        let rightLowerArm = meshFactory(lowerArmGeometry);
 
         let walkMultiplier = 0;
         let walkSpeed = 3;
@@ -3798,7 +3626,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let animationTimeOffset = random();
         let now = () => Scene.now + animationTimeOffset;
 
-        function UpperLegWalk(node: SceneNode, offset: number, multiplier: number)
+        let UpperLegWalk = (node: SceneNode, offset: number, multiplier: number) =>
         {
             let speed = 2;
             let magnitude = 1.0;
@@ -3808,7 +3636,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             node.R.setFromAxisAngle(1, 0, 0, (offset2 - (t ** 1.2)) * magnitude * multiplier);
         }
 
-        function LowerLegWalk(node: SceneNode, offset: number, multiplier: number)
+        let LowerLegWalk = (node: SceneNode, offset: number, multiplier: number) =>
         {
             let speed = 5;
             let magnitude = 0.15;
@@ -3818,7 +3646,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             node.R.setFromAxisAngle(1, 0, 0, (Pulse(t, 2, speed) * magnitude - 4 * magnitude) * multiplier);
         }
 
-        function BodyMovement(node: SceneNode, multiplier: number)
+        let BodyMovement = (node: SceneNode, multiplier: number) =>
         {
             let t = now() * walkSpeed * 4;
 
@@ -3876,14 +3704,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let node = new SceneNode();
         let bodyContainer = new SceneNode();
-        node.a(bodyContainer);
-        bodyContainer.a(head);
-        bodyContainer.a(body);
-        bodyContainer.a(lowerBody);
-        bodyContainer.a(leftUpperLeg);
-        bodyContainer.a(rightUpperLeg);
-        bodyContainer.a(leftUpperArm);
-        bodyContainer.a(rightUpperArm);
+        node.a(bodyContainer.a(head, body, lowerBody, leftUpperLeg, rightUpperLeg, leftUpperArm, rightUpperArm));
 
         bodyContainer.onUpdate.push(node => BodyMovement(node, walkMultiplier));
 
@@ -3908,7 +3729,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             setRightUpperArmDefaultRotation();
 
             let shield = ShieldObject();
-            shield.setTextures(metalTexture);
             if (isEnemy)
             {
                 shield.material.r = 1;
@@ -3985,7 +3805,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let tmp1 = NewVector2();
     let tmpResult = NewVector2();
 
-    function GetOffsetDirection(prevPoint: Vector2, currentPoint: Vector2, nextPoint: Vector2, offset: number, target: Vector2)
+    let GetOffsetDirection = (prevPoint: Vector2, currentPoint: Vector2, nextPoint: Vector2, offset: number, target: Vector2) =>
     {
         let dir0 = tmp0.copyFrom(currentPoint).s(prevPoint).r();
         let dir1 = tmp1.copyFrom(nextPoint).s(currentPoint).r();
@@ -3993,7 +3813,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         return target.setValues(bisector.y, -bisector.x).mulScalar(offset);
     }
 
-    function CreateRoadGeometry(polyline: number[], widthRadius: number): Geometry
+    let CreateRoadGeometry = (polyline: number[], widthRadius: number): Geometry =>
     {
         let prev = NewVector2();
         let current = NewVector2();
@@ -4056,15 +3876,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     globalCanvas.style.top = "0px";
     globalCanvas.style.left = "0px";
 
-    function RemoveItemFromArray<T>(arr: T[], item: T)
-    {
-        let idx = arr.indexOf(item);
-        if (idx > -1)
-        {
-            arr.splice(idx, 1);
-        }
-    }
-
     let scene = new Scene();
 
     let camera = new Camera();
@@ -4088,7 +3899,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let cameraPanning = false;
     let cameraRotating = false;
 
-    function Resize()
+    let Resize = () =>
     {
         let fov = 80;
         camera.setProjectionMatrixPerspecive(fov, (globalCanvas.width = window.innerWidth) / (globalCanvas.height = window.innerHeight), 0.4, 500);
@@ -4136,7 +3947,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         }
     });
 
-    function GetHoveredBuilding(ev: MouseEvent)
+    let GetHoveredBuilding = (ev: MouseEvent) =>
     {
         if (buildingInProgress)
         {
@@ -4163,7 +3974,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         return closestHitBuilding;
     }
 
-    function UpdateHoveredBuilding(ev: MouseEvent)
+    let UpdateHoveredBuilding = (ev: MouseEvent) =>
     {
         let hover = GetHoveredBuilding(ev);
         globalCanvas.style.cursor = hover ? "pointer" : "";
@@ -4214,7 +4025,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     });
 
     let running = false;
-    function Render(now: number)
+    let Render = (now: number) =>
     {
         requestAnimationFrame(Render);
 
@@ -4238,11 +4049,9 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let roadTexture = BrickTexture(2048, 2048, 90, 90, 0.02, 0.5, 0.03, 0.4, 4, 0.2, true, 0.7, 1, [0.85, 0.85, 0.8], [0.5, 0.5, 0.5], 3);
     let roadMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.03) };
 
-    let groundTexture = DirtTexture();
-    let groundMaterial: Material = { ...whiteColor, textureScale: NewVector3(0.2) };
+    let groundMaterial: Material = { r: 0.4, g: 0.6, b: 0.3, a: 1, textureScale: NewVector3(0.2), roughness: 1, metallic: 0 };
 
     let groundMesh = new Mesh(CreateBoxGeometry(500, 1, 500), groundMaterial);
-    groundMesh.setTextures(groundTexture);
     groundMesh.P.y = -0.5;
     groundMesh.renderOrder = 100;
     scene.a(groundMesh);
@@ -4268,7 +4077,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     let tmpScreenPos = NewVector3();
     let tmpWorldForScreenPos = NewVector3();
-    function UpdateElementScreenPositionFromWorldPosition(target: SceneNode, yOffset: number, element: HTMLElement, display = "")
+    let UpdateElementScreenPositionFromWorldPosition = (target: SceneNode, yOffset: number, element: HTMLElement, display = "") =>
     {
         tmpWorldForScreenPos.copyFrom(target.P).y += yOffset;
         camera.getScreenPosition(tmpWorldForScreenPos, tmpScreenPos);
@@ -4277,7 +4086,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         element.style.top = round((1 - tmpScreenPos.y) / 2 * window.innerHeight) + "px";
     }
 
-    function CreateHealthBar(target: SceneNode, yOffset: number)
+    let CreateHealthBar = (target: SceneNode, yOffset: number) =>
     {
         let healthBarContainer = createElement("div");
         healthBarContainer.className = "we hb";
@@ -4319,7 +4128,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     }
 
     let tmpCollisionCheckVec3 = NewVector3();
-    function HumanBehavior(human: ReturnType<typeof CreateHuman>)
+    let HumanBehavior = (human: ReturnType<typeof CreateHuman>) =>
     {
         let { isEnemy, node, node: { P, R, S }, startWalking, stopWalking } = human;
 
@@ -4681,13 +4490,13 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     }];
 
     let activeLevelObjects = new Set<SceneNode>();
-    function AddLevelObject(obj: SceneNode)
+    let AddLevelObject = (obj: SceneNode) =>
     {
         scene.a(obj);
         activeLevelObjects.add(obj);
     }
 
-    function BoundingBoxOverlap(min0: Vector2, max0: Vector2, min1: Vector2, max1: Vector2)
+    let BoundingBoxOverlap = (min0: Vector2, max0: Vector2, min1: Vector2, max1: Vector2) =>
     {
         return min1.x < max0.x && min1.y < max0.y && max1.x > min0.x && max1.y > min0.y;
     }
@@ -4709,7 +4518,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         uiElement: BuildingUIElement
     }
 
-    function DefaultShowHideFnForHtmlElement(elem: HTMLElement, onDestroy: () => void): BuildingUIElement
+    let DefaultShowHideFnForHtmlElement = (elem: HTMLElement, onDestroy: () => void): BuildingUIElement =>
     {
         return {
             show: () => elem.style.display = "",
@@ -4723,8 +4532,8 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         };
     }
 
-    function CreateAbilityContainer(buttonText: string, description: string, onClick: () => void, cooldown?: number, cost?: number,
-        customReadyText?: string, customCooldownText?: (cooldown: string) => string)
+    let CreateAbilityContainer = (buttonText: string, description: string, onClick: () => void, cooldown?: number, cost?: number,
+        customReadyText?: string, customCooldownText?: (cooldown: string) => string) =>
     {
         let c = createElement("div");
         let b = createElement("button");
@@ -4790,7 +4599,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
     // abilities/upgrades
 
-    function CreateUIContainerBase(title: string, description: string)
+    let CreateUIContainerBase = (title: string, description: string) =>
     {
         let container = createElement("div");
         container.style.display = "none";
@@ -4808,7 +4617,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         return container;
     }
 
-    function CreateFixedUpdateTimer(time: number, repeat: boolean, tick: () => void)
+    let CreateFixedUpdateTimer = (time: number, repeat: boolean, tick: () => void) =>
     {
         let accumulatedTime = time;
 
@@ -4843,7 +4652,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let foodText = getElementById("food-count")!;
 
     let onGoldChanged: (() => void)[] = [];
-    function UpdateGold(delta: number)
+    let UpdateGold = (delta: number) =>
     {
         goldText.textContent = (totalGold += delta).toString();
         onGoldChanged.forEach(callback => callback());
@@ -4853,7 +4662,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let goldPerSecond = 1;
     CreateFixedUpdateTimer(secondsPerGold, true, () => UpdateGold(goldPerSecond));
 
-    function TryUpdateFood(delta: number)
+    let TryUpdateFood = (delta: number) =>
     {
         if (totalFood + delta < 0)
         {
@@ -4878,13 +4687,13 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let windmillTotalLevelCount = 0;
     CreateFixedUpdateTimer(secondsPerFood, true, () => TryUpdateFood(windmillTotalLevelCount));
 
-    function CreateHouseUI()
+    let CreateHouseUI = () =>
     {
         let container = CreateUIContainerBase("House", "Houses increase the amount of gold you receive per second.");
 
         let upgradeLevel = 1;
 
-        function UpdateValues()
+        let UpdateValues = () =>
         {
             upgrade.b.disabled = totalGold < 30;
             upgrade.d.textContent = `You receive ${upgradeLevel} additional gold per second. (${upgradeLevel}/3)`;
@@ -4915,7 +4724,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         });
     }
 
-    function CreateCastleUI()
+    let CreateCastleUI = () =>
     {
         let container = CreateUIContainerBase("Castle", "The main building of the city. You must protect the castle from enemies.");
 
@@ -4943,7 +4752,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         judgmentRemainingDuration = max(judgmentRemainingDuration - fixedDeltaTime, 0);
     });
 
-    function CreateChurchUI()
+    let CreateChurchUI = () =>
     {
         let container = CreateUIContainerBase("Church", "Provides abilities that can turn the combat in your favor.");
 
@@ -4951,7 +4760,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let judgmentStunDuration = 0;
         let upgradeLevel = 1;
 
-        function UpdateValues()
+        let UpdateValues = () =>
         {
             blessingHealthRestorePercent = upgradeLevel * 0.2;
             blessing.d.textContent = `Restores ${upgradeLevel * 20}% health to all friendly soldiers.`;
@@ -5006,7 +4815,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let totalArmorUpgrade = 0;
     let totalDamageUpgrade = 0;
 
-    function CreateBlacksmithUI()
+    let CreateBlacksmithUI = () =>
     {
         let container = CreateUIContainerBase("Blacksmith", "Improves the equipment of your soldiers.");
 
@@ -5015,7 +4824,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let getUpgradeValue = (level: number) => 1 - (0.95 ** level);
 
-        function UpdateValues()
+        let UpdateValues = () =>
         {
             let armorPercent = round(getUpgradeValue(armorUpgradeLevel) * 100);
             let damagePercent = round(getUpgradeValue(damageUpgradeLevel) * 100);
@@ -5025,7 +4834,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
             damageUpgrade.b.disabled = totalGold < 20;
             damageUpgrade.d.textContent = `Increases damage dealt by friendly soldiers, by ${damagePercent}%. (${damageUpgradeLevel}/3)`;
-
         }
 
         let armorUpgrade = CreateAbilityContainer("Armor reinforcement (20 gold)", "", () =>
@@ -5064,14 +4872,14 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         });
     }
 
-    function CreateWindmillUI()
+    let CreateWindmillUI = () =>
     {
         let container = CreateUIContainerBase("Windmill", "Produces food. Soldiers need food to survive.");
 
         let upgradeLevel = 1;
         ++windmillTotalLevelCount;
 
-        function UpdateValues()
+        let UpdateValues = () =>
         {
             upgrade.b.disabled = totalGold < 20;
             upgrade.d.textContent = `Produces ${upgradeLevel} food per second. (${upgradeLevel}/3)`;
@@ -5103,7 +4911,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let towerRangeIndicatorGeometry = CreateCylinderGeometry(0.5, 1, 1, 64);
     let arrowProjectileGeometry = CreateCylinderGeometry(0.8, 0.05, 0.05);
 
-    function CreateTowerUI(node: SceneNode): BuildingUIElement
+    let CreateTowerUI = (node: SceneNode): BuildingUIElement =>
     {
         let container = CreateUIContainerBase("Archer tower", "Periodically attacks the closest enemy.");
 
@@ -5121,7 +4929,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let damageMultiplier = 0;
         let baseDamage = 30;
 
-        function UpdateValues()
+        let UpdateValues = () =>
         {
             rangeUpgrade.b.disabled = totalGold < 20;
             rangeRadius = 12 + rangeUpgradeLevel * 4;
@@ -5330,7 +5138,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     let castleHealthBarContainer: HTMLElement | null = null;
     let nextLevelLoading = false;
     let enemySpawnTimerCancellerFns: (() => void)[] = [];
-    async function LoadLevel(level: number, isRestart: boolean)
+    let LoadLevel = async (level: number, isRestart: boolean) =>
     {
         overlay.classList.remove("hidden");
         running = false;
@@ -5531,7 +5339,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
     }
 
     let buildingInProgress = false;
-    async function BuildBuilding(buildingType: BuildingType)
+    let BuildBuilding = (buildingType: BuildingType) =>
     {
         buildingInProgress = true;
         buildingInfoContainer.style.display = "none";
@@ -5545,9 +5353,6 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         let currentBBoxMax = NewVector2();
         let tmpDistanceFromOrigin = NewVector2();
 
-        globalCanvas.addEventListener("click", Click);
-        globalCanvas.addEventListener("mousemove", Move);
-
         cancelBuilding();
         cancelBuilding = () =>
         {
@@ -5559,7 +5364,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let canBuild = false;
 
-        function Click(ev: MouseEvent)
+        let Click = (ev: MouseEvent) =>
         {
             if (!canBuild)
             {
@@ -5636,7 +5441,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
 
         let tmpVec2_min = NewVector2();
         let tmpVec2_max = NewVector2();
-        function Move(ev: MouseEvent)
+        let Move = (ev: MouseEvent) =>
         {
             let ray = camera.getWorldRayFromMouseEvent(ev);
             let hitDistance = GroundPlaneLineIntersectionDistance(ray);
@@ -5709,6 +5514,9 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
             buildingPlaceholder.material.r = canBuild ? 0 : 1;
             buildingPlaceholder.material.g = canBuild ? 1 : 0;
         }
+
+        globalCanvas.addEventListener("click", Click);
+        globalCanvas.addEventListener("mousemove", Move);
     }
 
     let buildingButtonsContainer = getElementById("building-buttons-container")!;
@@ -5752,7 +5560,7 @@ vec4 gc(vec2 c){vec2 n=gsn(c)-.5;c+=n*float(${noiseScale0});
         globalFilterNode.frequency.exponentialRampToValueAtTime(20000, actx.currentTime + 4);
     };
 
-    function FadeOutMusic()
+    let FadeOutMusic = () =>
     {
         globalFilterNode.frequency.linearRampToValueAtTime(20000, actx.currentTime + 0.1);
         globalFilterNode.frequency.linearRampToValueAtTime(200, actx.currentTime + 4);
